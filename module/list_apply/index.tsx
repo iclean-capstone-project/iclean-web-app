@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Image, notification, Table, Tabs, TabsProps, Tag, Tooltip} from "antd";
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import {CheckCircleOutlined, CloseCircleOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {
   getAllApply,

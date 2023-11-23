@@ -36,13 +36,13 @@ export function ListBooking(): JSX.Element {
       statuses: keyTabSelected,
     });
 
+  console.log("keyTabSelected", keyTabSelected);
+
   const dataListBooking = useQuery(["GET_LIST_ICON"], getDataListBooking, {
     onSuccess: (res) => {
-      console.log("res", res?.data?.content);
+      console.log("res1111", res?.data?.content);
 
-      if (res?.data?.content[0]) {
-        setDataBooking(res.data.content);
-      }
+      setDataBooking(res.data.content);
     },
   });
 
