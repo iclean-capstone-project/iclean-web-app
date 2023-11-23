@@ -210,19 +210,13 @@ export function ListApply(): JSX.Element {
         >
           {dataIndex.status === "WAITING_FOR_CONFIRM" ? (
             <Tooltip placement="top" title="confirm">
-              <div
-                onClick={() => handleAcceptBooking(dataIndex.bookingId)}
-                style={{marginLeft: 8}}
-              >
+              <div style={{marginLeft: 8}}>
                 <CheckCircleOutlined style={{fontSize: 22, color: "blue"}} />
               </div>
             </Tooltip>
           ) : (
             <Tooltip placement="top" title="approve">
-              <div
-                onClick={() => handleAcceptBooking(dataIndex.bookingId)}
-                style={{marginLeft: 8}}
-              >
+              <div style={{marginLeft: 8}}>
                 <CheckCircleOutlined style={{fontSize: 22, color: "green"}} />
               </div>
             </Tooltip>
