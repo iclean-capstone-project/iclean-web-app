@@ -97,7 +97,28 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
                 >
                   Trạng thái
                 </div>
-                <Tag color="volcano">{item.status}</Tag>
+                {item.status === "NOT_YET" && (
+                  <Tag color="cyan">{item.status}</Tag>
+                )}
+                {item.status === "ON_CART" && (
+                  <Tag color="volcano">{item.status}</Tag>
+                )}
+                {item.status === "REJECTED" && (
+                  <Tag color="orange">{item.status}</Tag>
+                )}
+                {item.status === "APPROVED" && (
+                  <Tag color="green">{item.status}</Tag>
+                )}
+                {item.status === "FINISHED" && (
+                  <Tag color="red">{item.status}</Tag>
+                )}
+                {item.status === "NO_MONEY" && (
+                  <Tag color="purple">{item.status}</Tag>
+                )}
+                {item.status === "CANCELED" && (
+                  <Tag color="red">{item.status}</Tag>
+                )}
+                {/* <Tag color="volcano">{item.status}</Tag> */}
               </div>
             </div>
           ))}

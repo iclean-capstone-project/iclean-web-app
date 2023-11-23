@@ -53,8 +53,6 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
   const rejectBookingMutate = useMutation(rejectAproveBooking);
 
   const handleDeleteBooking = (data: any) => {
-    console.log("data", data.rejectionReasonId.length);
-
     if (
       data.rejectionReasonId.length === 0 ||
       data.rejectionReasonDetail.length === 0
@@ -65,9 +63,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
       return;
     }
 
-    console.log("11");
     if (bookingId) {
-      console.log("22");
       rejectBookingMutate.mutate(
         {
           id: bookingId,

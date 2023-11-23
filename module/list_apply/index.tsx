@@ -1,41 +1,87 @@
-import React, {useState} from "react";
-import {ColumnsType} from "antd/es/table";
-import {Image, Modal, Table} from "antd";
-import {EditOutlined} from "@ant-design/icons";
+import React, {useEffect, useState} from "react";
+import {Image, notification, Table, Tabs, TabsProps, Tag, Tooltip} from "antd";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {Formik} from "formik";
-import UploadFileGlobal from "@app/components/UploadFileGlobal";
-
-interface DataType {
-  key: string;
-  name: string;
-  avatar: string;
-  address: string;
-  description: string;
-  transport: string;
-  phoneNumber: string;
-  total: string;
-}
+import {
+  getAllApply,
+  IGetAllApplyRes,
+  IItemApplyRes,
+  rejectAproveBooking,
+} from "@app/api/ApiProduct";
+import {useMutation, useQuery} from "react-query";
 
 export function ListApply(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [keyTabSelected, setKeyTabSelected] = useState<string>("");
+
+  // action reject - post
+  const rejectBookingMutate = useMutation(rejectAproveBooking);
+  const getDataListApply = (): Promise<IGetAllApplyRes> =>
+    // IGetAllBookingRes
+    getAllApply({
+      page: 1,
+      size: 10,
+    });
+
+  const dataListApply = useQuery(["GET_LIST_APPLY"], getDataListApply, {
+    onSuccess: (res) => {
+      console.log("res", res?.data?.content);
+      setDataApply(res?.data?.content ?? []);
+    },
+  });
+
+  const handleAcceptBooking = (id?: number) => {
+    if (id) {
+      rejectBookingMutate.mutate(
+        {
+          id: id,
+          action: "approved",
+        },
+        {
+          onSuccess: () => {
+            notification.success({
+              message: "Phê duyệt thành công!",
+            });
+            dataListApply.refetch();
+          },
+          onError: () => {},
+        }
+      );
+    }
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-  };
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
   };
+
+  const onChangeTab = (key: string) => {
+    setKeyTabSelected(key === "all" ? "" : key);
+  };
+
+  useEffect(() => {
+    dataListApply.refetch();
+  }, [keyTabSelected]);
+
+  const itemsTab: TabsProps["items"] = [
+    {
+      key: "all",
+      label: "Tất cả",
+    },
+    {
+      key: "WAITING_FOR_APPROVE",
+      label: "Chờ duyệt",
+    },
+    {
+      key: "WAITING_FOR_CONFIRM",
+      label: "Chờ xác nhận",
+    },
+  ];
+
   const listSearchText = [
     {
       placeHolder: "Tìm kiếm...",
@@ -47,244 +93,164 @@ export function ListApply(): JSX.Element {
   const listDatePicker = [
     {
       onChange: (startTime: number, endTime: number): void => {
-        console.log("sss");
+        console.log("startTime", startTime);
+        console.log("endTime", endTime);
       },
       tooltip: "Ngày tạo",
       title: "Ngày tạo",
     },
   ];
-  const columns: ColumnsType<DataType> = [
+  const columns: any = [
     {
       title: "STT",
       dataIndex: "stt",
       key: "stt",
       align: "center",
-      width: 50,
-      render: (_, dataIndex) => <div>{data.indexOf(dataIndex) + 1}</div>,
+      width: 70,
+      render: (_: any, dataIndex: any) => (
+        <div>{dataApply.indexOf(dataIndex) + 1}</div>
+      ),
     },
     {
-      title: "Tên người dùng",
-      dataIndex: "user_name",
-      key: "name",
-      width: 150,
+      title: "Họ và tên",
+      dataIndex: "fullName",
+      key: "fullName",
       align: "center",
+      width: 170,
     },
     {
       title: "Ảnh đại diện",
-      dataIndex: "avatar",
+      dataIndex: "personalAvatar",
       key: "image",
-      render: (_, dataIndex) => (
+      render: (_, dataIndex: any) => (
         <div>
           <Image
             style={{borderRadius: 100}}
             width={100}
             height={100}
             preview={false}
-            src={dataIndex.avatar}
+            src={dataIndex.personalAvatar}
           />
         </div>
       ),
       align: "center",
-      width: 100,
+      width: 140,
     },
     {
       title: "Email",
       key: "email",
-      dataIndex: "description",
+      dataIndex: "email",
       align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 100,
+      width: 220,
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "time_created",
-      key: "time_created",
+      title: "SĐT",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
       align: "center",
-      width: 80,
+      width: 140,
     },
     {
-      title: "Sách còn lại",
-      dataIndex: "numberOfBook",
-      key: "time_created",
+      title: "Ngày sinh",
+      dataIndex: "dateOfBirth",
+      key: "dateOfBirth",
       align: "center",
-      width: 80,
+      width: 140,
     },
     {
-      title: "Số đơn giao dịch",
-      dataIndex: "transactions",
-      key: "time_created",
+      title: "Tạm trú",
+      dataIndex: "placeOfResidence",
+      key: "placeOfResidence",
       align: "center",
-      width: 80,
+      width: 200,
+    },
+    {
+      title: "Quê quán",
+      dataIndex: "homeTown",
+      key: "homeTown",
+      align: "center",
+      width: 200,
+    },
+
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      width: 170,
+      render: (_, dataIndex: any) => (
+        <div>
+          {dataIndex.status === "WAITING_FOR_APPROVE" && (
+            <Tag color="cyan">{dataIndex.status}</Tag>
+          )}
+          {dataIndex.status === "WAITING_FOR_CONFIRM" && (
+            <Tag color="lime">{dataIndex.status}</Tag>
+          )}
+          {dataIndex.status === "DISABLED" && (
+            <Tag color="red">{dataIndex.status}</Tag>
+          )}
+          {dataIndex.status === "ONLINE" && (
+            <Tag color="green">{dataIndex.status}</Tag>
+          )}
+        </div>
+      ),
     },
     {
       title: "Thao tác",
       key: "action",
       dataIndex: "action",
       align: "center",
-      render: () => (
+      render: (_, dataIndex: any) => (
         <div
-          onClick={showModal}
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <div style={{marginLeft: 8}}>
-            <EditOutlined style={{fontSize: 22, color: "blue"}} />
-          </div>
+          {dataIndex.status === "WAITING_FOR_CONFIRM" ? (
+            <Tooltip placement="top" title="confirm">
+              <div
+                onClick={() => handleAcceptBooking(dataIndex.bookingId)}
+                style={{marginLeft: 8}}
+              >
+                <CheckCircleOutlined style={{fontSize: 22, color: "blue"}} />
+              </div>
+            </Tooltip>
+          ) : (
+            <Tooltip placement="top" title="approve">
+              <div
+                onClick={() => handleAcceptBooking(dataIndex.bookingId)}
+                style={{marginLeft: 8}}
+              >
+                <CheckCircleOutlined style={{fontSize: 22, color: "green"}} />
+              </div>
+            </Tooltip>
+          )}
+          <Tooltip placement="top" title="reject">
+            <div style={{marginLeft: 8}}>
+              <CloseCircleOutlined style={{fontSize: 22, color: "orange"}} />
+            </div>
+          </Tooltip>
         </div>
       ),
       fixed: "right",
-      width: 50,
+      width: 140,
     },
   ];
-  const listInputUser = [
-    {
-      title: "Tên người dùng",
-      placeHolder: "Nhập tên người dùng",
-      type: "input",
-    },
-    {
-      title: "Ảnh đại diện",
-      placeHolder: "Nhập tên người dùng",
-      type: "uploadFile",
-    },
-    {
-      title: "Email",
-      placeHolder: "Nhập Email",
-      type: "input",
-    },
-    {
-      title: "Sách còn lại",
-      placeHolder: "Nhập số sách còn lại",
-      type: "input",
-    },
-    {
-      title: "Số đơn giao dịch",
-      placeHolder: "Nhập số đơn",
-      type: "input",
-    },
-  ];
-  const data: any = [
-    {
-      user_name: "Nguyễn văn A",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn B",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn C",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn D",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn E",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-  ];
-
   return (
-    <div className="manager-user-container">
+    <div className="list-apply-container">
+      <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       <FilterGroupGlobal
         listSearchText={listSearchText}
         listDatePicker={listDatePicker}
       />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1000, y: 400}}
+        scroll={{x: 600, y: 485}}
         columns={columns}
-        dataSource={data}
+        dataSource={dataApply}
       />
-      <Modal
-        title="Sửa thông tin người dùng"
-        open={isModalOpen}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
-      >
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
-        >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div>
-                {listInputUser.map((item, index) => (
-                  <div key={index}>
-                    {item.type === "input" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <InputGlobal
-                          name="username"
-                          placeholder={item.placeHolder}
-                          style={{width: "80%"}}
-                          onPressEnter={(): void => handleSubmit()}
-                        />
-                        <ErrorMessageGlobal name="username" />
-                      </div>
-                    )}
-                    {item.type === "uploadFile" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <div style={{width: "80%"}}>
-                          <UploadFileGlobal
-                            handleChange={() => console.log("uploadFile")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </Formik>
-      </Modal>
     </div>
   );
 }

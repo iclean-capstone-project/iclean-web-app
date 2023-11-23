@@ -10,6 +10,13 @@ interface IParamsGetAllBooking {
   endDate?: string;
 }
 
+interface IParamsGetAllApply {
+  isAllRequest?: boolean;
+  page?: number;
+  size?: number;
+  sort?: string[];
+}
+
 export interface IListItemBooking {
   bookingId?: number;
   bookingCode?: string;
@@ -47,6 +54,29 @@ export interface IGetAllBookingRes {
         managerName?: string;
       }[]
     ];
+  };
+}
+
+export interface IItemApplyRes {
+  helperInformationId?: number;
+  personalAvatar?: string;
+  email?: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  placeOfResidence?: string;
+  homeTown?: string;
+  fullName?: string;
+  status?: string;
+}
+
+export interface IGetAllApplyRes {
+  data?: {
+    pageNumber?: number;
+    pageSize?: number;
+    totalElements?: number;
+    totalPages?: number;
+    numberOfElement?: number;
+    content?: IItemApplyRes[];
   };
 }
 
@@ -95,6 +125,8 @@ const path = {
   getAllBooking: "/booking",
   rejectApproveBookingPath: "/booking/manager",
   listRejectReason: "/rejection-reason",
+
+  getAllApply: "/helper-registration",
 };
 
 function rejectAproveBooking(params: {
@@ -138,9 +170,18 @@ function getListRejectReason(): Promise<IListRejectReasonRes> {
   });
 }
 
+function getAllApply(params: IParamsGetAllApply): Promise<IGetAllApplyRes> {
+  return fetcher({
+    url: path.getAllApply,
+    method: "get",
+    params: params,
+  });
+}
+
 export {
   getAllBooking,
   rejectAproveBooking,
   getDetailBooking,
   getListRejectReason,
+  getAllApply,
 };
