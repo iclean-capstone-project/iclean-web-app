@@ -3,9 +3,11 @@ import {downloadFile, fetcher} from "./Fetcher";
 interface IParamsGetAllBooking {
   page?: number;
   size?: number;
-  statuses?: string[];
+  statuses?: string[] | string;
   isHelper?: boolean;
   sort?: string[];
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface IListItemBooking {
@@ -82,9 +84,17 @@ export interface IDetailBookingRes {
   };
 }
 
+export interface IListRejectReasonRes {
+  data?: {
+    rejectionReasonContent?: string;
+    rejectionReasonId?: number;
+  }[];
+}
+
 const path = {
   getAllBooking: "/booking",
   rejectApproveBookingPath: "/booking/manager",
+  listRejectReason: "/rejection-reason",
 };
 
 function rejectAproveBooking(params: {
@@ -121,4 +131,16 @@ function getDetailBooking(params: {id: number}): Promise<IDetailBookingRes> {
   });
 }
 
-export {getAllBooking, rejectAproveBooking, getDetailBooking};
+function getListRejectReason(): Promise<IListRejectReasonRes> {
+  return fetcher({
+    url: path.listRejectReason,
+    method: "get",
+  });
+}
+
+export {
+  getAllBooking,
+  rejectAproveBooking,
+  getDetailBooking,
+  getListRejectReason,
+};

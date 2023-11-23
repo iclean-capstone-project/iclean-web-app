@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Image, Modal, notification, Table, Tag, Tooltip} from "antd";
+import React, {useEffect, useState} from "react";
+import {Image, Modal, notification, Table, Tabs, Tag, Tooltip} from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -12,14 +12,19 @@ import {
   rejectAproveBooking,
 } from "@app/api/ApiProduct";
 import {useMutation, useQuery} from "react-query";
-import {ModalViewDetailBooking} from "@app/module/list_booking/components";
+import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalViewDetailBooking";
+import "./index.scss";
+import {itemsTab} from "@app/module/list_booking/listDataDefault";
+import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
 
 export function ListBooking(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeleteBooking, setIsModalDeleteBooking] = useState(false);
   const [dataBooking, setDataBooking] = useState<IListItemBooking[]>([]);
   const [bookingIdSelected, setBookingIdSelected] = useState<
     number | undefined
   >(undefined);
+  const [keyTabSelected, setKeyTabSelected] = useState<string>("");
 
   // action reject - post
   const rejectBookingMutate = useMutation(rejectAproveBooking);
@@ -28,6 +33,7 @@ export function ListBooking(): JSX.Element {
     getAllBooking({
       page: 1,
       size: 10,
+      statuses: keyTabSelected,
     });
 
   const dataListBooking = useQuery(["GET_LIST_ICON"], getDataListBooking, {
@@ -40,9 +46,13 @@ export function ListBooking(): JSX.Element {
     },
   });
 
-  console.log("dataListIcon", dataListBooking);
   const showModal = (id: number) => {
     setIsModalOpen(true);
+    setBookingIdSelected(id);
+  };
+
+  const showModalDeleteBooking = (id: number) => {
+    setIsModalDeleteBooking(true);
     setBookingIdSelected(id);
   };
 
@@ -66,33 +76,27 @@ export function ListBooking(): JSX.Element {
     }
   };
 
-  const handleRejectBooking = (id?: number) => {
-    if (id) {
-      rejectBookingMutate.mutate(
-        {
-          id: id,
-          action: "rejected",
-        },
-        {
-          onSuccess: () => {
-            dataListBooking.refetch();
-          },
-          onError: () => {},
-        }
-      );
-    }
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsModalDeleteBooking(false);
   };
 
   const handleSubmit = (data: any) => {
     console.log("data", data);
   };
+
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
   };
+
+  const onChangeTab = (key: string) => {
+    setKeyTabSelected(key === "all" ? "" : key);
+  };
+
+  useEffect(() => {
+    dataListBooking.refetch();
+  }, [keyTabSelected]);
+
   const listSearchText = [
     {
       placeHolder: "Tìm kiếm...",
@@ -104,7 +108,8 @@ export function ListBooking(): JSX.Element {
   const listDatePicker = [
     {
       onChange: (startTime: number, endTime: number): void => {
-        console.log("sss");
+        console.log("startTime", startTime);
+        console.log("endTime", endTime);
       },
       tooltip: "Ngày tạo",
       title: "Ngày tạo",
@@ -260,7 +265,7 @@ export function ListBooking(): JSX.Element {
 
               <Tooltip placement="top" title="reject">
                 <div
-                  onClick={() => handleRejectBooking(dataIndex.bookingId)}
+                  onClick={() => showModalDeleteBooking(dataIndex.bookingId)}
                   style={{marginLeft: 8}}
                 >
                   <CloseCircleOutlined
@@ -278,7 +283,8 @@ export function ListBooking(): JSX.Element {
   ];
 
   return (
-    <div className="manager-user-container">
+    <div className="list-booking-container">
+      <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       <FilterGroupGlobal
         listSearchText={listSearchText}
         listDatePicker={listDatePicker}
@@ -288,6 +294,7 @@ export function ListBooking(): JSX.Element {
         scroll={{x: 600, y: 485}}
         columns={columns}
         dataSource={dataBooking}
+        className="table-list-booking"
       />
       <Modal
         title="Chi tiết đơn hàng"
@@ -295,10 +302,15 @@ export function ListBooking(): JSX.Element {
         onOk={handleSubmit}
         onCancel={handleCancel}
         footer={false}
-        style={{width: 800}}
       >
         <ModalViewDetailBooking bookingId={bookingIdSelected} />
       </Modal>
+
+      <ModalDeleteBooking
+        bookingId={bookingIdSelected}
+        isModalDeleteBooking={isModalDeleteBooking}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }

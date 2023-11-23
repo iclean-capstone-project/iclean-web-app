@@ -15,7 +15,6 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
   const [dataDetailBookingInit, setDataDetailBookingInit] = useState<
     IDetailBookingRes | undefined
   >(undefined);
-  // console.log("bookingId", bookingId);
 
   const getDataDetailBooking = (): Promise<IDetailBookingRes> =>
     // IGetAllBookingRes

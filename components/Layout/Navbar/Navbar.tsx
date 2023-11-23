@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {Avatar, Dropdown, Image, Menu} from "antd";
 import {DownOutlined, UserOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
@@ -6,6 +6,7 @@ import {IRootState} from "@app/redux/store";
 import {useRouter} from "next/router";
 import {openModalConfirm} from "@app/components/ModalConfirm";
 import {logoutUser} from "@app/redux/slices/UserSlice";
+import RouteList from "@app/routes/RouteList";
 
 export default function Navbar(): JSX.Element {
   const router = useRouter();
@@ -41,21 +42,46 @@ export default function Navbar(): JSX.Element {
     />
   );
 
+    const nameRouter = useMemo((): string[] => {
+        const nameRouter: string[] = [];
+        RouteList.forEach(({path, name, children}) => {
+            // console.log("name", name)
+            // console.log("path", path)
+            // console.log("pathname", pathname)
+            if (path.split("/")[1] === pathname.split("/")[1]) {
+                nameRouter.push(name);
+                // console.log("path", path)
+
+                children?.forEach(({path, name, children}) => {
+                    if (path.split("/")[1] === pathname.split("/")[2])
+                        nameRouter.push(name);
+
+                    children?.forEach(({path, name}) => {
+                        if (path.split("/")[1] === pathname.split("/")[3])
+                            nameRouter.push(name);
+                    });
+                });
+            }
+        });
+
+        return nameRouter;
+    }, [router]);
+
   return (
     <div className="navbar">
-      {/* <div className="right-content-wrap"> */}
-      {/*  <span> */}
-      {/*    {nameRouter.map((item, index) => { */}
-      {/*      if (index === nameRouter.length - 1) */}
-      {/*        return ( */}
-      {/*          <span key={index} className="title title_focus"> */}
-      {/*            {item} */}
-      {/*          </span> */}
-      {/*        ); */}
-      {/*      return <span key={index} className="title">{`${item} / `}</span>; */}
-      {/*    })} */}
-      {/*  </span> */}
-      {/* </div> */}
+       <div className="right-content-wrap">
+        <span>
+          {nameRouter.map((item, index) => {
+            if (index === nameRouter.length - 1)
+              return (
+                <span key={index} className="title title_focus">
+                  {item}
+                </span>
+              );
+            return <span key={index} className="title">{`${item} / `}</span>;
+          })}
+        </span>
+       </div>
       <div className="left-content-wrap">
         <Dropdown overlay={menuUser} placement="topLeft" className="user-wrap">
           <div>
