@@ -1,5 +1,6 @@
 import {fetcher} from "./Fetcher";
 import store from "../redux/store";
+import {IGetAllApplyRes} from "@app/api/ApiProduct";
 
 export interface ILoginBody {
   username: string;
@@ -36,10 +37,60 @@ export interface IGetUserResponse {
   };
 }
 
+interface IParamsGetAllUser {
+  page?: number;
+  size?: number;
+  role?: string;
+  sort?: string[];
+}
+export interface IItemUser {
+  userId?: number;
+  fullName?: string;
+  phoneNumber?: string;
+  roleName?: string;
+  dateOfBirth?: string;
+  defaultAddress?: string;
+  avatar?: string;
+  isLocked?: boolean;
+  email?: string;
+}
+
+export interface IGetListUser {
+  data?: {
+    offset?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalElements?: number;
+    totalPages?: number;
+    numberOfElements?: number;
+    sortBy?: null;
+    content?: IItemUser[];
+  };
+}
+
 const path = {
   getUser: "/auth/get-user",
   login: "/auth",
+  getAllUser: "/user",
 };
+
+function getAllUser(params: IParamsGetAllUser): Promise<IGetListUser> {
+  return fetcher({
+    url: path.getAllUser,
+    method: "get",
+    params: params,
+  });
+}
+
+function banOrUnbanUser(params: {userId: number}): Promise<any> {
+  return fetcher({
+    url: `${path.getAllUser}/${params.userId}`,
+    method: "put",
+    // params: {
+    //   userId: params.userId,
+    // },
+  });
+}
 
 function login(body: ILoginBody): Promise<ILoginResponse> {
   return fetcher({url: path.login, method: "post", data: body});
@@ -58,4 +109,6 @@ export default {
   login,
   isLogin,
   getUser,
+  getAllUser,
+  banOrUnbanUser,
 };

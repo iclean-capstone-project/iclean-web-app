@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./style.scss";
 import {Button, Image, notification, Tag} from "antd";
 import {
@@ -19,13 +19,16 @@ interface IProps {
   isRefetch?: <TPageData>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
   ) => Promise<QueryObserverResult<IGetDetailApplyRes, unknown>>;
+  isChangeStatus: boolean;
 }
 export function ListServiceApply(props: IProps): JSX.Element {
-  const {listService, idApply, isRefetch} = props;
+  const {listService, idApply, isRefetch, isChangeStatus} = props;
+  const [isService, setIsService] = useState(undefined);
   console.log("listService", listService);
 
   const confirmApplyMutate = useMutation(confirmApply);
   const handleAcceptApply = (serviceRegistrationId?: number) => {
+    setIsService(serviceRegistrationId);
     if (idApply && serviceRegistrationId) {
       confirmApplyMutate.mutate(
         {
@@ -38,6 +41,7 @@ export function ListServiceApply(props: IProps): JSX.Element {
             notification.success({
               message: "Phê duyệt thành công!",
             });
+            setIsService(undefined);
           },
         }
       );
@@ -62,11 +66,15 @@ export function ListServiceApply(props: IProps): JSX.Element {
               {item?.status}
             </Tag>
           </div>
-          {item.status !== "ACTIVE" && (
+          {!isChangeStatus && item.status !== "ACTIVE" && (
             <Button
               onClick={() => handleAcceptApply(item.serviceRegistrationId)}
               shape="round"
               type="primary"
+              loading={
+                isService === item.serviceRegistrationId &&
+                confirmApplyMutate.isLoading
+              }
             >
               Xác nhận
             </Button>

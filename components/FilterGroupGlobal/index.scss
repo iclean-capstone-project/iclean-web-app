@@ -1,5 +1,13 @@
 .group-filter-global {
   display: flex;
+  align-items: center;
+
+  .title {
+    font-weight: 500;
+    margin-right: 10px;
+  }
+
+
   .search-text,
   .slect-option,
   .date-picker {

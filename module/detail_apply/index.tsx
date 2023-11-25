@@ -3,11 +3,15 @@ import {useRouter} from "next/router";
 import "./style.scss";
 import {HelperInfo} from "@app/module/detail_apply/components/HelperInfo";
 import {ListServiceApply} from "@app/module/detail_apply/components/ListServiceApply";
-import {getDetailApplyById, IGetDetailApplyRes} from "@app/api/ApiProduct";
-import {useQuery} from "react-query";
-import {Button} from "antd";
-import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
+import {
+  acceptApply,
+  getDetailApplyById,
+  IGetDetailApplyRes,
+} from "@app/api/ApiProduct";
+import {useMutation, useQuery} from "react-query";
+import {Button, notification, Tooltip} from "antd";
 import {ModalDeleteApply} from "@app/module/detail_apply/components/ModalDeleteApply";
+import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 
 export function DetailApply(): JSX.Element {
   const router = useRouter();
@@ -33,11 +37,46 @@ export function DetailApply(): JSX.Element {
   const showModalDeleteApply = (id: number) => {
     setIsOpenModalDeleteApply(true);
   };
+  const acceptApplyMutate = useMutation(acceptApply);
 
+  const handleAcceptApply = () => {
+    if (router.query.id) {
+      acceptApplyMutate.mutate(
+        {
+          id: parseInt(router.query.id, 10),
+        },
+        {
+          onSuccess: () => {
+            notification.success({
+              message: "Phê duyệt thành công!",
+            });
+            // dataListApply.refetch();
+          },
+        }
+      );
+    }
+  };
+
+  console.log("dataInit", dataInit);
   console.log("router", typeof parseInt(router.query?.id, 10));
   return (
     <div className="detail-apply-container">
       <div className="button-reject">
+        <Button
+          loading={acceptApplyMutate.isLoading}
+          style={{
+            borderRadius: 12,
+            backgroundColor: "blue",
+            color: "white",
+            borderColor: "blue",
+            marginRight: 8,
+          }}
+          onClick={handleAcceptApply}
+          icon={<CheckOutlined />}
+        >
+          Phê duyệt
+        </Button>
+        {/* )} */}
         <Button
           style={{
             borderRadius: 12,
@@ -46,8 +85,9 @@ export function DetailApply(): JSX.Element {
             borderColor: "red",
           }}
           onClick={() => showModalDeleteApply(1)}
+          icon={<CloseOutlined />}
         >
-          Từ chối đơn ứng tuyển
+          Từ chối
         </Button>
       </div>
       <div className="detail-apply-main">
@@ -59,6 +99,7 @@ export function DetailApply(): JSX.Element {
             isRefetch={refetch}
             idApply={parseInt(router.query.id, 10)}
             listService={dataInit?.services}
+            isChangeStatus={dataInit?.status !== "WAITING_FOR_CONFIRM"}
           />
         </div>
       </div>

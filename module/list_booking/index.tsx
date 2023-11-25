@@ -36,8 +36,6 @@ export function ListBooking(): JSX.Element {
       statuses: keyTabSelected,
     });
 
-  console.log("keyTabSelected", keyTabSelected);
-
   const dataListBooking = useQuery(["GET_LIST_ICON"], getDataListBooking, {
     onSuccess: (res) => {
       console.log("res1111", res?.data?.content);
@@ -295,6 +293,7 @@ export function ListBooking(): JSX.Element {
         columns={columns}
         dataSource={dataBooking}
         className="table-list-booking"
+        pagination={false}
       />
       <Modal
         title="Chi tiết đơn hàng"

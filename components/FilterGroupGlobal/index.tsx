@@ -24,6 +24,7 @@ export interface ListSelectOptionType {
   }[];
   loading?: boolean;
   tooltip?: string;
+  title?: string;
 }
 
 export interface ListDatePickerType {
@@ -101,19 +102,22 @@ function FilterGroupGlobal(props: FilterGroupGlobalProps): JSX.Element {
 
       {listSelectOption &&
         listSelectOption.map((item, index) => (
-          <Tooltip key={index} title={item.tooltip}>
-            <Select
-              mode={item.mode}
-              allowClear
-              placeholder={item.placeholder}
-              defaultValue={item.defaultValue}
-              style={{width: item.width ? item.width : 200}}
-              onChange={item.handleChange}
-              options={item.optionSelect}
-              className="slect-option"
-              loading={item.loading}
-            />
-          </Tooltip>
+          <div key={index}>
+            {item?.title && <span className="title">{`${item?.title}:`}</span>}
+            <Tooltip title={item.tooltip}>
+              <Select
+                mode={item.mode}
+                allowClear
+                placeholder={item.placeholder}
+                defaultValue={item.defaultValue}
+                style={{width: item.width ? item.width : 200}}
+                onChange={item.handleChange}
+                options={item.optionSelect}
+                className="slect-option"
+                loading={item.loading}
+              />
+            </Tooltip>
+          </div>
         ))}
 
       {listDatePicker &&

@@ -225,6 +225,7 @@ export function ListService(): JSX.Element {
         scroll={{x: 1000, y: 400}}
         columns={columns}
         dataSource={data}
+        pagination={false}
       />
       <Modal
         title="Sửa thông tin người dùng"

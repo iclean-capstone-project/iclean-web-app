@@ -85,7 +85,7 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
         {/* <ItemInput title="Điện thoại" value="" /> */}
       </div>
       <h3>Chi tiết bài đăng</h3>
-      <div style={{maxHeight: 280, overflow: "scroll"}}>
+      <div style={{maxHeight: 280, overflowY: "scroll"}}>
         {dataDetailBookingInit?.data?.details &&
           dataDetailBookingInit.data.details.map((item, index) => (
             <div key={index} style={{marginTop: 10}}>

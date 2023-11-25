@@ -27,9 +27,6 @@ export function ListApply(): JSX.Element {
 
   const [keyTabSelected, setKeyTabSelected] = useState<string>("");
 
-  // action reject - post
-  const acceptApplyMutate = useMutation(acceptApply);
-
   const getDataListApply = (): Promise<IGetAllApplyRes> =>
     // IGetAllBookingRes
     getAllApply({
@@ -44,24 +41,6 @@ export function ListApply(): JSX.Element {
       setDataApply(res?.data?.content ?? []);
     },
   });
-
-  const handleAcceptApply = (id?: number) => {
-    if (id) {
-      acceptApplyMutate.mutate(
-        {
-          id: id,
-        },
-        {
-          onSuccess: () => {
-            notification.success({
-              message: "Phê duyệt thành công!",
-            });
-            dataListApply.refetch();
-          },
-        }
-      );
-    }
-  };
 
   const goToDetailApply = (id: number): void => {
     router.push({
@@ -226,6 +205,7 @@ export function ListApply(): JSX.Element {
             justifyContent: "center",
           }}
         >
+          {/* <div>{dataIndex.helperInformationId}</div> */}
           <Button
             onClick={() => goToDetailApply(dataIndex.helperInformationId)}
             style={{fontSize: 13}}
@@ -234,18 +214,6 @@ export function ListApply(): JSX.Element {
           >
             Xem chi tiết
           </Button>
-
-          {dataIndex.status === "WAITING_FOR_APPROVE" && (
-            <Tooltip placement="top" title="accept">
-              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-              <div
-                onClick={() => handleAcceptApply(dataIndex.helperInformationId)}
-                style={{marginLeft: 8}}
-              >
-                <CheckCircleOutlined style={{fontSize: 22, color: "green"}} />
-              </div>
-            </Tooltip>
-          )}
         </div>
       ),
       fixed: "right",
@@ -267,6 +235,7 @@ export function ListApply(): JSX.Element {
           scroll={{x: 600, y: 485}}
           columns={columns}
           dataSource={dataApply}
+          pagination={false}
         />
       )}
     </div>
