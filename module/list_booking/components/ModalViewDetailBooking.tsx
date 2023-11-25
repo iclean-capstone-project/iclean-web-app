@@ -27,7 +27,6 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
     getDataDetailBooking,
     {
       onSuccess: (res) => {
-        console.log("res", res?.data);
         setDataDetailBookingInit(res);
       },
     }
@@ -37,7 +36,6 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
     refetch();
   }, [bookingId]);
 
-  console.log("dataDetailBookingInit", dataDetailBookingInit?.data?.details);
   // eslint-disable-next-line react/no-unstable-nested-components
   function ItemInput(props: {title: string; value: any}): React.JSX.Element {
     const {title, value} = props;

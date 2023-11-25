@@ -21,7 +21,6 @@ export function AddTabGlobal(props: InputProps): JSX.Element {
   ];
 
   const handleChange = (e: string[]) => {
-    console.log(e, "handleChange");
     setDataValue(e);
   };
 
@@ -29,7 +28,6 @@ export function AddTabGlobal(props: InputProps): JSX.Element {
     const data = dataValue;
     data.push(refInput.current.input.value);
     setDataValue(data);
-    console.log(dataValue, "inf");
     refInput.current.input.value = "";
     refInput.current.blur();
   };

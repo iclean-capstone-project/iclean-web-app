@@ -42,34 +42,31 @@ export default function Navbar(): JSX.Element {
     />
   );
 
-    const nameRouter = useMemo((): string[] => {
-        const nameRouter: string[] = [];
-        RouteList.forEach(({path, name, children}) => {
-            // console.log("name", name)
-            // console.log("path", path)
-            // console.log("pathname", pathname)
-            if (path.split("/")[1] === pathname.split("/")[1]) {
-                nameRouter.push(name);
-                // console.log("path", path)
+  const nameRouter = useMemo((): string[] => {
+    const nameRouter: string[] = [];
+    RouteList.forEach(({path, name, children}) => {
+      if (path.split("/")[1] === pathname.split("/")[1]) {
+        nameRouter.push(name);
+        // console.log("path", path)
 
-                children?.forEach(({path, name, children}) => {
-                    if (path.split("/")[1] === pathname.split("/")[2])
-                        nameRouter.push(name);
+        children?.forEach(({path, name, children}) => {
+          if (path.split("/")[1] === pathname.split("/")[2])
+            nameRouter.push(name);
 
-                    children?.forEach(({path, name}) => {
-                        if (path.split("/")[1] === pathname.split("/")[3])
-                            nameRouter.push(name);
-                    });
-                });
-            }
+          children?.forEach(({path, name}) => {
+            if (path.split("/")[1] === pathname.split("/")[3])
+              nameRouter.push(name);
+          });
         });
+      }
+    });
 
-        return nameRouter;
-    }, [router]);
+    return nameRouter;
+  }, [router]);
 
   return (
     <div className="navbar">
-       <div className="right-content-wrap">
+      <div className="right-content-wrap">
         <span>
           {nameRouter.map((item, index) => {
             if (index === nameRouter.length - 1)
@@ -81,7 +78,7 @@ export default function Navbar(): JSX.Element {
             return <span key={index} className="title">{`${item} / `}</span>;
           })}
         </span>
-       </div>
+      </div>
       <div className="left-content-wrap">
         <Dropdown overlay={menuUser} placement="topLeft" className="user-wrap">
           <div>

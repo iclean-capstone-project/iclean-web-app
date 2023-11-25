@@ -78,7 +78,6 @@ export function ManagerUser(): JSX.Element {
   };
 
   useEffect(() => {
-    console.log();
     refetch();
   }, [paramFilter]);
 

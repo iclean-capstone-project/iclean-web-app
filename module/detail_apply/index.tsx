@@ -25,7 +25,6 @@ export function DetailApply(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DETAIL_APPLY"], getDataDetailApply, {
     onSuccess: (res) => {
-      // console.log("ress", res?.data);
       setDataInit(res?.data);
     },
   });
@@ -58,7 +57,6 @@ export function DetailApply(): JSX.Element {
   };
 
   console.log("dataInit", dataInit);
-  console.log("router", typeof parseInt(router.query?.id, 10));
   return (
     <div className="detail-apply-container">
       <div className="button-reject">

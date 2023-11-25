@@ -8,10 +8,21 @@
     margin-bottom: 15px;
   }
 
+  .list-attachment {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+
+    .image-attachment {
+      padding: 0 7px;
+      object-fit: contain;
+    }
+  }
+
   .list-info {
     .item-info {
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
 
       .icon {
         font-size: 20px;

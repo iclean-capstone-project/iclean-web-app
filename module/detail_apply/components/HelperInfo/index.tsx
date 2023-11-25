@@ -8,6 +8,7 @@ interface IProps {
 }
 export function HelperInfo(props: IProps): JSX.Element {
   const {dataInfoHelper} = props;
+  console.log("dataInfoHelper", dataInfoHelper);
   return (
     <div className="helper-info-container">
       <h3>THÔNG TIN</h3>
@@ -19,6 +20,17 @@ export function HelperInfo(props: IProps): JSX.Element {
           src={dataInfoHelper?.personalAvatar}
         />
         <h3>{dataInfoHelper?.fullName}</h3>
+      </div>
+      <div className="list-attachment">
+        {dataInfoHelper?.attachments.map((item, index: number) => (
+          <Image
+            key={index}
+            className="image-attachment"
+            width={60}
+            height={60}
+            src={item}
+          />
+        ))}
       </div>
       <div className="list-info">
         <div className="item-info">
