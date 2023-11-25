@@ -49,6 +49,11 @@ const routes: IRoute[] = [
     icon: <IdcardOutlined className="icon-sidebar" />,
   },
   {
+    path: "/detail_apply",
+    name: "Detail Apply",
+    isSidebar: false,
+  },
+  {
     path: "/list_transaction",
     name: "Transaction",
     isSidebar: true,

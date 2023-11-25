@@ -1,27 +1,41 @@
 import React, {useEffect, useState} from "react";
-import {Image, notification, Table, Tabs, TabsProps, Tag, Tooltip} from "antd";
-import {CheckCircleOutlined, CloseCircleOutlined} from "@ant-design/icons";
+import {
+  Button,
+  Image,
+  notification,
+  Table,
+  Tabs,
+  TabsProps,
+  Tag,
+  Tooltip,
+} from "antd";
+import {CheckCircleOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {
+  acceptApply,
   getAllApply,
   IGetAllApplyRes,
   IItemApplyRes,
-  rejectAproveBooking,
 } from "@app/api/ApiProduct";
 import {useMutation, useQuery} from "react-query";
+import {LoadingGlobal} from "@app/components/Loading";
+import {useRouter} from "next/router";
 
 export function ListApply(): JSX.Element {
+  const router = useRouter();
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
 
   const [keyTabSelected, setKeyTabSelected] = useState<string>("");
 
   // action reject - post
-  const rejectBookingMutate = useMutation(rejectAproveBooking);
+  const acceptApplyMutate = useMutation(acceptApply);
+
   const getDataListApply = (): Promise<IGetAllApplyRes> =>
     // IGetAllBookingRes
     getAllApply({
       page: 1,
       size: 10,
+      statuses: keyTabSelected,
     });
 
   const dataListApply = useQuery(["GET_LIST_APPLY"], getDataListApply, {
@@ -31,12 +45,11 @@ export function ListApply(): JSX.Element {
     },
   });
 
-  const handleAcceptBooking = (id?: number) => {
+  const handleAcceptApply = (id?: number) => {
     if (id) {
-      rejectBookingMutate.mutate(
+      acceptApplyMutate.mutate(
         {
           id: id,
-          action: "approved",
         },
         {
           onSuccess: () => {
@@ -45,10 +58,18 @@ export function ListApply(): JSX.Element {
             });
             dataListApply.refetch();
           },
-          onError: () => {},
         }
       );
     }
+  };
+
+  const goToDetailApply = (id: number): void => {
+    router.push({
+      pathname: "/detail_apply",
+      query: {
+        id: id,
+      },
+    });
   };
 
   const handleSearch = (valueSearch: string): void => {
@@ -118,7 +139,7 @@ export function ListApply(): JSX.Element {
       title: "Ảnh đại diện",
       dataIndex: "personalAvatar",
       key: "image",
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div>
           <Image
             style={{borderRadius: 100}}
@@ -173,8 +194,9 @@ export function ListApply(): JSX.Element {
       dataIndex: "status",
       key: "status",
       align: "center",
+      fixed: "right",
       width: 170,
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.status === "WAITING_FOR_APPROVE" && (
             <Tag color="cyan">{dataIndex.status}</Tag>
@@ -196,7 +218,7 @@ export function ListApply(): JSX.Element {
       key: "action",
       dataIndex: "action",
       align: "center",
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div
           style={{
             display: "flex",
@@ -204,24 +226,26 @@ export function ListApply(): JSX.Element {
             justifyContent: "center",
           }}
         >
-          {dataIndex.status === "WAITING_FOR_CONFIRM" ? (
-            <Tooltip placement="top" title="confirm">
-              <div style={{marginLeft: 8}}>
-                <CheckCircleOutlined style={{fontSize: 22, color: "blue"}} />
-              </div>
-            </Tooltip>
-          ) : (
-            <Tooltip placement="top" title="approve">
-              <div style={{marginLeft: 8}}>
+          <Button
+            onClick={() => goToDetailApply(dataIndex.helperInformationId)}
+            style={{fontSize: 13}}
+            shape="round"
+            type="primary"
+          >
+            Xem chi tiết
+          </Button>
+
+          {dataIndex.status === "WAITING_FOR_APPROVE" && (
+            <Tooltip placement="top" title="accept">
+              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+              <div
+                onClick={() => handleAcceptApply(dataIndex.helperInformationId)}
+                style={{marginLeft: 8}}
+              >
                 <CheckCircleOutlined style={{fontSize: 22, color: "green"}} />
               </div>
             </Tooltip>
           )}
-          <Tooltip placement="top" title="reject">
-            <div style={{marginLeft: 8}}>
-              <CloseCircleOutlined style={{fontSize: 22, color: "orange"}} />
-            </div>
-          </Tooltip>
         </div>
       ),
       fixed: "right",
@@ -235,12 +259,16 @@ export function ListApply(): JSX.Element {
         listSearchText={listSearchText}
         listDatePicker={listDatePicker}
       />
-      <Table
-        style={{marginTop: 10}}
-        scroll={{x: 600, y: 485}}
-        columns={columns}
-        dataSource={dataApply}
-      />
+      {dataListApply.isLoading ? (
+        <LoadingGlobal />
+      ) : (
+        <Table
+          style={{marginTop: 10}}
+          scroll={{x: 600, y: 485}}
+          columns={columns}
+          dataSource={dataApply}
+        />
+      )}
     </div>
   );
 }

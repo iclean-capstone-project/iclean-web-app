@@ -1,4 +1,4 @@
-import {downloadFile, fetcher} from "./Fetcher";
+import {fetcher} from "./Fetcher";
 
 interface IParamsGetAllBooking {
   page?: number;
@@ -15,6 +15,7 @@ interface IParamsGetAllApply {
   page?: number;
   size?: number;
   sort?: string[];
+  statuses?: string;
 }
 
 export interface IListItemBooking {
@@ -80,6 +81,29 @@ export interface IGetAllApplyRes {
   };
 }
 
+export interface IListServiceDetailApply {
+  serviceRegistrationId?: number;
+  serviceName?: string;
+  serviceIcon?: string;
+  createAt?: string;
+  status?: string;
+}
+export interface IGetDetailApplyRes {
+  data?: {
+    helperInformationId?: number;
+    personalAvatar?: string;
+    email?: string;
+    phoneNumber?: string;
+    dateOfBirth?: string;
+    placeOfResidence?: string;
+    homeTown?: string;
+    fullName?: string;
+    status?: string;
+    attachments?: string[];
+    services?: IListServiceDetailApply[];
+  };
+}
+
 export interface IDetailBookingRes {
   data?: {
     bookingId?: number;
@@ -127,6 +151,9 @@ const path = {
   listRejectReason: "/rejection-reason",
 
   getAllApply: "/helper-registration",
+  cancelApplyPath: "/helper-registration/cancellation",
+  acceptApplyPath: "/helper-registration/acceptance",
+  confirmApplyPath: "/helper-registration/confirmation",
 };
 
 function rejectAproveBooking(params: {
@@ -178,10 +205,51 @@ function getAllApply(params: IParamsGetAllApply): Promise<IGetAllApplyRes> {
   });
 }
 
+function getDetailApplyById(params: {id: number}): Promise<IGetDetailApplyRes> {
+  return fetcher({
+    url: `${path.getAllApply}/${params.id}`,
+    method: "get",
+  });
+}
+
+function cancelApply(params: {id: number; reason: string}): Promise<any> {
+  return fetcher({
+    url: `${path.cancelApplyPath}/${params.id}`,
+    method: "put",
+    data: {
+      reason: params.reason,
+    },
+  });
+}
+
+function acceptApply(params: {id: number}): Promise<any> {
+  return fetcher({
+    url: `${path.acceptApplyPath}/${params.id}`,
+    method: "post",
+  });
+}
+
+function confirmApply(params: {
+  id: number;
+  serviceRegistrationIds: number[];
+}): Promise<any> {
+  return fetcher({
+    url: `${path.confirmApplyPath}/${params.id}`,
+    method: "post",
+    data: {
+      serviceRegistrationIds: params.serviceRegistrationIds,
+    },
+  });
+}
+
 export {
   getAllBooking,
   rejectAproveBooking,
   getDetailBooking,
   getListRejectReason,
   getAllApply,
+  cancelApply,
+  acceptApply,
+  confirmApply,
+  getDetailApplyById,
 };

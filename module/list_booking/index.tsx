@@ -232,7 +232,7 @@ export function ListBooking(): JSX.Element {
       key: "action",
       dataIndex: "action",
       align: "center",
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div
           style={{
             display: "flex",

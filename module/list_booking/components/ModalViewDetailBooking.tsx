@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Image, Input, Tag} from "antd";
 import {
   getAllBooking,
@@ -32,6 +32,10 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [bookingId]);
 
   console.log("dataDetailBookingInit", dataDetailBookingInit?.data?.details);
   // eslint-disable-next-line react/no-unstable-nested-components

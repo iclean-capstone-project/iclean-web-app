@@ -1,1 +1,1 @@
-export {ListBooking as default} from "@app/module/list_booking";
+export {ManagerUser as default} from "@app/module/manager_user";
