@@ -3,7 +3,7 @@
     width: 100%;
     margin-bottom: 14px;
     margin-top: 10px;
-    border: 1.5px solid #CED4DA;
+    border: 1.5px solid #ced4da;
     padding: 10px 20px;
     border-radius: 12px;
     display: flex;
@@ -20,11 +20,10 @@
         }
       }
     }
-
-
   }
 
   .item-service:hover {
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   }
 }

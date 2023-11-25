@@ -1,38 +1,36 @@
 import React, {useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Image, Modal, Table} from "antd";
+import {Image, Table, Tag} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {Formik} from "formik";
-import UploadFileGlobal from "@app/components/UploadFileGlobal";
+import {useQuery} from "react-query";
+import {
+  getAllService,
+  IGetListServiceRes,
+  IItemService,
+} from "@app/api/ApiService";
 
 interface DataType {
-  key: string;
-  name: string;
-  avatar: string;
-  address: string;
-  description: string;
-  transport: string;
-  phoneNumber: string;
-  total: string;
+  serviceId: string;
+  serviceImage: string;
+  serviceName: string;
+  isDeleted: string;
+  createAt: string;
 }
 
 export function ListService(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataInit, setDataInit] = useState<IItemService[]>([]);
+  const getDataListService = (): Promise<IGetListServiceRes> => getAllService();
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  const {refetch} = useQuery(["GET_LIST_SERVICE"], getDataListService, {
+    onSuccess: (res) => {
+      console.log("res1111", res?.data);
+      setDataInit(res?.data ?? []);
+    },
+  });
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const showModal = () => {};
 
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-  };
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
   };
@@ -60,17 +58,19 @@ export function ListService(): JSX.Element {
       key: "stt",
       align: "center",
       width: 50,
-      render: (_, dataIndex) => <div>{data.indexOf(dataIndex) + 1}</div>,
+      render: (_, dataIndex: any) => (
+        <div>{dataInit.indexOf(dataIndex) + 1}</div>
+      ),
     },
     {
-      title: "Tên người dùng",
-      dataIndex: "user_name",
-      key: "name",
-      width: 150,
+      title: "Tên dịch vụ",
+      dataIndex: "serviceName",
+      key: "serviceName",
+      width: 100,
       align: "center",
     },
     {
-      title: "Ảnh đại diện",
+      title: "Ảnh dịch vụ",
       dataIndex: "avatar",
       key: "image",
       render: (_, dataIndex) => (
@@ -80,7 +80,7 @@ export function ListService(): JSX.Element {
             width={100}
             height={100}
             preview={false}
-            src={dataIndex.avatar}
+            src={dataIndex.serviceImage}
           />
         </div>
       ),
@@ -88,33 +88,27 @@ export function ListService(): JSX.Element {
       width: 100,
     },
     {
-      title: "Email",
-      key: "email",
-      dataIndex: "description",
+      title: "Trạng thái",
+      key: "isDeleted",
+      dataIndex: "isDeleted",
       align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
+      render: (_, dataIndex) => (
+        <div>
+          {dataIndex.isDeleted ? (
+            <Tag color="green">Đang hoạt động</Tag>
+          ) : (
+            <Tag color="red">Không hoạt động</Tag>
+          )}
+        </div>
+      ),
       width: 100,
     },
     {
       title: "Ngày tạo",
-      dataIndex: "time_created",
-      key: "time_created",
+      dataIndex: "createAt",
+      key: "createAt",
       align: "center",
-      width: 80,
-    },
-    {
-      title: "Sách còn lại",
-      dataIndex: "numberOfBook",
-      key: "time_created",
-      align: "center",
-      width: 80,
-    },
-    {
-      title: "Số đơn giao dịch",
-      dataIndex: "transactions",
-      key: "time_created",
-      align: "center",
-      width: 80,
+      width: 100,
     },
     {
       title: "Thao tác",
@@ -136,81 +130,7 @@ export function ListService(): JSX.Element {
         </div>
       ),
       fixed: "right",
-      width: 50,
-    },
-  ];
-  const listInputUser = [
-    {
-      title: "Tên người dùng",
-      placeHolder: "Nhập tên người dùng",
-      type: "input",
-    },
-    {
-      title: "Ảnh đại diện",
-      placeHolder: "Nhập tên người dùng",
-      type: "uploadFile",
-    },
-    {
-      title: "Email",
-      placeHolder: "Nhập Email",
-      type: "input",
-    },
-    {
-      title: "Sách còn lại",
-      placeHolder: "Nhập số sách còn lại",
-      type: "input",
-    },
-    {
-      title: "Số đơn giao dịch",
-      placeHolder: "Nhập số đơn",
-      type: "input",
-    },
-  ];
-  const data: any = [
-    {
-      user_name: "Nguyễn văn A",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn B",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn C",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn D",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn E",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
+      width: 100,
     },
   ];
 
@@ -224,68 +144,9 @@ export function ListService(): JSX.Element {
         style={{marginTop: 10}}
         scroll={{x: 1000, y: 400}}
         columns={columns}
-        dataSource={data}
+        dataSource={dataInit}
         pagination={false}
       />
-      <Modal
-        title="Sửa thông tin người dùng"
-        open={isModalOpen}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
-      >
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
-        >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div>
-                {listInputUser.map((item, index) => (
-                  <div key={index}>
-                    {item.type === "input" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <InputGlobal
-                          name="username"
-                          placeholder={item.placeHolder}
-                          style={{width: "80%"}}
-                          onPressEnter={(): void => handleSubmit()}
-                        />
-                        <ErrorMessageGlobal name="username" />
-                      </div>
-                    )}
-                    {item.type === "uploadFile" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <div style={{width: "80%"}}>
-                          <UploadFileGlobal
-                            handleChange={() => console.log("uploadFile")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </Formik>
-      </Modal>
     </div>
   );
 }

@@ -19,12 +19,12 @@ interface IProps {
   isRefetch?: <TPageData>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
   ) => Promise<QueryObserverResult<IGetDetailApplyRes, unknown>>;
-  isChangeStatus: boolean;
+  isChangeStatus: string;
 }
 export function ListServiceApply(props: IProps): JSX.Element {
   const {listService, idApply, isRefetch, isChangeStatus} = props;
   const [isService, setIsService] = useState(undefined);
-  console.log("listService", listService);
+  console.log("isChangeStatus", isChangeStatus);
 
   const confirmApplyMutate = useMutation(confirmApply);
   const handleAcceptApply = (serviceRegistrationId?: number) => {
@@ -60,13 +60,16 @@ export function ListServiceApply(props: IProps): JSX.Element {
                 src={item?.serviceIcon}
                 preview={false}
               />
-              <span>{item?.serviceName}</span>
+              <span>Dịch vụ đăng kí: {item?.serviceName}</span>
             </div>
-            <Tag style={{paddingTop: 4}} color="green">
-              {item?.status}
-            </Tag>
+            {/* <div style={{marginLeft: 40}}> */}
+            {/*  <span>Trạng thái: </span> */}
+            {/*  <Tag style={{paddingTop: 4}} color="green"> */}
+            {/*    {item?.status} */}
+            {/*  </Tag> */}
+            {/* </div> */}
           </div>
-          {!isChangeStatus && item.status !== "ACTIVE" && (
+          {isChangeStatus === "WAITING_FOR_CONFIRM" && (
             <Button
               onClick={() => handleAcceptApply(item.serviceRegistrationId)}
               shape="round"

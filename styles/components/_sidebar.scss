@@ -1,4 +1,6 @@
-.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+.ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub,
+.ant-menu.ant-menu-dark .ant-menu-sub {
   background-color: $sidebar-background;
 }
 
@@ -6,7 +8,10 @@
   border-radius: 5px;
 }
 
-.ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content, .ant-menu-inline.ant-menu-root .ant-menu-submenu-title > .ant-menu-title-content {
+.ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content,
+.ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -92,5 +97,3 @@
     opacity: 0.3;
   }
 }
-
-

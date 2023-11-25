@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import "./style.scss";
 import {HelperInfo} from "@app/module/detail_apply/components/HelperInfo";
@@ -9,7 +9,7 @@ import {
   IGetDetailApplyRes,
 } from "@app/api/ApiProduct";
 import {useMutation, useQuery} from "react-query";
-import {Button, notification, Tooltip} from "antd";
+import {Button, notification} from "antd";
 import {ModalDeleteApply} from "@app/module/detail_apply/components/ModalDeleteApply";
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 
@@ -56,24 +56,31 @@ export function DetailApply(): JSX.Element {
     }
   };
 
+  useEffect(() => {
+    refetch();
+  }, [router.query.id]);
+
   console.log("dataInit", dataInit);
   return (
     <div className="detail-apply-container">
       <div className="button-reject">
-        <Button
-          loading={acceptApplyMutate.isLoading}
-          style={{
-            borderRadius: 12,
-            backgroundColor: "blue",
-            color: "white",
-            borderColor: "blue",
-            marginRight: 8,
-          }}
-          onClick={handleAcceptApply}
-          icon={<CheckOutlined />}
-        >
-          Phê duyệt
-        </Button>
+        {dataInit?.status !== "WAITING_FOR_CONFIRM" && (
+          <Button
+            loading={acceptApplyMutate.isLoading}
+            style={{
+              borderRadius: 12,
+              backgroundColor: "blue",
+              color: "white",
+              borderColor: "blue",
+              marginRight: 8,
+            }}
+            onClick={handleAcceptApply}
+            icon={<CheckOutlined />}
+          >
+            Phê duyệt
+          </Button>
+        )}
+
         {/* )} */}
         <Button
           style={{
@@ -97,7 +104,7 @@ export function DetailApply(): JSX.Element {
             isRefetch={refetch}
             idApply={parseInt(router.query.id, 10)}
             listService={dataInit?.services}
-            isChangeStatus={dataInit?.status !== "WAITING_FOR_CONFIRM"}
+            isChangeStatus={dataInit?.status}
           />
         </div>
       </div>

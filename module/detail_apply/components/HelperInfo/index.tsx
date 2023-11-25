@@ -22,7 +22,7 @@ export function HelperInfo(props: IProps): JSX.Element {
         <h3>{dataInfoHelper?.fullName}</h3>
       </div>
       <div className="list-attachment">
-        {dataInfoHelper?.attachments.map((item, index: number) => (
+        {dataInfoHelper?.attachments.map((item: string, index: number) => (
           <Image
             key={index}
             className="image-attachment"

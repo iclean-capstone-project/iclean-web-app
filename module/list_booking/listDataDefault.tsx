@@ -18,19 +18,7 @@ export const itemsTab: TabsProps["items"] = [
     label: "Đã từ chối",
   },
   {
-    key: "ON_CART",
-    label: "Báo cáo",
-  },
-  {
     key: "FINISHED",
     label: "Đã hoàn thành",
-  },
-  {
-    key: "NO_MONEY",
-    label: "Báo cáo",
-  },
-  {
-    key: "CANCELED",
-    label: "Đã hủy",
   },
 ];
