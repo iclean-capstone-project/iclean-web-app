@@ -136,7 +136,7 @@ export function ListService(): JSX.Element {
       />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1000, y: 400}}
+        scroll={{x: 1000, y: 550}}
         columns={columns}
         dataSource={dataInit}
         pagination={false}

@@ -215,7 +215,7 @@ export function ListApply(): JSX.Element {
       ) : (
         <Table
           style={{marginTop: 10}}
-          scroll={{x: 600, y: 485}}
+          scroll={{x: 600, y: 500}}
           columns={columns}
           dataSource={dataApply}
           pagination={false}
