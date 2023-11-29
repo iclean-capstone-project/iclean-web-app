@@ -8,7 +8,7 @@ export interface ILoginBody {
 }
 export interface ILoginResponse {
   response: {
-    accesstoken: string;
+    accessToken: string;
     expires_in: number;
     pass_jwt: string;
   };
@@ -103,7 +103,7 @@ function isLogin(): boolean {
   const {user} = store.getState();
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return !!user?.accesstoken;
+  return !!user?.accessToken;
 }
 
 export default {

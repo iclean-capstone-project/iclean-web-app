@@ -46,7 +46,7 @@ interface IFetcherOptions {
 }
 
 export interface IRefreshToken {
-  accesstoken: string;
+  accessToken: string;
   refreshToken: string;
 }
 
@@ -116,7 +116,7 @@ export async function fetcher<T>(
   } else {
     if (defaultOptions.withToken) {
       const state = store.getState();
-      const token = state.user?.accesstoken;
+      const token = state.user?.accessToken;
       if (token) {
         apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
@@ -203,8 +203,8 @@ export async function downloadFile({
 
   // Access Token
   const state = store.getState();
-  const token = state.user?.data?.accesstoken;
-  console.log("Access Token", token);
+  const token = state.user?.data?.accessToken;
+  console.log("Access Token", state);
   if (token) {
     apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
