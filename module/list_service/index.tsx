@@ -4,11 +4,7 @@ import {Image, Table, Tag} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
-import {
-  getAllService,
-  IGetListServiceRes,
-  IItemService,
-} from "@app/api/ApiService";
+import {getAllService, IGetListServiceRes} from "@app/api/ApiService";
 
 interface DataType {
   serviceId: string;
@@ -19,17 +15,16 @@ interface DataType {
 }
 
 export function ListService(): JSX.Element {
-  const [dataInit, setDataInit] = useState<IItemService[]>([]);
+  const [dataInit, setDataInit] = useState<any>([]);
   const getDataListService = (): Promise<IGetListServiceRes> => getAllService();
 
-  const {refetch} = useQuery(["GET_LIST_SERVICE"], getDataListService, {
+  const {data} = useQuery(["GET_LIST_SERVICE"], getDataListService, {
     onSuccess: (res) => {
       console.log("res1111", res?.data);
       setDataInit(res?.data ?? []);
     },
   });
-
-  const showModal = () => {};
+  console.log(data);
 
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
@@ -117,7 +112,6 @@ export function ListService(): JSX.Element {
       align: "center",
       render: () => (
         <div
-          onClick={showModal}
           style={{
             display: "flex",
             alignItems: "center",

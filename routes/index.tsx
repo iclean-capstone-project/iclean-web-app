@@ -1,9 +1,7 @@
 import React, {useEffect} from "react";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import LandingLayout from "../components/Layout/LandingLayout";
-import Config from "../config";
 import {AppProps} from "next/app";
-import ApiUser from "@app/api/ApiUser";
 import RouteList, {IRoute} from "./RouteList";
 // import {IRootState} from "@app/redux/store";
 // import {useDispatch, useSelector} from "react-redux";
@@ -25,10 +23,10 @@ export default function Routes({
 
   // const isRememberSessionStorage = sessionStorage.getItem("isRemember");
 
-  const goToLogin = (): null => {
-    router.push(Config.PATHNAME.LOGIN);
-    return null;
-  };
+  // const goToLogin = (): null => {
+  //   router.push(Config.PATHNAME.LOGIN);
+  //   return null;
+  // };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {

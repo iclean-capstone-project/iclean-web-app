@@ -122,6 +122,7 @@ export function Profile(): JSX.Element {
       dataIndex: "action",
       align: "center",
       render: () => (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
           onClick={showModal}
           style={{

@@ -8,7 +8,7 @@ import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
 import {Formik} from "formik";
 import UploadFileGlobal from "@app/components/UploadFileGlobal";
 import {useMutation, useQuery} from "react-query";
-import ApiUser, {IGetListUser, IItemUser} from "@app/api/ApiUser";
+import ApiUser, {IGetListUser} from "@app/api/ApiUser";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
@@ -29,7 +29,7 @@ interface DataType {
 
 export function ManagerUser(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [dataUserInit, setDataUserInit] = useState<IItemUser[]>([]);
+  const [dataUserInit, setDataUserInit] = useState<any>([]);
   const [paramFilter, setParamFilter] = useState<string>("");
 
   const user = useSelector((state: IRootState) => state.user);
@@ -217,6 +217,7 @@ export function ManagerUser(): JSX.Element {
           >
             {user?.userInformationDto?.roleName === "admin" ? (
               <Tooltip title={dataIndex?.isLocked ? "Ban user" : "Unban User"}>
+                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div onClick={() => handleBanOrUnbanUser(dataIndex.userId)}>
                   <SyncOutlined
                     style={{

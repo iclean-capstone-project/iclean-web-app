@@ -1,6 +1,5 @@
 import {fetcher} from "./Fetcher";
 import store from "../redux/store";
-import {IGetAllApplyRes} from "@app/api/ApiProduct";
 
 export interface ILoginBody {
   username: string;

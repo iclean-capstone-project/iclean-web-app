@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Image, Input, Tag} from "antd";
-import {
-  getAllBooking,
-  getDetailBooking,
-  IDetailBookingRes,
-} from "@app/api/ApiProduct";
+import {getDetailBooking, IDetailBookingRes} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
 
 interface IProps {
@@ -22,7 +18,7 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
       id: bookingId ?? 1,
     });
 
-  const {refetch, data} = useQuery(
+  const {refetch} = useQuery(
     ["GET_DATA_DETAIL_BOOKING"],
     getDataDetailBooking,
     {

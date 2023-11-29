@@ -70,7 +70,7 @@ const routes: IRoute[] = [
     path: "/deposit_withdraw",
     name: "Nạp rút tền",
     isSidebar: true,
-    icon: <LogoutOutlined className="icon-sidebar"/>,
+    icon: <LogoutOutlined className="icon-sidebar" />,
   },
 ];
 

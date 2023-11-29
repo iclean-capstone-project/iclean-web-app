@@ -68,7 +68,6 @@ export function ListBooking(): JSX.Element {
             });
             dataListBooking.refetch();
           },
-          onError: () => {},
         }
       );
     }
@@ -135,7 +134,7 @@ export function ListBooking(): JSX.Element {
       title: "Ảnh đại diện",
       dataIndex: "renterAvatar",
       key: "image",
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div>
           <Image
             style={{borderRadius: 100}}
@@ -199,7 +198,7 @@ export function ListBooking(): JSX.Element {
       align: "center",
       fixed: "right",
       width: 170,
-      render: (_, dataIndex: any) => (
+      render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.bookingStatus === "NOT_YET" && (
             <Tag color="cyan">{dataIndex.bookingStatus}</Tag>
@@ -242,6 +241,7 @@ export function ListBooking(): JSX.Element {
           {/*  Xem chi tiết */}
           {/* </Button> */}
           <Tooltip placement="top" title="xem chi tiết">
+            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
             <div
               onClick={() => showModal(dataIndex.bookingId)}
               style={{marginLeft: 8}}
@@ -253,6 +253,7 @@ export function ListBooking(): JSX.Element {
           {dataIndex.bookingStatus === "NOT_YET" && (
             <>
               <Tooltip placement="top" title="approve">
+                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => handleAcceptBooking(dataIndex.bookingId)}
                   style={{marginLeft: 8}}
@@ -262,6 +263,7 @@ export function ListBooking(): JSX.Element {
               </Tooltip>
 
               <Tooltip placement="top" title="reject">
+                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => showModalDeleteBooking(dataIndex.bookingId)}
                   style={{marginLeft: 8}}

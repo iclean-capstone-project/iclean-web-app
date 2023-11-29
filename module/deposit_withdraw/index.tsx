@@ -1,17 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Button, Form, Image, Input, Modal, notification, Table, Tag, Tooltip} from "antd";
-import {useMutation, useQuery} from "react-query";
+import {
+  Button,
+  Form,
+  Image,
+  Input,
+  Modal,
+  notification,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
+import {useQuery} from "react-query";
 import {useSelector} from "react-redux";
 
 import {DownloadOutlined, UploadOutlined} from "@ant-design/icons";
-import ApiUser, {IGetListUser, IItemUser} from "@app/api/ApiUser";
+import ApiUser, {IGetListUser} from "@app/api/ApiUser";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
 import {IRootState} from "@app/redux/store";
-import { IMoneyRequest, IMoneyRequestValidated, moneyRequest, moneyRequestValidated } from "../../api/ApiMoney";
-
+import {
+  IMoneyRequest,
+  IMoneyRequestValidated,
+  moneyRequest,
+  moneyRequestValidated,
+} from "../../api/ApiMoney";
 
 interface DataType {
   key: string;
@@ -27,17 +41,16 @@ interface DataType {
 
 export function DepositWithdraw(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [dataUserInit, setDataUserInit] = useState<IItemUser[]>([]);
+  const [dataUserInit, setDataUserInit] = useState<any>([]);
   const [paramFilter, setParamFilter] = useState<string>("");
-  const [selectedUserId , setSelectedUserId ] = useState<number>();
-  const [sentOtp , setSentOtp ] = useState<boolean>(false);
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [sentOtp, setSentOtp] = useState<boolean>(false);
   const [typeDW, setTypeDW] = useState<string>("");
   const [titlePopupDW, setTitlePopupDW] = useState<string>("");
   const [form] = Form.useForm();
 
-
   const user = useSelector((state: IRootState) => state.user);
-
+  console.log(user);
   const getDataListUser = (): Promise<IGetListUser> =>
     ApiUser.getAllUser({
       page: 1,
@@ -53,42 +66,41 @@ export function DepositWithdraw(): JSX.Element {
   });
 
   const handleSubmit = async (formData: any) => {
-    
-    const selectedUser = dataUserInit.find(user => user.userId === selectedUserId)
-    
-    if(selectedUser) {
+    const selectedUser = dataUserInit.find(
+      (user: {userId: number | undefined}) => user.userId === selectedUserId
+    );
 
-      if(sentOtp) {
-        
+    if (selectedUser) {
+      if (sentOtp) {
         try {
-          const data : IMoneyRequestValidated = {
-            phoneNumber: selectedUser.phoneNumber, 
+          const data: IMoneyRequestValidated = {
+            phoneNumber: selectedUser.phoneNumber,
             otpToken: formData.otp,
-          }
+          };
           const res = moneyRequestValidated(data);
-          console.log("Yêu cầu thành công >> ",(await res).status);
+          console.log("Yêu cầu thành công >> ", (await res).status);
           closeModal();
           notification.success({
             message: "Yêu cầu thành công",
             description: "Yêu cầu của bạn đã được xử lý thành công.",
           });
-          setSentOtp(false)
-        } catch (err){
+          setSentOtp(false);
+        } catch (err) {
           console.log(err);
           notification.error({
             message: "Lỗi",
-            description: "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
+            description:
+              "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
           });
         }
       } else {
-        
-        const data : IMoneyRequest = {
-          userPhoneNumber: selectedUser.phoneNumber, 
-          balance: formData.balance, 
-          moneyRequestType: typeDW
-        }
+        const data: IMoneyRequest = {
+          userPhoneNumber: selectedUser.phoneNumber,
+          balance: formData.balance,
+          moneyRequestType: typeDW,
+        };
         moneyRequest(data);
-        setSentOtp(true)
+        setSentOtp(true);
       }
     }
   };
@@ -227,25 +239,27 @@ export function DepositWithdraw(): JSX.Element {
               justifyContent: "center",
             }}
           >
-            <Tooltip title={"Rút tiền"}>
-                <div onClick={() => handleWithdraw(dataIndex.userId)}>
-                  <UploadOutlined
-                    style={{
-                      fontSize: 22,
-                      transform: 'rotate(90deg)',
-                    }}
-                  />
-                </div>
+            <Tooltip title="Rút tiền">
+              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+              <div onClick={() => handleWithdraw(dataIndex.userId)}>
+                <UploadOutlined
+                  style={{
+                    fontSize: 22,
+                    transform: "rotate(90deg)",
+                  }}
+                />
+              </div>
             </Tooltip>
-            <div style={{width: '10px'}}></div>
-            <Tooltip title={"Nạp tiền"}>
-                <div onClick={() => handleDeposit(dataIndex.userId)}>
-                  <DownloadOutlined
-                    style={{
-                      fontSize: 22,
-                    }}
-                  />
-                </div>
+            <div style={{width: "10px"}} />
+            <Tooltip title="Nạp tiền">
+              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+              <div onClick={() => handleDeposit(dataIndex.userId)}>
+                <DownloadOutlined
+                  style={{
+                    fontSize: 22,
+                  }}
+                />
+              </div>
             </Tooltip>
           </div>
         );
@@ -254,29 +268,29 @@ export function DepositWithdraw(): JSX.Element {
     },
   ];
 
-  const handleWithdraw = (userId : number) => {
-    setSelectedUserId(userId)
-    setTypeDW("withdraw")
-    setTitlePopupDW("Rút tiền")
-    openModal()
-  }
+  const handleWithdraw = (userId: number) => {
+    setSelectedUserId(userId);
+    setTypeDW("withdraw");
+    setTitlePopupDW("Rút tiền");
+    openModal();
+  };
 
-  const handleDeposit = (userId : number) => {
-    setSelectedUserId(userId)
-    setTypeDW("deposit")
-    setTitlePopupDW("Nạp tiền")
-    openModal()
-  }
+  const handleDeposit = (userId: number) => {
+    setSelectedUserId(userId);
+    setTypeDW("deposit");
+    setTitlePopupDW("Nạp tiền");
+    openModal();
+  };
 
   const openModal = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const closeModal = () => {
-    setIsModalOpen(false)
-    setSentOtp(false)
+    setIsModalOpen(false);
+    setSentOtp(false);
     form.resetFields();
-  }
+  };
 
   return (
     <div className="deposit-withdraw-container">
@@ -302,22 +316,24 @@ export function DepositWithdraw(): JSX.Element {
           autoComplete="off"
           action="POST"
         >
-          <Form.Item
-            label={titlePopupDW}
-            name="balance"
-          >
+          <Form.Item label={titlePopupDW} name="balance">
             <Input placeholder="Nhập số tiền" />
           </Form.Item>
 
-          <Form.Item
-            label="OTP"
-            name="otp"
-          >
-            <Input placeholder="Nhập OTP" disabled={!sentOtp}/>
+          <Form.Item label="OTP" name="otp">
+            <Input placeholder="Nhập OTP" disabled={!sentOtp} />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{backgroundColor: "#52C41A", borderColor: "#52C41A", marginRight: '10px'}}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                backgroundColor: "#52C41A",
+                borderColor: "#52C41A",
+                marginRight: "10px",
+              }}
+            >
               {sentOtp ? "Xác nhận" : "Gửi"}
             </Button>
           </Form.Item>

@@ -1,23 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {
-  Button,
-  Image,
-  notification,
-  Table,
-  Tabs,
-  TabsProps,
-  Tag,
-  Tooltip,
-} from "antd";
-import {CheckCircleOutlined} from "@ant-design/icons";
+import {Button, Image, Table, Tabs, TabsProps, Tag} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {
-  acceptApply,
-  getAllApply,
-  IGetAllApplyRes,
-  IItemApplyRes,
-} from "@app/api/ApiProduct";
-import {useMutation, useQuery} from "react-query";
+import {getAllApply, IGetAllApplyRes, IItemApplyRes} from "@app/api/ApiProduct";
+import {useQuery} from "react-query";
 import {LoadingGlobal} from "@app/components/Loading";
 import {useRouter} from "next/router";
 
