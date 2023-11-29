@@ -101,6 +101,8 @@ function getUser(): Promise<IGetUserResponse> {
 
 function isLogin(): boolean {
   const {user} = store.getState();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return !!user?.accesstoken;
 }
 
