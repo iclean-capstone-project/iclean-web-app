@@ -1,60 +1,48 @@
-import React, {useState} from "react";
+import React from "react";
 import "./style.scss";
-import {Button, Image, notification} from "antd";
-import {
-  confirmApply,
-  IGetDetailApplyRes,
-  IListServiceDetailApply,
-} from "@app/api/ApiProduct";
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-  useMutation,
-} from "react-query";
+import {Image} from "antd";
+import {IListServiceDetailApply} from "@app/api/ApiProduct";
 
 interface IProps {
   listService?: IListServiceDetailApply[];
-  idApply?: number;
-  isRefetch?: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  ) => Promise<QueryObserverResult<IGetDetailApplyRes, unknown>>;
-  isChangeStatus: string;
+  setListServiceConfirmed: any;
+  listServiceConfirmed: any;
 }
 export function ListServiceApply(props: IProps): JSX.Element {
-  const {listService, idApply, isRefetch, isChangeStatus} = props;
-  const [isService, setIsService] = useState(undefined);
+  const {listService, setListServiceConfirmed, listServiceConfirmed} = props;
 
-  const confirmApplyMutate = useMutation(confirmApply);
-  const handleAcceptApply = (serviceRegistrationId?: number) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setIsService(serviceRegistrationId);
-    if (idApply && serviceRegistrationId) {
-      confirmApplyMutate.mutate(
-        {
-          id: idApply,
-          serviceRegistrationIds: [serviceRegistrationId],
-        },
-        {
-          onSuccess: () => {
-            if (isRefetch) {
-              isRefetch().then((r) => console.log(r));
-            }
-            notification.success({
-              message: "Phê duyệt thành công!",
-            });
-            setIsService(undefined);
-          },
-        }
-      );
+  const checkIncludeServiceSelected = (id: number) => {
+    return listServiceConfirmed.includes(id);
+  };
+  const getListServiceConfirm = (id: number): void => {
+    if (!listServiceConfirmed.includes(id)) {
+      setListServiceConfirmed([...listServiceConfirmed, id]);
+    } else {
+      const newArray = listServiceConfirmed.filter((item: any) => item !== id);
+      setListServiceConfirmed(newArray);
     }
   };
 
+  // console.log("listServiceSelectedTmp", listServiceConfirmed);
   return (
     <div className="list-service-apply-container">
       {listService?.map((item, index) => (
-        <div key={index} className="item-service">
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div
+          onClick={() =>
+            item.serviceRegistrationId &&
+            getListServiceConfirm(item.serviceRegistrationId)
+          }
+          key={index}
+          className="item-service"
+          style={{
+            backgroundColor: checkIncludeServiceSelected(
+              item.serviceRegistrationId ?? 1
+            )
+              ? "#a29b9b"
+              : "white",
+          }}
+        >
           <div className="row1">
             <div className="service">
               <Image
@@ -72,19 +60,19 @@ export function ListServiceApply(props: IProps): JSX.Element {
             {/*  </Tag> */}
             {/* </div> */}
           </div>
-          {isChangeStatus === "WAITING_FOR_CONFIRM" && (
-            <Button
-              onClick={() => handleAcceptApply(item.serviceRegistrationId)}
-              shape="round"
-              type="primary"
-              loading={
-                isService === item.serviceRegistrationId &&
-                confirmApplyMutate.isLoading
-              }
-            >
-              Xác nhận
-            </Button>
-          )}
+          {/* {isChangeStatus === "WAITING_FOR_CONFIRM" && ( */}
+          {/*  <Button */}
+          {/*    onClick={() => handleAcceptApply(item.serviceRegistrationId)} */}
+          {/*    shape="round" */}
+          {/*    type="primary" */}
+          {/*    loading={ */}
+          {/*      isService === item.serviceRegistrationId && */}
+          {/*      confirmApplyMutate.isLoading */}
+          {/*    } */}
+          {/*  > */}
+          {/*    Xác nhận */}
+          {/*  </Button> */}
+          {/* )} */}
         </div>
       ))}
     </div>

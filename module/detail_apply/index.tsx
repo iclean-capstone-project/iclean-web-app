@@ -5,6 +5,7 @@ import {HelperInfo} from "@app/module/detail_apply/components/HelperInfo";
 import {ListServiceApply} from "@app/module/detail_apply/components/ListServiceApply";
 import {
   acceptApply,
+  confirmApply,
   getDetailApplyById,
   IGetDetailApplyRes,
 } from "@app/api/ApiProduct";
@@ -18,6 +19,9 @@ export function DetailApply(): JSX.Element {
   const [dataInit, setDataInit] = useState<any | undefined>(undefined);
   const [isOpenModalDeleteApply, setIsOpenModalDeleteApply] =
     useState<boolean>(false);
+  const [listServiceConfirmed, setListServiceConfirmed] = useState<number[]>(
+    []
+  );
   const getDataDetailApply = (): Promise<IGetDetailApplyRes> =>
     getDetailApplyById({
       id: router?.query?.id ? parseInt(router.query.id as string, 10) : 1,
@@ -61,6 +65,28 @@ export function DetailApply(): JSX.Element {
     }
   };
 
+  const confirmApplyMutate = useMutation(confirmApply);
+
+  const handleConfirmApply = (): void => {
+    console.log("listServiceConfirmed", listServiceConfirmed);
+    confirmApplyMutate.mutate(
+      {
+        id: parseInt(router.query.id as string, 10),
+        serviceRegistrationIds: listServiceConfirmed,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          notification.success({
+            message: "Phê duyệt thành công!",
+          });
+          router.push("/list_apply");
+          // setIsService(undefined);
+        },
+      }
+    );
+  };
+
   useEffect(() => {
     refetch();
   }, []);
@@ -71,7 +97,7 @@ export function DetailApply(): JSX.Element {
       <div className="button-reject">
         {checkStatusNotFinish(dataInit?.status) && (
           <>
-            {dataInit?.status !== "WAITING_FOR_CONFIRM" && (
+            {dataInit?.status !== "WAITING_FOR_CONFIRM" ? (
               <Button
                 loading={acceptApplyMutate.isLoading}
                 style={{
@@ -85,6 +111,21 @@ export function DetailApply(): JSX.Element {
                 icon={<CheckOutlined />}
               >
                 Phê duyệt
+              </Button>
+            ) : (
+              <Button
+                loading={acceptApplyMutate.isLoading}
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: "blue",
+                  color: "white",
+                  borderColor: "blue",
+                  marginRight: 8,
+                }}
+                onClick={handleConfirmApply}
+                icon={<CheckOutlined />}
+              >
+                Xác nhận
               </Button>
             )}
 
@@ -110,10 +151,9 @@ export function DetailApply(): JSX.Element {
         </div>
         <div className="list-service">
           <ListServiceApply
-            isRefetch={refetch}
-            idApply={parseInt(router.query.id as string, 10)}
             listService={dataInit?.services}
-            isChangeStatus={dataInit?.status}
+            listServiceConfirmed={listServiceConfirmed}
+            setListServiceConfirmed={setListServiceConfirmed}
           />
         </div>
       </div>
