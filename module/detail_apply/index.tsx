@@ -159,6 +159,7 @@ export function DetailApply(): JSX.Element {
         </div>
       </div>
       <ModalDeleteApply
+        isRefetch={refetch}
         idApply={parseInt(router.query.id as string, 10)}
         isModalDeleteApply={isOpenModalDeleteApply}
         handleCancel={handleCancel}
