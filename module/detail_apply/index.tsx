@@ -58,6 +58,7 @@ export function DetailApply(): JSX.Element {
             notification.success({
               message: "Phê duyệt thành công!",
             });
+            refetch();
             // dataListApply.refetch();
           },
         }
