@@ -30,25 +30,24 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
   const getDataRejectReason = (): Promise<IListRejectReasonRes> =>
     getListRejectReason();
 
-  const {refetch, data} = useQuery(
-    ["GET_DATA_REJECT_REASON"],
-    getDataRejectReason,
-    {
-      onSuccess: (res) => {
-        const newArray: IListOptionReasonReject[] = [];
-        res?.data &&
-          res.data.forEach((item) => {
-            const newObject: IListOptionReasonReject = {
-              value: item.rejectionReasonId ?? 1,
-              label: item.rejectionReasonContent ?? "",
-            };
-            newArray.push(newObject);
-          });
+  const {data} = useQuery(["GET_DATA_REJECT_REASON"], getDataRejectReason, {
+    onSuccess: (res) => {
+      const newArray: IListOptionReasonReject[] = [];
+      // eslint-disable-next-line no-unused-expressions
+      res?.data &&
+        res.data.forEach((item) => {
+          const newObject: IListOptionReasonReject = {
+            value: item.rejectionReasonId ?? 1,
+            label: item.rejectionReasonContent ?? "",
+          };
+          newArray.push(newObject);
+        });
 
-        setListRejectReason(newArray);
-      },
-    }
-  );
+      setListRejectReason(newArray);
+    },
+  });
+
+  console.log("data", data);
 
   const rejectBookingMutate = useMutation(rejectAproveBooking);
 

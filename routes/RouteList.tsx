@@ -6,6 +6,7 @@ import {
   PicRightOutlined,
   SettingOutlined,
   UserOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 
 export interface IRoute {
@@ -58,6 +59,12 @@ const routes: IRoute[] = [
     name: "Transaction",
     isSidebar: true,
     icon: <MoneyCollectOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/list_report",
+    name: "Report",
+    isSidebar: true,
+    icon: <WarningOutlined className="icon-sidebar" />,
   },
   {
     path: "/profile",

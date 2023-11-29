@@ -1,27 +1,62 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Image, Modal, Table} from "antd";
+import {Modal, Pagination, Table} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {InputGlobal} from "@app/components/InputGlobal";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
 import {Formik} from "formik";
 import UploadFileGlobal from "@app/components/UploadFileGlobal";
+import {useQuery} from "react-query";
+import {
+  getAllReport,
+  IGetListReportRes,
+  IParamGetAllReport,
+} from "@app/api/ApiReport";
+import {LoadingGlobal} from "@app/components/Loading";
 
 interface DataType {
   key: string;
-  name: string;
-  avatar: string;
-  address: string;
-  description: string;
-  transport: string;
+  reportId: string;
+  fullName: string;
   phoneNumber: string;
-  total: string;
+  reportTypeDetail: string;
+  detail: string;
+  createAt: string;
+  reportStatus: string;
 }
 
-export function ListTransaction(): JSX.Element {
+export function ListReport(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataInit, setDataInit] = useState<any>([]);
+  const [paramsGetReport, setParamsGetReport] = useState<IParamGetAllReport>({
+    renterName: "",
+    page: 1,
+    size: 10,
+  });
 
+  const getDataDetailReport = (): Promise<IGetListReportRes> =>
+    getAllReport({
+      renterName: paramsGetReport.renterName,
+      page: paramsGetReport.page,
+      size: paramsGetReport.size,
+    });
+
+  const {refetch, data, isLoading} = useQuery(
+    ["GET_DETAIL_REPORT"],
+    getDataDetailReport,
+    {
+      onSuccess: (res) => {
+        setDataInit(res?.data?.content);
+      },
+    }
+  );
+
+  const onChangePagination = (page: number): void => {
+    console.log("sdasdasdasd", typeof page);
+    setParamsGetReport({...paramsGetReport, page: page});
+  };
+  console.log("dataInit", dataInit);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -35,6 +70,7 @@ export function ListTransaction(): JSX.Element {
   };
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
+    setParamsGetReport({...paramsGetReport, renterName: valueSearch});
   };
   const listSearchText = [
     {
@@ -60,61 +96,49 @@ export function ListTransaction(): JSX.Element {
       key: "stt",
       align: "center",
       width: 50,
-      render: (_, dataIndex) => <div>{data.indexOf(dataIndex) + 1}</div>,
+      render: (_, dataIndex) => <div>{dataInit.indexOf(dataIndex) + 1}</div>,
     },
     {
       title: "Tên người dùng",
-      dataIndex: "user_name",
-      key: "name",
-      width: 150,
+      dataIndex: "fullName",
+      key: "fullName",
+      width: 120,
       align: "center",
     },
     {
-      title: "Ảnh đại diện",
-      dataIndex: "avatar",
-      key: "image",
-      render: (_, dataIndex) => (
-        <div>
-          <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
-            preview={false}
-            src={dataIndex.avatar}
-          />
-        </div>
-      ),
+      title: "Số điện thoại",
+      key: "phoneNumber",
+      dataIndex: "phoneNumber",
       align: "center",
-      width: 100,
+      width: 120,
     },
     {
-      title: "Email",
-      key: "email",
-      dataIndex: "description",
+      title: "Loại báo cáo",
+      dataIndex: "reportTypeDetail",
+      key: "reportTypeDetail",
       align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 100,
+      width: 120,
+    },
+    {
+      title: "Chi tiết",
+      dataIndex: "detail",
+      key: "detail",
+      align: "center",
+      width: 170,
+    },
+    {
+      title: "Trạng thái báo cáo",
+      dataIndex: "reportStatus",
+      key: "reportStatus",
+      align: "center",
+      width: 120,
     },
     {
       title: "Ngày tạo",
-      dataIndex: "time_created",
-      key: "time_created",
+      dataIndex: "createAt",
+      key: "createAt",
       align: "center",
-      width: 80,
-    },
-    {
-      title: "Sách còn lại",
-      dataIndex: "numberOfBook",
-      key: "time_created",
-      align: "center",
-      width: 80,
-    },
-    {
-      title: "Số đơn giao dịch",
-      dataIndex: "transactions",
-      key: "time_created",
-      align: "center",
-      width: 80,
+      width: 120,
     },
     {
       title: "Thao tác",
@@ -137,7 +161,7 @@ export function ListTransaction(): JSX.Element {
         </div>
       ),
       fixed: "right",
-      width: 50,
+      width: 80,
     },
   ];
   const listInputUser = [
@@ -167,53 +191,10 @@ export function ListTransaction(): JSX.Element {
       type: "input",
     },
   ];
-  const data: any = [
-    {
-      user_name: "Nguyễn văn A",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn B",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn C",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn D",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn E",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-  ];
+
+  useEffect(() => {
+    refetch();
+  }, [paramsGetReport]);
 
   return (
     <div className="manager-user-container">
@@ -221,12 +202,25 @@ export function ListTransaction(): JSX.Element {
         listSearchText={listSearchText}
         listDatePicker={listDatePicker}
       />
-      <Table
-        style={{marginTop: 10}}
-        scroll={{x: 1000, y: 400}}
-        columns={columns}
-        dataSource={data}
-      />
+      {isLoading ? (
+        <LoadingGlobal />
+      ) : (
+        <Table
+          style={{marginTop: 10}}
+          scroll={{x: 600, y: 550}}
+          columns={columns}
+          dataSource={dataInit}
+          pagination={false}
+        />
+      )}
+
+      <div className="pagination-table">
+        <Pagination
+          onChange={onChangePagination}
+          defaultCurrent={1}
+          total={data?.data?.totalElements}
+        />
+      </div>
       <Modal
         title="Sửa thông tin người dùng"
         open={isModalOpen}

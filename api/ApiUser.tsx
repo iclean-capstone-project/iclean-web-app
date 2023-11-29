@@ -1,6 +1,6 @@
 import {fetcher} from "./Fetcher";
-import store from "../redux/store";
-import {IGetAllApplyRes} from "@app/api/ApiProduct";
+// import store from "../redux/store";
+// import {IGetAllApplyRes} from "@app/api/ApiProduct";
 
 export interface ILoginBody {
   username: string;
@@ -96,19 +96,19 @@ function login(body: ILoginBody): Promise<ILoginResponse> {
   return fetcher({url: path.login, method: "post", data: body});
 }
 
-function getUser(): Promise<IGetUserResponse> {
-  return fetcher({url: path.getUser, method: "get"});
-}
-
-function isLogin(): boolean {
-  const {user} = store.getState();
-  return !!user?.accesstoken;
-}
+// function getUser(): Promise<IGetUserResponse> {
+//   return fetcher({url: path.getUser, method: "get"});
+// }
+//
+// function isLogin(): boolean {
+//   const {user} = store.getState();
+//   return !!user?.accesstoken;
+// }
 
 export default {
   login,
-  isLogin,
-  getUser,
+  // isLogin,
+  // getUser,
   getAllUser,
   banOrUnbanUser,
 };
