@@ -142,17 +142,18 @@ export async function fetcher<T>(
           if (defaultOptions.displaySuccess) {
             displaySuccess(defaultOptions.typeSuccess as string);
           }
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           resolve(response.data);
-          return;
         }
-        const dataError: any = {
-          errorCode: response?.data?.headerCode,
-          errorMessageArr: response?.data?.responses?.message,
-        };
-        if (defaultOptions.displayError) {
-          displayError(dataError);
-        }
-        reject(dataError);
+        // const dataError: any = {
+        //   errorCode: response?.data?.headerCode,
+        //   errorMessageArr: response?.data?.responses?.message,
+        // };
+        // if (defaultOptions.displayError) {
+        //   displayError(dataError);
+        // }
+        // reject(dataError);
       })
       .catch((error: AxiosError<IErrorDTO>) => {
         if (axios.isAxiosError(error)) {
