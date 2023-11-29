@@ -20,7 +20,7 @@ export function DetailApply(): JSX.Element {
     useState<boolean>(false);
   const getDataDetailApply = (): Promise<IGetDetailApplyRes> =>
     getDetailApplyById({
-      id: router?.query?.id ? parseInt(router.query.id as string, 10) : 1,
+      id: router?.query?.id ? parseInt(router.query.id, 10) : 1,
     });
 
   const {refetch} = useQuery(["GET_DETAIL_APPLY"], getDataDetailApply, {
@@ -42,7 +42,7 @@ export function DetailApply(): JSX.Element {
     if (router.query.id) {
       acceptApplyMutate.mutate(
         {
-          id: parseInt(router.query.id as string, 10),
+          id: parseInt(router.query.id, 10),
         },
         {
           onSuccess: () => {
@@ -102,14 +102,14 @@ export function DetailApply(): JSX.Element {
         <div className="list-service">
           <ListServiceApply
             isRefetch={refetch}
-            idApply={parseInt(router.query.id as string, 10)}
+            idApply={parseInt(router.query.id, 10)}
             listService={dataInit?.services}
             isChangeStatus={dataInit?.status}
           />
         </div>
       </div>
       <ModalDeleteApply
-        idApply={parseInt(router.query.id as string, 10)}
+        idApply={parseInt(router.query.id, 10)}
         isModalDeleteApply={isOpenModalDeleteApply}
         handleCancel={handleCancel}
       />

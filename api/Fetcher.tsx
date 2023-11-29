@@ -129,7 +129,7 @@ export async function fetcher<T>(
       .then(async (response) => {
         if (response) {
           if (response.data === undefined) {
-            const dataEmpty: any = {
+            const dataEmpty: IDataError = {
               errorCode: "ERROR???",
               errorMessageArr: [{err: ["Không có dữ liệu"]}],
             };
@@ -142,14 +142,12 @@ export async function fetcher<T>(
           if (defaultOptions.displaySuccess) {
             displaySuccess(defaultOptions.typeSuccess as string);
           }
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           resolve(response.data);
           return;
         }
         const dataError: any = {
-          errorCode: "",
-          errorMessageArr: "",
+          errorCode: response?.data?.headerCode,
+          errorMessageArr: response?.data?.responses?.message,
         };
         if (defaultOptions.displayError) {
           displayError(dataError);

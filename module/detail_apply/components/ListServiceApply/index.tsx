@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./style.scss";
-import {Button, Image, notification} from "antd";
+import {Button, Image, notification, Tag} from "antd";
 import {
   confirmApply,
   IGetDetailApplyRes,
@@ -28,8 +28,6 @@ export function ListServiceApply(props: IProps): JSX.Element {
 
   const confirmApplyMutate = useMutation(confirmApply);
   const handleAcceptApply = (serviceRegistrationId?: number) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     setIsService(serviceRegistrationId);
     if (idApply && serviceRegistrationId) {
       confirmApplyMutate.mutate(
@@ -39,9 +37,7 @@ export function ListServiceApply(props: IProps): JSX.Element {
         },
         {
           onSuccess: () => {
-            if (isRefetch) {
-              isRefetch().then((r) => console.log(r));
-            }
+            isRefetch();
             notification.success({
               message: "Phê duyệt thành công!",
             });

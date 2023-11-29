@@ -1,19 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Image, Modal, notification, Table, Tag, Tooltip} from "antd";
-import {StopOutlined, SyncOutlined} from "@ant-design/icons";
-
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {Formik} from "formik";
-import UploadFileGlobal from "@app/components/UploadFileGlobal";
+import {Button, Form, Image, Input, Modal, notification, Table, Tag, Tooltip} from "antd";
 import {useMutation, useQuery} from "react-query";
+import {useSelector} from "react-redux";
+
+import {DownloadOutlined, UploadOutlined} from "@ant-design/icons";
 import ApiUser, {IGetListUser, IItemUser} from "@app/api/ApiUser";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
-import {useSelector} from "react-redux";
 import {IRootState} from "@app/redux/store";
+import { IMoneyRequest, IMoneyRequestValidated, moneyRequest, moneyRequestValidated } from "../../api/ApiMoney";
+
 
 interface DataType {
   key: string;
@@ -27,19 +25,18 @@ interface DataType {
   isLocked: boolean;
 }
 
-export function ManagerUser(): JSX.Element {
+export function DepositWithdraw(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataUserInit, setDataUserInit] = useState<IItemUser[]>([]);
   const [paramFilter, setParamFilter] = useState<string>("");
+  const [selectedUserId , setSelectedUserId ] = useState<number>();
+  const [sentOtp , setSentOtp ] = useState<boolean>(false);
+  const [typeDW, setTypeDW] = useState<string>("");
+  const [titlePopupDW, setTitlePopupDW] = useState<string>("");
+  const [form] = Form.useForm();
+
 
   const user = useSelector((state: IRootState) => state.user);
-  // console.log("user", user?.userInformationDto?.roleName);
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const banOrUnbanUserMutate = useMutation(ApiUser.banOrUnbanUser);
 
   const getDataListUser = (): Promise<IGetListUser> =>
     ApiUser.getAllUser({
@@ -55,26 +52,45 @@ export function ManagerUser(): JSX.Element {
     },
   });
 
-  const handleBanOrUnbanUser = (userId?: number) => {
-    if (userId) {
-      banOrUnbanUserMutate.mutate(
-        {
-          userId: userId,
-        },
-        {
-          onSuccess: () => {
-            refetch();
-            notification.success({
-              message: "Phê duyệt thành công!",
-            });
-          },
-        }
-      );
-    }
-  };
+  const handleSubmit = async (formData: any) => {
+    
+    const selectedUser = dataUserInit.find(user => user.userId === selectedUserId)
+    
+    if(selectedUser) {
 
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
+      if(sentOtp) {
+        
+        try {
+          const data : IMoneyRequestValidated = {
+            phoneNumber: selectedUser.phoneNumber, 
+            otpToken: formData.otp,
+          }
+          const res = moneyRequestValidated(data);
+          console.log("Yêu cầu thành công >> ",(await res).status);
+          closeModal();
+          notification.success({
+            message: "Yêu cầu thành công",
+            description: "Yêu cầu của bạn đã được xử lý thành công.",
+          });
+          setSentOtp(false)
+        } catch (err){
+          console.log(err);
+          notification.error({
+            message: "Lỗi",
+            description: "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
+          });
+        }
+      } else {
+        
+        const data : IMoneyRequest = {
+          userPhoneNumber: selectedUser.phoneNumber, 
+          balance: formData.balance, 
+          moneyRequestType: typeDW
+        }
+        moneyRequest(data);
+        setSentOtp(true)
+      }
+    }
   };
 
   useEffect(() => {
@@ -93,10 +109,6 @@ export function ManagerUser(): JSX.Element {
         {
           value: "all",
           label: "Tất cả",
-        },
-        {
-          value: "Manager",
-          label: "Manager",
         },
         {
           value: "Employee",
@@ -215,63 +227,59 @@ export function ManagerUser(): JSX.Element {
               justifyContent: "center",
             }}
           >
-            {user?.userInformationDto?.roleName === "admin" ? (
-              <Tooltip title={dataIndex?.isLocked ? "Ban user" : "Unban User"}>
-                <div onClick={() => handleBanOrUnbanUser(dataIndex.userId)}>
-                  <SyncOutlined
+            <Tooltip title={"Rút tiền"}>
+                <div onClick={() => handleWithdraw(dataIndex.userId)}>
+                  <UploadOutlined
                     style={{
                       fontSize: 22,
-                      color: dataIndex?.isLocked ? "red" : "green",
+                      transform: 'rotate(90deg)',
                     }}
                   />
                 </div>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Chỉ có admin mới có quyền">
-                <StopOutlined
-                  style={{
-                    fontSize: 22,
-                    color: "red",
-                  }}
-                />
-              </Tooltip>
-            )}
+            </Tooltip>
+            <div style={{width: '10px'}}></div>
+            <Tooltip title={"Nạp tiền"}>
+                <div onClick={() => handleDeposit(dataIndex.userId)}>
+                  <DownloadOutlined
+                    style={{
+                      fontSize: 22,
+                    }}
+                  />
+                </div>
+            </Tooltip>
           </div>
         );
       },
       width: 100,
     },
   ];
-  const listInputUser = [
-    {
-      title: "Tên người dùng",
-      placeHolder: "Nhập tên người dùng",
-      type: "input",
-    },
-    {
-      title: "Ảnh đại diện",
-      placeHolder: "Nhập tên người dùng",
-      type: "uploadFile",
-    },
-    {
-      title: "Email",
-      placeHolder: "Nhập Email",
-      type: "input",
-    },
-    {
-      title: "Sách còn lại",
-      placeHolder: "Nhập số sách còn lại",
-      type: "input",
-    },
-    {
-      title: "Số đơn giao dịch",
-      placeHolder: "Nhập số đơn",
-      type: "input",
-    },
-  ];
+
+  const handleWithdraw = (userId : number) => {
+    setSelectedUserId(userId)
+    setTypeDW("withdraw")
+    setTitlePopupDW("Rút tiền")
+    openModal()
+  }
+
+  const handleDeposit = (userId : number) => {
+    setSelectedUserId(userId)
+    setTypeDW("deposit")
+    setTitlePopupDW("Nạp tiền")
+    openModal()
+  }
+
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSentOtp(false)
+    form.resetFields();
+  }
 
   return (
-    <div className="manager-user-container">
+    <div className="deposit-withdraw-container">
       <FilterGroupGlobal listSelectOption={listSelectOption} />
       <Table
         style={{marginTop: 10}}
@@ -281,63 +289,39 @@ export function ManagerUser(): JSX.Element {
         pagination={false}
       />
       <Modal
-        title="Sửa thông tin người dùng"
+        title="Yêu cầu"
         open={isModalOpen}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
+        onCancel={closeModal}
+        footer={null}
       >
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
+        <Form
+          name="deposit-withdraw"
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          autoComplete="off"
+          action="POST"
         >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div>
-                {listInputUser.map((item, index) => (
-                  <div key={index}>
-                    {item.type === "input" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <InputGlobal
-                          name="username"
-                          placeholder={item.placeHolder}
-                          style={{width: "80%"}}
-                          onPressEnter={(): void => handleSubmit()}
-                        />
-                        <ErrorMessageGlobal name="username" />
-                      </div>
-                    )}
-                    {item.type === "uploadFile" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <div style={{width: "80%"}}>
-                          <UploadFileGlobal
-                            handleChange={() => console.log("uploadFile")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </Formik>
+          <Form.Item
+            label={titlePopupDW}
+            name="balance"
+          >
+            <Input placeholder="Nhập số tiền" />
+          </Form.Item>
+
+          <Form.Item
+            label="OTP"
+            name="otp"
+          >
+            <Input placeholder="Nhập OTP" disabled={!sentOtp}/>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{backgroundColor: "#52C41A", borderColor: "#52C41A", marginRight: '10px'}}>
+              {sentOtp ? "Xác nhận" : "Gửi"}
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

@@ -1,3 +1,5 @@
+import {Icon} from "@app/components/Icon";
+import {LoadingGlobal} from "@app/components/Loading";
 import {useRouter} from "next/router";
 import React, {useEffect, useState} from "react";
 import "./index.scss";
@@ -10,7 +12,7 @@ function LoadingLayout({children}: LoadingLayoutProps): JSX.Element {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  console.log(loading);
+
   useEffect(() => {
     const handleStart = (url: string): void | boolean =>
       url !== router.asPath && setLoading(true);

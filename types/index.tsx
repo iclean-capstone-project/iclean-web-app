@@ -9,9 +9,7 @@ export interface CommonReactProps {
 }
 
 export interface IAccountInfo {
-  data: any;
   accessToken?: string;
-  accesstoken?: string;
   refreshToken?: string;
   userInformationDto?: {
     fullName: string;

@@ -122,7 +122,6 @@ export function ListTransaction(): JSX.Element {
       dataIndex: "action",
       align: "center",
       render: () => (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
           onClick={showModal}
           style={{
@@ -226,6 +225,7 @@ export function ListTransaction(): JSX.Element {
         scroll={{x: 1000, y: 400}}
         columns={columns}
         dataSource={data}
+        pagination={false}
       />
       <Modal
         title="Sửa thông tin người dùng"

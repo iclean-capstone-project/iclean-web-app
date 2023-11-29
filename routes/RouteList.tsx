@@ -2,11 +2,11 @@ import {ReactNode} from "react";
 import {
   BlockOutlined,
   IdcardOutlined,
+  LogoutOutlined,
   MoneyCollectOutlined,
   PicRightOutlined,
   SettingOutlined,
   UserOutlined,
-  WarningOutlined,
 } from "@ant-design/icons";
 
 export interface IRoute {
@@ -61,16 +61,16 @@ const routes: IRoute[] = [
     icon: <MoneyCollectOutlined className="icon-sidebar" />,
   },
   {
-    path: "/list_report",
-    name: "Report",
-    isSidebar: true,
-    icon: <WarningOutlined className="icon-sidebar" />,
-  },
-  {
     path: "/profile",
     name: "Profile",
     isSidebar: true,
     icon: <SettingOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/deposit_withdraw",
+    name: "Nạp rút tền",
+    isSidebar: true,
+    icon: <LogoutOutlined className="icon-sidebar"/>,
   },
 ];
 
