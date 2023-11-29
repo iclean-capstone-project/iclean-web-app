@@ -118,6 +118,7 @@ export interface IDetailBookingRes {
     rejectionReasonDescription?: string | null;
     bookingCode?: string;
     renterName?: string;
+    renterAvatar?: string;
     currentStatus?: string;
     details?: {
       bookingDetailId?: number;
