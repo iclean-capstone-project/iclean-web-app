@@ -204,7 +204,6 @@ export async function downloadFile({
   // Access Token
   const state = store.getState();
   const token = state.user?.data?.accessToken;
-  console.log("Access Token", state);
   if (token) {
     apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
   }

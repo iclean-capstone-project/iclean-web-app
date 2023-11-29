@@ -24,7 +24,6 @@ interface IProps {
 export function ListServiceApply(props: IProps): JSX.Element {
   const {listService, idApply, isRefetch, isChangeStatus} = props;
   const [isService, setIsService] = useState(undefined);
-  console.log("isChangeStatus", isChangeStatus);
 
   const confirmApplyMutate = useMutation(confirmApply);
   const handleAcceptApply = (serviceRegistrationId?: number) => {

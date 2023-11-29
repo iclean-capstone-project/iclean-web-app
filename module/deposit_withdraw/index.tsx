@@ -60,7 +60,6 @@ export function DepositWithdraw(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
     onSuccess: (res) => {
-      console.log("RES USER", res?.data);
       setDataUserInit(res?.data?.content ?? []);
     },
   });
@@ -86,7 +85,6 @@ export function DepositWithdraw(): JSX.Element {
           });
           setSentOtp(false);
         } catch (err) {
-          console.log(err);
           notification.error({
             message: "Lỗi",
             description:

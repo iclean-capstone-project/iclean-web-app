@@ -32,9 +32,7 @@ export function AddTabGlobal(props: InputProps): JSX.Element {
     refInput.current.blur();
   };
 
-  useEffect(() => {
-    console.log(dataValue, "sdsd");
-  }, [dataValue]);
+  useEffect(() => {}, [dataValue]);
 
   return (
     <div>

@@ -9,7 +9,6 @@ import {useRouter} from "next/router";
 export function ListApply(): JSX.Element {
   const router = useRouter();
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
-
   const [keyTabSelected, setKeyTabSelected] = useState<string>("");
 
   const getDataListApply = (): Promise<IGetAllApplyRes> =>
@@ -27,18 +26,16 @@ export function ListApply(): JSX.Element {
     },
   });
 
-  const goToDetailApply = (id: number): void => {
+  const goToDetailApply = (idValue: number): void => {
     router.push({
       pathname: "/detail_apply",
       query: {
-        id: id,
+        id: idValue,
       },
     });
   };
 
-  const handleSearch = (valueSearch: string): void => {
-    console.log("Ssss");
-  };
+  const handleSearch = (valueSearch: string): void => {};
 
   const onChangeTab = (key: string) => {
     setKeyTabSelected(key === "all" ? "" : key);
@@ -73,10 +70,7 @@ export function ListApply(): JSX.Element {
   ];
   const listDatePicker = [
     {
-      onChange: (startTime: number, endTime: number): void => {
-        console.log("startTime", startTime);
-        console.log("endTime", endTime);
-      },
+      onChange: (startTime: number, endTime: number): void => {},
       tooltip: "Ngày tạo",
       title: "Ngày tạo",
     },

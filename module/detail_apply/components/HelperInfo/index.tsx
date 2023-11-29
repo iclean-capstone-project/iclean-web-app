@@ -8,7 +8,6 @@ interface IProps {
 }
 export function HelperInfo(props: IProps): JSX.Element {
   const {dataInfoHelper} = props;
-  console.log("dataInfoHelper", dataInfoHelper);
   return (
     <div className="helper-info-container">
       <h3>THÔNG TIN</h3>
@@ -16,7 +15,8 @@ export function HelperInfo(props: IProps): JSX.Element {
         <Image
           preview={false}
           style={{borderRadius: "50%"}}
-          width={180}
+          width={150}
+          height={150}
           src={dataInfoHelper?.personalAvatar}
         />
         <h3>{dataInfoHelper?.fullName}</h3>

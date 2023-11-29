@@ -25,9 +25,14 @@ export function DetailApply(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DETAIL_APPLY"], getDataDetailApply, {
     onSuccess: (res) => {
+      console.log("Ré", res);
       setDataInit(res?.data);
     },
   });
+
+  const checkStatusNotFinish = (value: string) => {
+    return value !== "ONLINE" && value !== "DISABLED";
+  };
 
   const handleCancel = (): void => {
     setIsOpenModalDeleteApply(false);
@@ -58,42 +63,46 @@ export function DetailApply(): JSX.Element {
 
   useEffect(() => {
     refetch();
-  }, [router.query.id]);
+  }, []);
 
   console.log("dataInit", dataInit);
   return (
     <div className="detail-apply-container">
       <div className="button-reject">
-        {dataInit?.status !== "WAITING_FOR_CONFIRM" && (
-          <Button
-            loading={acceptApplyMutate.isLoading}
-            style={{
-              borderRadius: 12,
-              backgroundColor: "blue",
-              color: "white",
-              borderColor: "blue",
-              marginRight: 8,
-            }}
-            onClick={handleAcceptApply}
-            icon={<CheckOutlined />}
-          >
-            Phê duyệt
-          </Button>
-        )}
+        {checkStatusNotFinish(dataInit?.status) && (
+          <>
+            {dataInit?.status !== "WAITING_FOR_CONFIRM" && (
+              <Button
+                loading={acceptApplyMutate.isLoading}
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: "blue",
+                  color: "white",
+                  borderColor: "blue",
+                  marginRight: 8,
+                }}
+                onClick={handleAcceptApply}
+                icon={<CheckOutlined />}
+              >
+                Phê duyệt
+              </Button>
+            )}
 
-        {/* )} */}
-        <Button
-          style={{
-            borderRadius: 12,
-            backgroundColor: "red",
-            color: "white",
-            borderColor: "red",
-          }}
-          onClick={() => showModalDeleteApply(1)}
-          icon={<CloseOutlined />}
-        >
-          Từ chối
-        </Button>
+            {/* )} */}
+            <Button
+              style={{
+                borderRadius: 12,
+                backgroundColor: "red",
+                color: "white",
+                borderColor: "red",
+              }}
+              onClick={() => showModalDeleteApply(1)}
+              icon={<CloseOutlined />}
+            >
+              Từ chối
+            </Button>
+          </>
+        )}
       </div>
       <div className="detail-apply-main">
         <div className="info-helper">
