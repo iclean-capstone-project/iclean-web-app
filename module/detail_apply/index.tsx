@@ -69,23 +69,28 @@ export function DetailApply(): JSX.Element {
   const confirmApplyMutate = useMutation(confirmApply);
 
   const handleConfirmApply = (): void => {
-    console.log("listServiceConfirmed", listServiceConfirmed);
-    confirmApplyMutate.mutate(
-      {
-        id: parseInt(router.query.id as string, 10),
-        serviceRegistrationIds: listServiceConfirmed,
-      },
-      {
-        onSuccess: () => {
-          refetch();
-          notification.success({
-            message: "Phê duyệt thành công!",
-          });
-          router.push("/list_apply");
-          // setIsService(undefined);
+    console.log("listServiceConfirmed", listServiceConfirmed.length);
+    if (listServiceConfirmed.length > 0) {
+      confirmApplyMutate.mutate(
+        {
+          id: parseInt(router.query.id as string, 10),
+          serviceRegistrationIds: listServiceConfirmed,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            refetch();
+            notification.success({
+              message: "Phê duyệt thành công!",
+            });
+            router.push("/list_apply");
+            // setIsService(undefined);
+          },
+        }
+      );
+    } else
+      notification.error({
+        message: "Vui lòng chọn dịch vụ!",
+      });
   };
 
   useEffect(() => {
