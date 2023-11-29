@@ -116,7 +116,7 @@ export async function fetcher<T>(
   } else {
     if (defaultOptions.withToken) {
       const state = store.getState();
-      const token = state.user?.accessToken;
+      const token = state.user?.accesstoken;
       if (token) {
         apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
