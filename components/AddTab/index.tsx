@@ -1,6 +1,6 @@
 import {Button, Col, Row} from "antd";
 import {Input, InputProps, Select, SelectProps} from "formik-antd";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
 export function AddTabGlobal(props: InputProps): JSX.Element {
   const refInput = useRef<any>(null);
@@ -31,8 +31,6 @@ export function AddTabGlobal(props: InputProps): JSX.Element {
     refInput.current.input.value = "";
     refInput.current.blur();
   };
-
-  useEffect(() => {}, [dataValue]);
 
   return (
     <div>
