@@ -35,7 +35,9 @@ export function ListApply(): JSX.Element {
     });
   };
 
-  const handleSearch = (valueSearch: string): void => {};
+  const handleSearch = (valueSearch: string): void => {
+    console.log(valueSearch);
+  };
 
   const onChangeTab = (key: string) => {
     setKeyTabSelected(key === "all" ? "" : key);
@@ -70,9 +72,11 @@ export function ListApply(): JSX.Element {
   ];
   const listDatePicker = [
     {
-      onChange: (startTime: number, endTime: number): void => {},
       tooltip: "Ngày tạo",
       title: "Ngày tạo",
+      onChange: (startTime: number, endTime: number): void => {
+        console.log(startTime);
+      },
     },
   ];
   const columns: any = [
