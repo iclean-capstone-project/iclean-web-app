@@ -185,7 +185,7 @@ export function ListBooking(): JSX.Element {
       width: 140,
     },
     {
-      title: "totalPriceActual",
+      title: "Giá thực tế",
       dataIndex: "totalPriceActual",
       key: "totalPriceActual",
       align: "center",

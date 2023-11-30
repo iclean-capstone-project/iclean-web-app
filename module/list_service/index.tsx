@@ -25,7 +25,7 @@ export function ListService(): JSX.Element {
     },
   });
   console.log(data);
-
+  console.log("dataInit", dataInit);
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
   };
@@ -89,7 +89,7 @@ export function ListService(): JSX.Element {
       align: "center",
       render: (_, dataIndex) => (
         <div>
-          {dataIndex.isDeleted ? (
+          {!dataIndex.isDeleted ? (
             <Tag color="green">Đang hoạt động</Tag>
           ) : (
             <Tag color="red">Không hoạt động</Tag>
