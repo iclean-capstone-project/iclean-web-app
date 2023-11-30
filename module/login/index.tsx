@@ -2,7 +2,11 @@ import React from "react";
 import "./index.scss";
 import {Formik} from "formik";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {CheckboxGlobal, InputGlobal, InputPasswordGlobal} from "@app/components/InputGlobal";
+import {
+  CheckboxGlobal,
+  InputGlobal,
+  InputPasswordGlobal,
+} from "@app/components/InputGlobal";
 import {HomeFilled, UnlockOutlined, UserOutlined} from "@ant-design/icons";
 import {ButtonGlobal} from "@app/components/ButtonGlobal";
 import ApiUser from "@app/api/ApiUser";
@@ -10,9 +14,7 @@ import {useMutation} from "react-query";
 import {useDispatch} from "react-redux";
 import {loginUser} from "@app/redux/slices/UserSlice";
 import {useRouter} from "next/router";
-import {Col, Image, Layout, Menu, Row, notification} from "antd";
-
-const { Header} = Layout;
+import {Col, notification, Row} from "antd";
 
 interface UserAccount {
   username: string;
@@ -67,7 +69,7 @@ export function Login(): JSX.Element {
     <div className="login-screen">
       <div className="header">
         <div className="logo">
-          <img src="/logo_none.png" alt="" width={192}/>
+          <img src="/logo_none.png" alt="" width={192} />
         </div>
         <div className="menu">
           <a className="menu-item" href="#">
@@ -90,13 +92,14 @@ export function Login(): JSX.Element {
               validateOnChange
               validateOnBlur
               // validationSchema={LoginValidation}
-              >
+            >
               {({handleSubmit}): JSX.Element => {
                 return (
                   <div className="login-container">
                     <div className="login-container">
                       <h1>WELCOME BACK</h1>
                       <div className="login-form-item">
+                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <label className="label-input">Username</label>
                         <InputGlobal
                           name="username"
@@ -109,6 +112,7 @@ export function Login(): JSX.Element {
                       </div>
 
                       <div className="login-form-item">
+                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <label className="label-input">Password</label>
                         <InputPasswordGlobal
                           name="password"
@@ -124,13 +128,16 @@ export function Login(): JSX.Element {
                         <CheckboxGlobal
                           name="remember"
                           // checked
-                          onChange={(e): void => handleCheckRemember(e.target.checked)}
+                          onChange={(e): void =>
+                            handleCheckRemember(e.target.checked)
+                          }
                         >
-                        Nhớ tài khoản
+                          Nhớ tài khoản
                         </CheckboxGlobal>
-                        
 
-                        <span className="forgot-password_link">Quên mật khẩu?</span>
+                        <span className="forgot-password_link">
+                          Quên mật khẩu?
+                        </span>
                       </div>
 
                       <ButtonGlobal
@@ -147,10 +154,11 @@ export function Login(): JSX.Element {
             </Formik>
           </div>
         </Col>
-        
+
         <Col span={12}>
           <div>
-          <img width={"100%"} src="/img/login_img.png"></img>
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
+            <img width="100%" src="/img/login_img.png" />
           </div>
         </Col>
       </Row>
