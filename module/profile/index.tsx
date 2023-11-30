@@ -223,7 +223,7 @@ export function Profile(): JSX.Element {
       />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1000, y: 400}}
+        scroll={{x: 1000, y: 500}}
         columns={columns}
         dataSource={data}
       />

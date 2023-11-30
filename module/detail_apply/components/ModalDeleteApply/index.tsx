@@ -10,11 +10,12 @@ interface IProps {
   handleCancel: any;
   isModalDeleteApply: any;
   idApply: number;
+  isRefetch: any;
 }
 
 export function ModalDeleteApply(props: IProps): JSX.Element {
   const formikRef = useRef<any>(null);
-  const {isModalDeleteApply, handleCancel, idApply} = props;
+  const {isModalDeleteApply, handleCancel, idApply, isRefetch} = props;
 
   const cancelApplyMutate = useMutation(cancelApply);
 
@@ -39,6 +40,7 @@ export function ModalDeleteApply(props: IProps): JSX.Element {
               message: "Từ chối đơn hàng thành công!",
             });
             handleCancel();
+            isRefetch();
           },
           onError: () => {
             notification.error({

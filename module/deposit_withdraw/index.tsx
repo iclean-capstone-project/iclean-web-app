@@ -60,7 +60,6 @@ export function DepositWithdraw(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
     onSuccess: (res) => {
-      console.log("RES USER", res?.data);
       setDataUserInit(res?.data?.content ?? []);
     },
   });
@@ -86,7 +85,6 @@ export function DepositWithdraw(): JSX.Element {
           });
           setSentOtp(false);
         } catch (err) {
-          console.log(err);
           notification.error({
             message: "Lỗi",
             description:
@@ -170,7 +168,7 @@ export function DepositWithdraw(): JSX.Element {
       width: 130,
     },
     {
-      title: "phoneNumber",
+      title: "SDT",
       key: "phoneNumber",
       dataIndex: "phoneNumber",
       align: "center",
@@ -297,7 +295,7 @@ export function DepositWithdraw(): JSX.Element {
       <FilterGroupGlobal listSelectOption={listSelectOption} />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 800, y: 400}}
+        scroll={{x: 800, y: 500}}
         columns={columns}
         dataSource={dataUserInit}
         pagination={false}
