@@ -1,9 +1,9 @@
 import {fetcher} from "@app/api/Fetcher";
 
 export interface IMoneyResponse {
-  status: string;
-  message: string;
-  data: null;
+  status?: string;
+  message?: string;
+  data?: null;
 }
 
 export interface IMoneyRequest {
@@ -22,7 +22,7 @@ const path = {
   confirmOtp: "/money-request/validated",
 };
 
-function moneyRequest(body: IMoneyRequest): Promise<any> {
+function moneyRequest(body: IMoneyRequest): Promise<IMoneyResponse> {
   return fetcher({
     url: path.sendRequest,
     method: "post",

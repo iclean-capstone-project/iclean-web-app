@@ -1,45 +1,83 @@
-.login-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
+.login-screen {
+  width: 100%;
 
-  .logo_visang {
-    position: fixed;
-    top: 0;
-    left: 20px;
-    height: 80px;
+  .label-input {
+    font-size: 20px;
+    margin: 20px 0;
   }
 
-  .logo {
-    height: 200px;
-  }
-
-  .login-form-item {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    .input_login {
-      width: 370px;
-      height: 50px;
-    }
-  }
-
-  .forgot-password-wrap {
+  .header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    padding: 0 24px;
 
-    .forgot-password_link {
-      color: #1890ff;
-      cursor: pointer;
+    .logo {
+
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      .menu-item {
+        text-decoration: none;
+        margin-right: 32px;
+        font-size: 16px;
+        font-weight: 600;
+        color: black;
+        padding-bottom: 20px;
+      }
     }
   }
 
-  .btn-login {
-    height: 50px;
-    width: 370px;
-    margin-left: 0;
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+  
+    .logo_visang {
+      position: fixed;
+      top: 0;
+      left: 20px;
+      height: 80px;
+    }
+  
+    .logo {
+      height: 200px;
+    }
+  
+    .login-form-item {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      .input_login {
+        width: 370px;
+        height: 50px;
+      }
+    }
+  
+    .forgot-password-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      margin-bottom: 30px;
+  
+      .forgot-password_link {
+        color: #1890ff;
+        cursor: pointer;
+      }
+    }
+  
+    .btn-login {
+      height: 50px;
+      width: 370px;
+      margin-left: 0;
+      margin-top: 16px;
+      background-color: #AD82D9;
+      border: #AD82D9;
+    }
   }
 }
