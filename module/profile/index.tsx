@@ -143,6 +143,7 @@ export function Profile(): JSX.Element {
                   name="phoneNumber"
                   readOnly={isEdit}
                   size={"large"}
+                  placeholder="Số điện thoại"
                 />
               </Form.Item>
 
@@ -154,6 +155,7 @@ export function Profile(): JSX.Element {
                 <Input
                   readOnly={isEdit}
                   size={"large"}
+                  placeholder="Địa chỉ"
                 />
               </Form.Item>
 
