@@ -5,6 +5,7 @@ import {HelperInfo} from "@app/module/detail_apply/components/HelperInfo";
 import {ListServiceApply} from "@app/module/detail_apply/components/ListServiceApply";
 import {
   acceptApply,
+  confirmApply,
   getDetailApplyById,
   IGetDetailApplyRes,
 } from "@app/api/ApiProduct";
@@ -18,6 +19,9 @@ export function DetailApply(): JSX.Element {
   const [dataInit, setDataInit] = useState<any | undefined>(undefined);
   const [isOpenModalDeleteApply, setIsOpenModalDeleteApply] =
     useState<boolean>(false);
+  const [listServiceConfirmed, setListServiceConfirmed] = useState<number[]>(
+    []
+  );
   const getDataDetailApply = (): Promise<IGetDetailApplyRes> =>
     getDetailApplyById({
       id: router?.query?.id ? parseInt(router.query.id as string, 10) : 1,
@@ -25,9 +29,14 @@ export function DetailApply(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DETAIL_APPLY"], getDataDetailApply, {
     onSuccess: (res) => {
+      console.log("Ré", res);
       setDataInit(res?.data);
     },
   });
+
+  const checkStatusNotFinish = (value: string) => {
+    return value !== "ONLINE" && value !== "DISABLED";
+  };
 
   const handleCancel = (): void => {
     setIsOpenModalDeleteApply(false);
@@ -49,6 +58,7 @@ export function DetailApply(): JSX.Element {
             notification.success({
               message: "Phê duyệt thành công!",
             });
+            refetch();
             // dataListApply.refetch();
           },
         }
@@ -56,44 +66,90 @@ export function DetailApply(): JSX.Element {
     }
   };
 
+  const confirmApplyMutate = useMutation(confirmApply);
+
+  const handleConfirmApply = (): void => {
+    console.log("listServiceConfirmed", listServiceConfirmed.length);
+    if (listServiceConfirmed.length > 0) {
+      confirmApplyMutate.mutate(
+        {
+          id: parseInt(router.query.id as string, 10),
+          serviceRegistrationIds: listServiceConfirmed,
+        },
+        {
+          onSuccess: () => {
+            refetch();
+            notification.success({
+              message: "Phê duyệt thành công!",
+            });
+            router.push("/list_apply");
+            // setIsService(undefined);
+          },
+        }
+      );
+    } else
+      notification.error({
+        message: "Vui lòng chọn dịch vụ!",
+      });
+  };
+
   useEffect(() => {
     refetch();
-  }, [router.query.id]);
+  }, []);
 
   console.log("dataInit", dataInit);
   return (
     <div className="detail-apply-container">
       <div className="button-reject">
-        {dataInit?.status !== "WAITING_FOR_CONFIRM" && (
-          <Button
-            loading={acceptApplyMutate.isLoading}
-            style={{
-              borderRadius: 12,
-              backgroundColor: "blue",
-              color: "white",
-              borderColor: "blue",
-              marginRight: 8,
-            }}
-            onClick={handleAcceptApply}
-            icon={<CheckOutlined />}
-          >
-            Phê duyệt
-          </Button>
-        )}
+        {checkStatusNotFinish(dataInit?.status) && (
+          <>
+            {dataInit?.status !== "WAITING_FOR_CONFIRM" ? (
+              <Button
+                loading={acceptApplyMutate.isLoading}
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: "blue",
+                  color: "white",
+                  borderColor: "blue",
+                  marginRight: 8,
+                }}
+                onClick={handleAcceptApply}
+                icon={<CheckOutlined />}
+              >
+                Phê duyệt
+              </Button>
+            ) : (
+              <Button
+                loading={acceptApplyMutate.isLoading}
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: "blue",
+                  color: "white",
+                  borderColor: "blue",
+                  marginRight: 8,
+                }}
+                onClick={handleConfirmApply}
+                icon={<CheckOutlined />}
+              >
+                Xác nhận
+              </Button>
+            )}
 
-        {/* )} */}
-        <Button
-          style={{
-            borderRadius: 12,
-            backgroundColor: "red",
-            color: "white",
-            borderColor: "red",
-          }}
-          onClick={() => showModalDeleteApply(1)}
-          icon={<CloseOutlined />}
-        >
-          Từ chối
-        </Button>
+            {/* )} */}
+            <Button
+              style={{
+                borderRadius: 12,
+                backgroundColor: "red",
+                color: "white",
+                borderColor: "red",
+              }}
+              onClick={() => showModalDeleteApply(1)}
+              icon={<CloseOutlined />}
+            >
+              Từ chối
+            </Button>
+          </>
+        )}
       </div>
       <div className="detail-apply-main">
         <div className="info-helper">
@@ -101,14 +157,14 @@ export function DetailApply(): JSX.Element {
         </div>
         <div className="list-service">
           <ListServiceApply
-            isRefetch={refetch}
-            idApply={parseInt(router.query.id as string, 10)}
             listService={dataInit?.services}
-            isChangeStatus={dataInit?.status}
+            listServiceConfirmed={listServiceConfirmed}
+            setListServiceConfirmed={setListServiceConfirmed}
           />
         </div>
       </div>
       <ModalDeleteApply
+        isRefetch={refetch}
         idApply={parseInt(router.query.id as string, 10)}
         isModalDeleteApply={isOpenModalDeleteApply}
         handleCancel={handleCancel}

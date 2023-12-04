@@ -18,6 +18,7 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
       id: bookingId ?? 1,
     });
 
+  console.log("dataDetailBookingInit?.data?", dataDetailBookingInit?.data);
   const {refetch} = useQuery(
     ["GET_DATA_DETAIL_BOOKING"],
     getDataDetailBooking,
@@ -63,9 +64,13 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
         <div style={{paddingLeft: "27%", marginBottom: 5}}>
           <Image
             preview={false}
-            style={{borderRadius: "50%"}}
+            style={{borderRadius: "50%", objectFit: "cover"}}
             width={100}
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            height={100}
+            src={
+              dataDetailBookingInit?.data?.renterAvatar ??
+              "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            }
           />
         </div>
         <ItemInput

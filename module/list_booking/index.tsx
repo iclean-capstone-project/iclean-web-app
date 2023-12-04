@@ -185,7 +185,7 @@ export function ListBooking(): JSX.Element {
       width: 140,
     },
     {
-      title: "totalPriceActual",
+      title: "Giá thực tế",
       dataIndex: "totalPriceActual",
       key: "totalPriceActual",
       align: "center",
@@ -291,7 +291,7 @@ export function ListBooking(): JSX.Element {
       />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 600, y: 485}}
+        scroll={{x: 600, y: 505}}
         columns={columns}
         dataSource={dataBooking}
         className="table-list-booking"
