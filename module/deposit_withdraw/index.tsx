@@ -21,11 +21,15 @@ import FilterGroupGlobal, {
 } from "@app/components/FilterGroupGlobal";
 import {IRootState} from "@app/redux/store";
 import {
+  IGetTransactionHistory,
   IMoneyRequest,
   IMoneyRequestValidated,
+  IParamsGetAllTransactionHistory,
   moneyRequest,
   moneyRequestValidated,
+  transactionHistory,
 } from "../../api/ApiMoney";
+import { formatDateTime } from "./components/Utils";
 
 interface DataType {
   key: string;
@@ -33,10 +37,20 @@ interface DataType {
   name: string;
   avatar: string;
   address: string;
+  roleName: string;
   description: string;
   transport: string;
   phoneNumber: string;
   isLocked: boolean;
+}
+
+interface TransactionHistory {
+  requestId: number;
+  requestDate: string;
+  balance: number;
+  requestStatus: string;
+  processDate: null;
+  requestType: string;
 }
 
 export function DepositWithdraw(): JSX.Element {
@@ -48,6 +62,8 @@ export function DepositWithdraw(): JSX.Element {
   const [typeDW, setTypeDW] = useState<string>("");
   const [titlePopupDW, setTitlePopupDW] = useState<string>("");
   const [form] = Form.useForm();
+  const [isModalHistoryOpen, setIsModalHistoryOpen] = useState<boolean>(false);
+  const [dataTransactionHistory, setDataTransactionHistory] = useState<any>([]);
 
   const user = useSelector((state: IRootState) => state.user);
   console.log(user);
@@ -60,7 +76,10 @@ export function DepositWithdraw(): JSX.Element {
 
   const {refetch} = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
     onSuccess: (res) => {
-      setDataUserInit(res?.data?.content ?? []);
+      const filteredUsers = res?.data?.content?.filter(
+        (user: any) => user.roleName !== "admin"
+      );
+      setDataUserInit(filteredUsers ?? []);
     },
   });
 
@@ -117,16 +136,12 @@ export function DepositWithdraw(): JSX.Element {
       defaultValue: "all",
       optionSelect: [
         {
-          value: "all",
-          label: "Tất cả",
-        },
-        {
           value: "Employee",
-          label: "Employee",
+          label: "Nhân viên",
         },
         {
           value: "Renter",
-          label: "Renter",
+          label: "Khách hàng",
         },
       ],
     },
@@ -141,13 +156,6 @@ export function DepositWithdraw(): JSX.Element {
       render: (_, dataIndex) => (
         <div>{dataUserInit.indexOf(dataIndex) + 1}</div>
       ),
-    },
-    {
-      title: "Tên người dùng",
-      dataIndex: "fullName",
-      key: "fullName",
-      width: 150,
-      align: "center",
     },
     {
       title: "Ảnh đại diện",
@@ -168,6 +176,13 @@ export function DepositWithdraw(): JSX.Element {
       width: 130,
     },
     {
+      title: "Tên người dùng",
+      dataIndex: "fullName",
+      key: "fullName",
+      width: 150,
+      align: "center",
+    },
+    {
       title: "SDT",
       key: "phoneNumber",
       dataIndex: "phoneNumber",
@@ -182,26 +197,15 @@ export function DepositWithdraw(): JSX.Element {
       width: 120,
     },
     {
-      title: "Ngày sinh",
-      dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
-      align: "center",
-      width: 120,
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "defaultAddress",
-      key: "defaultAddress",
-      align: "center",
-      width: 150,
-    },
-    {
       title: "Quyền",
       dataIndex: "roleName",
       key: "roleName",
       align: "center",
       width: 100,
       fixed: "right",
+      render: (_, dataIndex) => (
+        <div>{dataIndex.roleName === "employee" ? "Nhân viên" : "Khách hàng"}</div>
+      ),
     },
     {
       title: "Trạng thái",
@@ -221,6 +225,27 @@ export function DepositWithdraw(): JSX.Element {
           </div>
         );
       },
+    },
+    {
+      title: "Lịch sử giao dịch",
+      key: "history",
+      dataIndex: "history",
+      fixed: "right",
+      align: "center",
+      render: (_, dataIndex) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Button type="link" onClick={() => showHistory(dataIndex.phoneNumber)}>Lịch sử giao dịch</Button>
+          </div>
+        );
+      },
+      width: 100,
     },
     {
       title: "Thao tác",
@@ -266,6 +291,28 @@ export function DepositWithdraw(): JSX.Element {
     },
   ];
 
+  const showHistory = (phoneNumber: string) => {
+    console.log("Show history of user:", phoneNumber);
+
+    const params: IParamsGetAllTransactionHistory = {
+      page: 1, 
+      size: 10,
+      phoneNumber: phoneNumber,
+    };
+    
+    transactionHistory(params)
+      .then((response: IGetTransactionHistory) => {
+        // Handle the response data here
+        console.log("Transaction history:", response.data?.data?.content);
+        setDataTransactionHistory(response.data?.data?.content);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error fetching transaction history:", error);
+      });
+    openModalHistory()
+  }
+
   const handleWithdraw = (userId: number) => {
     setSelectedUserId(userId);
     setTypeDW("withdraw");
@@ -289,6 +336,79 @@ export function DepositWithdraw(): JSX.Element {
     setSentOtp(false);
     form.resetFields();
   };
+
+  const openModalHistory = () => {
+    setIsModalHistoryOpen(true);
+  };
+
+  const closeHistoryModal = () => {
+    setIsModalHistoryOpen(false);
+  };
+
+  const columnsInHistory: ColumnsType<TransactionHistory> = [
+    {
+      title: 'Id',
+      dataIndex: 'requestId',
+      key: 'requestId',
+    },
+    {
+      title: 'Ngày',
+      dataIndex: 'requestDate',
+      key: 'date',
+      render: (_, dataIndex) => {
+        return (
+          <span>{formatDateTime(dataIndex.requestDate)}</span>
+        )
+      }
+    },
+    {
+      title: 'Số tiền',
+      dataIndex: 'balance',
+      key: 'balance',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'requestStatus',
+      key: 'requestStatus',
+      render: (_, dataIndex) => {
+        var color = "warning";
+        switch (dataIndex.requestStatus) {
+          case "SUCCESS":
+            color="success"
+            break;
+          case "CANCEL":
+            color="warning"
+            break;
+          case "PENDING":
+            color="processing"
+            break;
+          default:
+            break;
+        }
+
+        return (
+          <Tag color={color}>{dataIndex.requestStatus}</Tag>
+        )
+      },
+    },
+    {
+      title: 'Loại',
+      dataIndex: 'requestType',
+      key: 'requestType',
+      render: (_, dataIndex) => {
+        var type;
+        if(dataIndex.requestType==="WITHDRAW") {
+          type="Rút tiền"
+        }
+        if(dataIndex.requestType==="DEPOSIT") {
+          type="Nạp tiền"
+        }
+        return (
+          <span>{type}</span>
+        )
+      }
+    },
+  ];
 
   return (
     <div className="deposit-withdraw-container">
@@ -336,6 +456,19 @@ export function DepositWithdraw(): JSX.Element {
             </Button>
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="Lịch sử giao dịch"
+        open={isModalHistoryOpen}
+        onCancel={closeHistoryModal}
+        footer={null}
+      >
+        <Table
+          style={{marginTop: 10}}
+          columns={columnsInHistory}
+          dataSource={dataTransactionHistory}
+          pagination={false}
+        />
       </Modal>
     </div>
   );

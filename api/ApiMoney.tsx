@@ -30,6 +30,39 @@ function moneyRequest(body: IMoneyRequest): Promise<IMoneyResponse> {
   });
 }
 
+export interface IGetTransactionHistory {
+  data?: {
+    userId?: number;
+    phoneNumber?: number;
+    fullName?: number;
+    roleName?: number;
+    dateOfBirth?: number;
+    email?: number;
+    facebookUid?: null;
+    data?: IGetListTransactionHistory,
+  };
+}
+
+export interface IGetListTransactionHistory {
+    requestId?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalElements?: number;
+    totalPages?: number;
+    numberOfElements?: number;
+    sortBy?: null;
+    content?: IItemTransactionHistory[];
+}
+
+export interface IItemTransactionHistory {
+  requestId?: number;
+  requestDate?: string;
+  balance?: number;
+  requestStatus?: string;
+  processDate?: null;
+  requestType?: string;
+}
+
 function moneyRequestValidated(
   body: IMoneyRequestValidated
 ): Promise<IMoneyResponse> {
@@ -40,4 +73,18 @@ function moneyRequestValidated(
   });
 }
 
-export {moneyRequest, moneyRequestValidated};
+export interface IParamsGetAllTransactionHistory {
+  page?: number;
+  size?: number;
+  phoneNumber?: string,
+}
+
+function transactionHistory(params: IParamsGetAllTransactionHistory): Promise<IGetTransactionHistory> {
+  return fetcher({
+    url: path.sendRequest,
+    method: "get",
+    params: params,
+  });
+}
+
+export {moneyRequest, moneyRequestValidated, transactionHistory};

@@ -1,7 +1,6 @@
-import {FormOutlined, UploadOutlined} from "@ant-design/icons";
-import ApiProfile, { DataType, IInfoUser, IInfoUserData, getProfile } from "@app/api/ApiProfile";
+import {FormOutlined} from "@ant-design/icons";
+import ApiProfile, { DataType, IInfoUser, IUpdateProfileData } from "@app/api/ApiProfile";
 import {
-  Avatar,
   Button,
   Card,
   Col,
@@ -11,44 +10,80 @@ import {
   Input,
   Row,
   Upload,
+  notification,
 } from "antd";
-import { log } from "console";
 import React, {useEffect, useState} from "react";
+import { useQuery } from "react-query";
 
 export function Profile(): JSX.Element {
   const [isEdit, setIsEdit] = useState<boolean>(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [userData, setUserData] = useState<DataType>();
+
+  // ApiProfile.getProfile()
+  //   .then((res) => {
+  //     setUserData(res.data);
+  //     console.log(userData);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // useEffect(() => {
+  // }, []);
   
+    console.log("aaaa");
 
-
-  useEffect(() => {
-    // Fetch profile information when the component mounts
-  }, []);
-  
-     const res = getProfile()
-     console.log(res);
-    
-
-    const onFinish = (values: any) => {
-      console.log("Success:", values);
-      const updatedInfo: IInfoUserData = {
-        fullName: values.fullName,
-        dateOfBirth: values.datePicker.format("YYYY-MM-DD"),
-        fileImage: "",
-      };
-  
-
-      ApiProfile.updateInfoUser(updatedInfo)
-        .then((response) => {
-          console.log("User information updated successfully:", response.data);
-          setIsEdit(true);
-        })
-        .catch((error) => {
-          console.error("Error updating user information:", error);
-        });
-      setIsEdit(true);
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+    const apiUrl = 'https://iclean.azurewebsites.net/api/v1/profile';
+    const requestData = {
+      fullName: 'John Doe',
+      dateOfBirth: '1990-01-01',
+      fileImage: 'base64encodedimage',
     };
+
+    fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers if required
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error('Error:', error));
+
+    // Prepare the data for the updateProfile function
+    // const updatedProfileData: IUpdateProfileData = {
+    //   fullName: values.fullName,
+    //   dateOfBirth: "",
+    //   fileImage: "", // Add the logic to get the fileImage data if needed
+    // };
+
+    // console.log(updatedProfileData);
+
+    // // Call the updateProfile function
+    // ApiProfile.updateProfile(updatedProfileData)
+    //   .then((response) => {
+    //     console.log("Profile updated successfully:", response.data);
+    //     setIsEdit(true);
+    //     // You may want to update the local state with the updated data if needed
+    //     setUserData(response.data);
+    //     notification.success({
+    //       message: "Thành công",
+    //       description: "Cập nhât thông tin thành công.",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error updating profile:", error);
+    //     notification.error({
+    //       message: "Lỗi",
+    //       description:
+    //         "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
+    //     });
+    //   });
+  };
     
     const editInfo = () => {
       setIsEdit(false);
@@ -61,6 +96,19 @@ export function Profile(): JSX.Element {
         setSelectedImage(info.file.response.url);
     }
   };
+
+  const getUserData = (): Promise<IInfoUser> =>
+    ApiProfile.getInfoUser();
+
+  const {refetch} = useQuery(["GET_DATA_USER"], getUserData, {
+    onSuccess: (res: any) => {
+      console.log("User data: ", res?.data);
+      setUserData(res?.data ?? []);
+    },
+  });
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const initValue = {
     fullName: "userData?.fullNam",

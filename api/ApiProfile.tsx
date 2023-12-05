@@ -32,6 +32,25 @@ export interface DataType {
   avatar: string,
 }
 
+// Define the interface for the update profile request body
+export interface IUpdateProfileData {
+  fullName: string;
+  dateOfBirth: string;
+  fileImage?: string;
+}
+
+// Create a function to update the profile information
+export function updateProfile(profileData: IUpdateProfileData): Promise<IDataWithMeta<DataType>> {
+  return fetcher({
+    url: path.updateProfile,
+    method: "put",
+    data: profileData,
+    headers: {
+      'Content-Type': 'application/json', // Ensure this header is set
+    },
+  });
+}
+
 function getInfoUser(): Promise<IInfoUser> {
   return fetcher({
     url: path.getInfoUser,
@@ -40,7 +59,7 @@ function getInfoUser(): Promise<IInfoUser> {
   });
 }
 
-export function getProfile(): Promise<IDataWithMeta<DataType>> {
+function getProfile(): Promise<IDataWithMeta<DataType>> {
   return fetcher({
     url: path.getProfile,
     method: "get",
@@ -55,4 +74,4 @@ function updateInfoUser(body: IInfoUserData): Promise<IInfoUser> {
     });
   }
 
-export default {getInfoUser, updateInfoUser};
+export default {getInfoUser, updateInfoUser, getProfile, updateProfile};
