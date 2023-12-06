@@ -1,5 +1,5 @@
 import {FormOutlined} from "@ant-design/icons";
-import ApiProfile, { DataType, IInfoUser, IUpdateProfileData } from "@app/api/ApiProfile";
+import { IUpdateProfileData, IUserData, getInfoUser, } from "@app/api/ApiProfile";
 import {
   Button,
   Card,
@@ -13,76 +13,58 @@ import {
   notification,
 } from "antd";
 import React, {useEffect, useState} from "react";
-import { useQuery } from "react-query";
 
 export function Profile(): JSX.Element {
   const [isEdit, setIsEdit] = useState<boolean>(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [userData, setUserData] = useState<DataType>();
+  const [userData, setUserData] = useState<IUserData>();
+  const [r, setR] = useState<string>("");
 
-  // ApiProfile.getProfile()
-  //   .then((res) => {
+  // getInfoUser()
+  //   .then((res: { data: any; }) => {
   //     setUserData(res.data);
-  //     console.log(userData);
+  //     console.log(res);
   //   })
-  //   .catch((err) => {
+  //   .catch((err: any) => {
   //     console.log(err);
   //   });
   // useEffect(() => {
   // }, []);
-  
-    console.log("aaaa");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getInfoUser();
+        setUserData(res.data);
+        console.log(res);
+        setR(res.data.roleName);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (!userData) {
+      fetchData();
+    }
+  }, [userData]);
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    const apiUrl = 'https://iclean.azurewebsites.net/api/v1/profile';
     const requestData = {
       fullName: 'John Doe',
       dateOfBirth: '1990-01-01',
       fileImage: 'base64encodedimage',
     };
 
-    fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        // Add any other headers if required
-      },
-      body: JSON.stringify(requestData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error('Error:', error));
-
     // Prepare the data for the updateProfile function
-    // const updatedProfileData: IUpdateProfileData = {
-    //   fullName: values.fullName,
-    //   dateOfBirth: "",
-    //   fileImage: "", // Add the logic to get the fileImage data if needed
-    // };
+    const updatedProfileData: IUpdateProfileData = {
+      fullName: values.fullName,
+      dateOfBirth: "",
+      fileImage: "", // Add the logic to get the fileImage data if needed
+    };
 
-    // console.log(updatedProfileData);
+    console.log(updatedProfileData);
 
-    // // Call the updateProfile function
-    // ApiProfile.updateProfile(updatedProfileData)
-    //   .then((response) => {
-    //     console.log("Profile updated successfully:", response.data);
-    //     setIsEdit(true);
-    //     // You may want to update the local state with the updated data if needed
-    //     setUserData(response.data);
-    //     notification.success({
-    //       message: "Thành công",
-    //       description: "Cập nhât thông tin thành công.",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error updating profile:", error);
-    //     notification.error({
-    //       message: "Lỗi",
-    //       description:
-    //         "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
-    //     });
-    //   });
   };
     
     const editInfo = () => {
@@ -97,25 +79,16 @@ export function Profile(): JSX.Element {
     }
   };
 
-  const getUserData = (): Promise<IInfoUser> =>
-    ApiProfile.getInfoUser();
-
-  const {refetch} = useQuery(["GET_DATA_USER"], getUserData, {
-    onSuccess: (res: any) => {
-      console.log("User data: ", res?.data);
-      setUserData(res?.data ?? []);
-    },
-  });
-  useEffect(() => {
-    refetch();
-  }, []);
-
-  const initValue = {
-    fullName: "userData?.fullNam",
-    roleName: "userData",
+  const init : IUserData = {
+    fullName: 'string',
+    phoneNumber: 'string',
+    roleName: "role",
+    dateOfBirth: 'string',
+    defaultAddress: 'string',
+    avatar: 'string',
+    isRegistration: true
   }
 
-  console.log("initValue", initValue)
   return (
     <div className="profile-container">
       <Row>
@@ -128,7 +101,7 @@ export function Profile(): JSX.Element {
               onFinish={onFinish}
               autoComplete="off"
               layout="vertical"
-              initialValues={userData}
+              initialValues={init}
             >
               <div style={{display: "flex", margin: "24px 0px"}}>
                 <div
@@ -161,7 +134,7 @@ export function Profile(): JSX.Element {
                 <Row>
                   <Col span={22}>
                     <Input
-                      // defaultValue={userData?.fullName}
+                      value={userData?.fullName}
                       readOnly={isEdit}
                       size={"large"}
                       placeholder="Họ và tên"
