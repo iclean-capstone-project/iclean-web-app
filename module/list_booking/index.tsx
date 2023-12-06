@@ -207,25 +207,25 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.bookingStatus === "NOT_YET" && (
-            <Tag color="cyan">{dataIndex.bookingStatus}</Tag>
+            <Tag color="cyan">{"Chưa duyệt"}</Tag>
           )}
           {dataIndex.bookingStatus === "ON_CART" && (
-            <Tag color="volcano">{dataIndex.bookingStatus}</Tag>
+            <Tag color="volcano">{"Đang chờ"}</Tag>
           )}
           {dataIndex.bookingStatus === "REJECTED" && (
-            <Tag color="orange">{dataIndex.bookingStatus}</Tag>
+            <Tag color="orange">{"Từ chối"}</Tag>
           )}
           {dataIndex.bookingStatus === "APPROVED" && (
-            <Tag color="green">{dataIndex.bookingStatus}</Tag>
+            <Tag color="green">{"Đã duyệt"}</Tag>
           )}
           {dataIndex.bookingStatus === "FINISHED" && (
-            <Tag color="red">{dataIndex.bookingStatus}</Tag>
+            <Tag color="red">{"Hoàn thành"}</Tag>
           )}
           {dataIndex.bookingStatus === "NO_MONEY" && (
             <Tag color="purple">{dataIndex.bookingStatus}</Tag>
           )}
           {dataIndex.bookingStatus === "CANCELED" && (
-            <Tag color="red">{dataIndex.bookingStatus}</Tag>
+            <Tag color="red">{"Đã huỷ"}</Tag>
           )}
         </div>
       ),
