@@ -121,22 +121,15 @@ export function ManagerUser(): JSX.Element {
       ),
     },
     {
-      title: "Tên người dùng",
-      dataIndex: "fullName",
-      key: "fullName",
-      width: 150,
-      align: "center",
-    },
-    {
       title: "Ảnh đại diện",
       dataIndex: "avatar",
       key: "image",
       render: (_, dataIndex) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.avatar}
           />
@@ -144,6 +137,13 @@ export function ManagerUser(): JSX.Element {
       ),
       align: "center",
       width: 130,
+    },
+    {
+      title: "Tên người dùng",
+      dataIndex: "fullName",
+      key: "fullName",
+      width: 150,
+      align: "center",
     },
     {
       title: "Số điện thoại",

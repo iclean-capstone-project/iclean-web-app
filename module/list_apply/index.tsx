@@ -104,9 +104,9 @@ export function ListApply(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.personalAvatar}
           />

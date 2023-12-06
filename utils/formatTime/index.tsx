@@ -10,7 +10,7 @@ function formatDateTime(inputDateTime : string) {
     const seconds = String(inputDate.getSeconds()).padStart(2, '0');
   
     // Định dạng chuỗi kết quả
-    const formattedDateTime = `T${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+    const formattedDateTime = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
   
     return formattedDateTime;
 }

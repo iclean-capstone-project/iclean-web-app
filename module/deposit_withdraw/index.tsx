@@ -29,7 +29,7 @@ import {
   moneyRequestValidated,
   transactionHistory,
 } from "../../api/ApiMoney";
-import { formatDateTime } from "./components/Utils";
+import { formatDateTime } from "../../utils/formatTime";
 
 interface DataType {
   key: string;
@@ -164,9 +164,9 @@ export function DepositWithdraw(): JSX.Element {
       render: (_, dataIndex) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.avatar}
           />

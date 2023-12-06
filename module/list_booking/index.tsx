@@ -16,6 +16,7 @@ import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalV
 import "./index.scss";
 import {itemsTab} from "@app/module/list_booking/listDataDefault";
 import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
+import { formatDateTime } from "@app/utils/formatTime";
 
 export function ListBooking(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -137,9 +138,9 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.renterAvatar}
           />
@@ -169,6 +170,11 @@ export function ListBooking(): JSX.Element {
       key: "orderDate",
       align: "center",
       width: 140,
+      render: (_: any, dataIndex: any) => {
+        return <span>
+          {formatDateTime(dataIndex.orderDate)}
+        </span>
+      }
     },
     {
       title: "Số lượng yêu cầu",
