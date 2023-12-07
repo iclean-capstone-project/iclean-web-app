@@ -1,6 +1,7 @@
 import {ReactNode} from "react";
 import {
   BlockOutlined,
+  FileExclamationOutlined,
   IdcardOutlined,
   LogoutOutlined,
   MoneyCollectOutlined,
@@ -55,10 +56,15 @@ const routes: IRoute[] = [
     isSidebar: false,
   },
   {
-    path: "/list_transaction",
-    name: "Giao dịch",
+    path: "/list_report",
+    name: "Khiếu nại",
     isSidebar: true,
-    icon: <MoneyCollectOutlined className="icon-sidebar" />,
+    icon: <FileExclamationOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/detail_report",
+    name: "Chi tiết khiếu nại",
+    isSidebar: false,
   },
   {
     path: "/profile",

@@ -30,7 +30,6 @@ import {
   transactionHistory,
 } from "../../api/ApiMoney";
 import { formatDateTime } from "../../utils/formatTime";
-import { spawn } from "child_process";
 import { formatMoney } from "@app/utils/formatMoney";
 
 interface DataType {
