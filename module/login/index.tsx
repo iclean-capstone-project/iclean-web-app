@@ -65,6 +65,20 @@ export function Login(): JSX.Element {
     }
   };
 
+  const validate = (values: UserAccount) => {
+    const errors: Partial<UserAccount> = {};
+
+    if (!values.username) {
+      errors.username = 'Vui lòng nhập tên đăng nhập';
+    }
+
+    if (!values.password) {
+      errors.password = 'Vui lòng nhập mật khẩu';
+    }
+
+    return errors;
+  };
+
   return (
     <div className="login-screen">
       <div className="header">
@@ -91,7 +105,7 @@ export function Login(): JSX.Element {
               onSubmit={handleLogin}
               validateOnChange
               validateOnBlur
-              // validationSchema={LoginValidation}
+              validate={validate}
             >
               {({handleSubmit}): JSX.Element => {
                 return (
@@ -107,6 +121,7 @@ export function Login(): JSX.Element {
                           prefix={<UserOutlined />}
                           className="input_login"
                           onPressEnter={(): void => handleSubmit()}
+                          style={{borderRadius: "25px"}}
                         />
                         <ErrorMessageGlobal name="username" />
                       </div>
@@ -120,6 +135,7 @@ export function Login(): JSX.Element {
                           prefix={<UnlockOutlined />}
                           className="input_login"
                           onPressEnter={(): void => handleSubmit()}
+                          style={{borderRadius: "25px"}}
                         />
                         <ErrorMessageGlobal name="password" />
                       </div>

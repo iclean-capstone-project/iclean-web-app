@@ -33,7 +33,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/list_booking",
-    name: "Đơn hàng",
+    name: "Yêu cầu",
     isSidebar: true,
     icon: <PicRightOutlined className="icon-sidebar" />,
   },
@@ -45,7 +45,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/list_apply",
-    name: "Ứng tuyến",
+    name: "Ứng tuyển",
     isSidebar: true,
     icon: <IdcardOutlined className="icon-sidebar" />,
   },
@@ -68,7 +68,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/deposit_withdraw",
-    name: "Nạp rút tền",
+    name: "Nạp rút tiền",
     isSidebar: true,
     icon: <LogoutOutlined className="icon-sidebar" />,
   },

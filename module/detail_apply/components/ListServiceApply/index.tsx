@@ -51,7 +51,7 @@ export function ListServiceApply(props: IProps): JSX.Element {
                 src={item?.serviceIcon}
                 preview={false}
               />
-              <span>Dịch vụ đăng kí: {item?.serviceName}</span>
+              <span>{item?.serviceName}</span>
             </div>
             {/* <div style={{marginLeft: 40}}> */}
             {/*  <span>Trạng thái: </span> */}

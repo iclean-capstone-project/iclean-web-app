@@ -30,6 +30,8 @@ import {
   transactionHistory,
 } from "../../api/ApiMoney";
 import { formatDateTime } from "../../utils/formatTime";
+import { spawn } from "child_process";
+import { formatMoney } from "@app/utils/formatMoney";
 
 interface DataType {
   key: string;
@@ -136,6 +138,10 @@ export function DepositWithdraw(): JSX.Element {
       defaultValue: "all",
       optionSelect: [
         {
+          value: "all",
+          label: "Tất cả",
+        },
+        {
           value: "Employee",
           label: "Nhân viên",
         },
@@ -152,7 +158,7 @@ export function DepositWithdraw(): JSX.Element {
       dataIndex: "stt",
       key: "stt",
       align: "center",
-      width: 80,
+      width: 60,
       render: (_, dataIndex) => (
         <div>{dataUserInit.indexOf(dataIndex) + 1}</div>
       ),
@@ -173,7 +179,7 @@ export function DepositWithdraw(): JSX.Element {
         </div>
       ),
       align: "center",
-      width: 130,
+      width: 100,
     },
     {
       title: "Tên người dùng",
@@ -206,25 +212,6 @@ export function DepositWithdraw(): JSX.Element {
       render: (_, dataIndex) => (
         <div>{dataIndex.roleName === "employee" ? "Nhân viên" : "Khách hàng"}</div>
       ),
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "isLocked",
-      key: "isLocked",
-      align: "center",
-      fixed: "right",
-      width: 100,
-      render: (_, dataIndex) => {
-        return (
-          <div>
-            {dataIndex?.isLocked ? (
-              <Tag color="green">Unlock</Tag>
-            ) : (
-              <Tag color="magenta">Locked</Tag>
-            )}
-          </div>
-        );
-      },
     },
     {
       title: "Lịch sử giao dịch",
@@ -265,10 +252,9 @@ export function DepositWithdraw(): JSX.Element {
             <Tooltip title="Rút tiền">
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
               <div onClick={() => handleWithdraw(dataIndex.userId)}>
-                <UploadOutlined
+                <DownloadOutlined
                   style={{
                     fontSize: 22,
-                    transform: "rotate(90deg)",
                   }}
                 />
               </div>
@@ -277,9 +263,10 @@ export function DepositWithdraw(): JSX.Element {
             <Tooltip title="Nạp tiền">
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
               <div onClick={() => handleDeposit(dataIndex.userId)}>
-                <DownloadOutlined
+                <UploadOutlined
                   style={{
                     fontSize: 22,
+                    transform: "rotate(90deg)",
                   }}
                 />
               </div>
@@ -365,6 +352,7 @@ export function DepositWithdraw(): JSX.Element {
       title: 'Số tiền',
       dataIndex: 'balance',
       key: 'balance',
+      render: (_, dataIndex) => (<span>{formatMoney(dataIndex.balance)}</span>)
     },
     {
       title: 'Trạng thái',

@@ -8,6 +8,13 @@ interface IProps {
 }
 export function HelperInfo(props: IProps): JSX.Element {
   const {dataInfoHelper} = props;
+  console.log(dataInfoHelper?.status);
+  var status = dataInfoHelper?.status
+  if(status === "WAITING_FOR_APPROVE") {
+    status = "Chờ phê duyệt"
+  } else if(status === "WAITING_FOR_CONFIRM") {
+    status = "Chờ xác nhận"
+  }
   return (
     <div className="helper-info-container">
       <h3>THÔNG TIN</h3>
@@ -55,7 +62,7 @@ export function HelperInfo(props: IProps): JSX.Element {
         </div>
         <div className="item-info">
           <MenuFoldOutlined className="icon" color="#EFF3FA" />
-          <div>{dataInfoHelper?.status}</div>
+          <div>{status}</div>
         </div>
         {/* <b className="title-exp">Kinh nghiệm</b> */}
         {/* <div className="description-exp">sssss</div> */}

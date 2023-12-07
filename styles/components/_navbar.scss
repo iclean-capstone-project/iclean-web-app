@@ -3,9 +3,9 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 2px 2px 5px 0 #f0f1f2;
-  padding: 5px 10px 5px 10px;
+  padding: 45px 27px;
   @media (min-width: $grid-breakpoints-md) {
-    padding: 10px 15px 10px 15px;
+    padding: 45px 27px;
   }
   top: 0;
   left: 0;
@@ -19,7 +19,7 @@
     align-items: center;
 
     .title {
-      font-size: 24px;
+      font-size: 40px;
       font-weight: 700;
       color: #8c8c8c;
     }

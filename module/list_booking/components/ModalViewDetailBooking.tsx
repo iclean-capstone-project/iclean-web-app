@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Image, Input, Tag} from "antd";
 import {getDetailBooking, IDetailBookingRes} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
+import { formatDateTime } from "@app/utils/formatTime";
+import { formatMoney } from "@app/utils/formatMoney";
 
 interface IProps {
   bookingId: number | undefined;
@@ -79,7 +81,7 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
         />
         <ItemInput
           title="Tổng đơn hàng"
-          value={dataDetailBookingInit?.data?.totalPrice}
+          value={formatMoney(dataDetailBookingInit?.data?.totalPrice)}
         />
         {/* <ItemInput title="Điện thoại" value="" /> */}
       </div>
@@ -91,8 +93,8 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
               <i style={{marginTop: 5, marginBottom: 5}}>Dịch vụ {index + 1}</i>
               <ItemInput title="Dịch vụ" value={item.serviceName} />
               <ItemInput title="Dung lượng" value={item.value} />
-              <ItemInput title="Ngày đăng" value={item.orderDate} />
-              <ItemInput title="Giá đơn hàng" value={item.price} />
+              <ItemInput title="Ngày đăng" value={formatDateTime(item.orderDate)} />
+              <ItemInput title="Giá đơn hàng" value={formatMoney(item.price)} />
               <ItemInput title="Ngày thực hiện" value={item.workDate} />
               <div style={{display: "flex"}}>
                 <div

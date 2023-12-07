@@ -1,4 +1,7 @@
-function formatDateTime(inputDateTime : string) {
+function formatDateTime(inputDateTime : any) {
+
+    if (inputDateTime===undefined) return "";
+
     const inputDate = new Date(inputDateTime);
   
     // Lấy thông tin về ngày, tháng, năm, giờ, phút và giây
