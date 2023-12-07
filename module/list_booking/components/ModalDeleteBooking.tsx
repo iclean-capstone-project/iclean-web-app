@@ -72,7 +72,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
         {
           onSuccess: () => {
             notification.success({
-              message: "Xóa đơn hàng thành công!",
+              message: "Từ chối đơn hàng thành công!",
             });
             handleCancel();
           },
@@ -102,8 +102,9 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
         {({handleSubmit, handleChange, values, setFieldValue}): JSX.Element => {
           return (
             <Modal
-              title="Xóa đơn hàng"
-              okText="DELETE"
+              title="Từ chối đơn hàng"
+              okText="Từ chối"
+              cancelText="Huỷ"
               okButtonProps={{
                 style: {background: "red", color: "white", borderColor: "red"},
               }}
