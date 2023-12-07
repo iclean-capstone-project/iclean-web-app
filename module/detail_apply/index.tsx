@@ -137,6 +137,7 @@ export function DetailApply(): JSX.Element {
 
             {/* )} */}
             <Button
+              loading={acceptApplyMutate.isLoading}
               style={{
                 borderRadius: 12,
                 backgroundColor: "red",

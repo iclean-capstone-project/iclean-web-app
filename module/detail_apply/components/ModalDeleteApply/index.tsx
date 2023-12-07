@@ -67,7 +67,8 @@ export function ModalDeleteApply(props: IProps): JSX.Element {
           return (
             <Modal
               title="Từ chối đơn ứng tuyển"
-              okText="DELETE"
+              okText="Từ chối"
+              cancelText="Huỷ"
               okButtonProps={{
                 style: {background: "red", color: "white", borderColor: "red"},
               }}
