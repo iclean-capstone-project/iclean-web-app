@@ -65,6 +65,7 @@ export function DepositWithdraw(): JSX.Element {
   const [form] = Form.useForm();
   const [isModalHistoryOpen, setIsModalHistoryOpen] = useState<boolean>(false);
   const [dataTransactionHistory, setDataTransactionHistory] = useState<any>([]);
+  const [selectedUserPhone, setSelectedUserPhone] = useState<string>("");
 
   const user = useSelector((state: IRootState) => state.user);
   console.log(user);
@@ -78,24 +79,24 @@ export function DepositWithdraw(): JSX.Element {
   const {refetch} = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
     onSuccess: (res) => {
       const filteredUsers = res?.data?.content?.filter(
-        (user: any) => user.roleName !== "admin"
+        (user: any) => user.roleName !== "admin" && user.roleName !== "manager"
       );
       setDataUserInit(filteredUsers ?? []);
     },
   });
 
   const handleSubmit = async (formData: any) => {
-    const selectedUser = dataUserInit.find(
-      (user: {userId: number | undefined}) => user.userId === selectedUserId
-    );
-
-    if (selectedUser) {
+    // const selectedUser = dataUserInit.find(
+    //   (user: {userId: number | undefined}) => user.userId === selectedUserId
+    // );
+    console.log(selectedUserPhone);
       if (sentOtp) {
         try {
           const data: IMoneyRequestValidated = {
-            phoneNumber: selectedUser.phoneNumber,
+            phoneNumber: selectedUserPhone,
             otpToken: formData.otp,
           };
+          console.log(data);
           const res = moneyRequestValidated(data);
           console.log("Yêu cầu thành công >> ", (await res).status);
           closeModal();
@@ -113,14 +114,20 @@ export function DepositWithdraw(): JSX.Element {
         }
       } else {
         const data: IMoneyRequest = {
-          userPhoneNumber: selectedUser.phoneNumber,
+          userPhoneNumber: selectedUserPhone,
           balance: formData.balance,
           moneyRequestType: typeDW,
         };
-        moneyRequest(data);
+        console.log(data);
+        try {
+          moneyRequest(data);
+          console.log("Sent otp");
+        } catch (err) {
+          console.log("Erorr");
+        }
+
         setSentOtp(true);
       }
-    }
   };
 
   useEffect(() => {
@@ -250,7 +257,7 @@ export function DepositWithdraw(): JSX.Element {
           >
             <Tooltip title="Rút tiền">
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-              <div onClick={() => handleWithdraw(dataIndex.userId)}>
+              <div onClick={() => handleWithdraw(dataIndex.phoneNumber)}>
                 <DownloadOutlined
                   style={{
                     fontSize: 22,
@@ -261,7 +268,7 @@ export function DepositWithdraw(): JSX.Element {
             <div style={{width: "10px"}} />
             <Tooltip title="Nạp tiền">
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-              <div onClick={() => handleDeposit(dataIndex.userId)}>
+              <div onClick={() => handleDeposit(dataIndex.phoneNumber)}>
                 <UploadOutlined
                   style={{
                     fontSize: 22,
@@ -299,15 +306,15 @@ export function DepositWithdraw(): JSX.Element {
     openModalHistory()
   }
 
-  const handleWithdraw = (userId: number) => {
-    setSelectedUserId(userId);
+  const handleWithdraw = (phone: string) => {
+    setSelectedUserPhone(phone)
     setTypeDW("withdraw");
     setTitlePopupDW("Rút tiền");
     openModal();
   };
 
-  const handleDeposit = (userId: number) => {
-    setSelectedUserId(userId);
+  const handleDeposit = (phone: string) => {
+    setSelectedUserPhone(phone)
     setTypeDW("deposit");
     setTitlePopupDW("Nạp tiền");
     openModal();

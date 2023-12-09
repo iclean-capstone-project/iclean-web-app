@@ -17,6 +17,7 @@ export function DetailReport(): JSX.Element {
     const {data} = useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
       onSuccess: (res) => {
         setDataInit(res.data)
+        console.log(res);
       }
     });
     console.log("Data detail: ", dataInit);
