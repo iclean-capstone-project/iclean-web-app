@@ -1,9 +1,10 @@
 import {ReactNode} from "react";
 import {
   BlockOutlined,
+  FileExclamationOutlined,
   IdcardOutlined,
+  LineChartOutlined,
   LogoutOutlined,
-  MoneyCollectOutlined,
   PicRightOutlined,
   SettingOutlined,
   UserOutlined,
@@ -33,7 +34,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/list_booking",
-    name: "Đơn hàng",
+    name: "Yêu cầu",
     isSidebar: true,
     icon: <PicRightOutlined className="icon-sidebar" />,
   },
@@ -45,7 +46,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/list_apply",
-    name: "Ứng tuyến",
+    name: "Ứng tuyển",
     isSidebar: true,
     icon: <IdcardOutlined className="icon-sidebar" />,
   },
@@ -55,10 +56,15 @@ const routes: IRoute[] = [
     isSidebar: false,
   },
   {
-    path: "/list_transaction",
-    name: "Giao dịch",
+    path: "/list_report",
+    name: "Khiếu nại",
     isSidebar: true,
-    icon: <MoneyCollectOutlined className="icon-sidebar" />,
+    icon: <FileExclamationOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/detail_report",
+    name: "Chi tiết khiếu nại",
+    isSidebar: false,
   },
   {
     path: "/profile",
@@ -68,9 +74,15 @@ const routes: IRoute[] = [
   },
   {
     path: "/deposit_withdraw",
-    name: "Nạp rút tền",
+    name: "Nạp rút tiền",
     isSidebar: true,
     icon: <LogoutOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/dashboard",
+    name: "Thống kê",
+    isSidebar: true,
+    icon: <LineChartOutlined className="icon-sidebar" />,
   },
 ];
 

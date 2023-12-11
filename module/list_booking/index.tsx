@@ -16,6 +16,8 @@ import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalV
 import "./index.scss";
 import {itemsTab} from "@app/module/list_booking/listDataDefault";
 import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
+import { formatDateTime } from "@app/utils/formatTime";
+import { formatMoney } from "@app/utils/formatMoney";
 
 export function ListBooking(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -137,16 +139,16 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.renterAvatar}
           />
         </div>
       ),
       align: "center",
-      width: 140,
+      width: 100,
     },
     {
       title: "Người thuê",
@@ -169,13 +171,11 @@ export function ListBooking(): JSX.Element {
       key: "orderDate",
       align: "center",
       width: 140,
-    },
-    {
-      title: "Số lượng yêu cầu",
-      dataIndex: "requestCount",
-      key: "requestCount",
-      align: "center",
-      width: 150,
+      render: (_: any, dataIndex: any) => {
+        return <span>
+          {formatDateTime(dataIndex.orderDate)}
+        </span>
+      }
     },
     {
       title: "Tổng giá",
@@ -183,6 +183,7 @@ export function ListBooking(): JSX.Element {
       key: "totalPrice",
       align: "center",
       width: 140,
+      render: (_:any, dataIndex: any) => (<span>{formatMoney(dataIndex.totalPrice)}</span>)
     },
     {
       title: "Giá thực tế",
@@ -190,6 +191,7 @@ export function ListBooking(): JSX.Element {
       key: "totalPriceActual",
       align: "center",
       width: 140,
+      render: (_:any, dataIndex: any) => (<span>{formatMoney(dataIndex.totalPriceActual)}</span>)
     },
     {
       title: "Trạng thái đơn hàng",
@@ -201,25 +203,25 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.bookingStatus === "NOT_YET" && (
-            <Tag color="cyan">{dataIndex.bookingStatus}</Tag>
+            <Tag color="cyan">{"Chưa duyệt"}</Tag>
           )}
           {dataIndex.bookingStatus === "ON_CART" && (
-            <Tag color="volcano">{dataIndex.bookingStatus}</Tag>
+            <Tag color="volcano">{"Đang chờ"}</Tag>
           )}
           {dataIndex.bookingStatus === "REJECTED" && (
-            <Tag color="orange">{dataIndex.bookingStatus}</Tag>
+            <Tag color="orange">{"Từ chối"}</Tag>
           )}
           {dataIndex.bookingStatus === "APPROVED" && (
-            <Tag color="green">{dataIndex.bookingStatus}</Tag>
+            <Tag color="green">{"Đã duyệt"}</Tag>
           )}
           {dataIndex.bookingStatus === "FINISHED" && (
-            <Tag color="red">{dataIndex.bookingStatus}</Tag>
+            <Tag color="red">{"Hoàn thành"}</Tag>
           )}
           {dataIndex.bookingStatus === "NO_MONEY" && (
             <Tag color="purple">{dataIndex.bookingStatus}</Tag>
           )}
           {dataIndex.bookingStatus === "CANCELED" && (
-            <Tag color="red">{dataIndex.bookingStatus}</Tag>
+            <Tag color="red">{"Đã huỷ"}</Tag>
           )}
         </div>
       ),
@@ -240,7 +242,7 @@ export function ListBooking(): JSX.Element {
           {/* <Button type="primary" shape="round"> */}
           {/*  Xem chi tiết */}
           {/* </Button> */}
-          <Tooltip placement="top" title="xem chi tiết">
+          <Tooltip placement="top" title="Xem chi tiết">
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
             <div
               onClick={() => showModal(dataIndex.bookingId)}
@@ -252,7 +254,7 @@ export function ListBooking(): JSX.Element {
 
           {dataIndex.bookingStatus === "NOT_YET" && (
             <>
-              <Tooltip placement="top" title="approve">
+              <Tooltip placement="top" title="Phê duyệt">
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => handleAcceptBooking(dataIndex.bookingId)}
@@ -262,7 +264,7 @@ export function ListBooking(): JSX.Element {
                 </div>
               </Tooltip>
 
-              <Tooltip placement="top" title="reject">
+              <Tooltip placement="top" title="Từ chối">
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => showModalDeleteBooking(dataIndex.bookingId)}

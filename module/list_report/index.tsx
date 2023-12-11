@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Modal, Pagination, Table} from "antd";
-import {EditOutlined} from "@ant-design/icons";
+import {Button, Table} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {Formik} from "formik";
-import UploadFileGlobal from "@app/components/UploadFileGlobal";
 import {useQuery} from "react-query";
 import {
   getAllReport,
@@ -14,10 +9,12 @@ import {
   IParamGetAllReport,
 } from "@app/api/ApiReport";
 import {LoadingGlobal} from "@app/components/Loading";
+import { formatDateTime } from "@app/utils/formatTime";
+import { useRouter } from "next/router";
 
 interface DataType {
   key: string;
-  reportId: string;
+  reportId: number;
   fullName: string;
   phoneNumber: string;
   reportTypeDetail: string;
@@ -27,17 +24,18 @@ interface DataType {
 }
 
 export function ListReport(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataInit, setDataInit] = useState<any>([]);
   const [paramsGetReport, setParamsGetReport] = useState<IParamGetAllReport>({
     renterName: "",
     page: 1,
     size: 10,
   });
+  const router = useRouter()
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
     getAllReport({
       renterName: paramsGetReport.renterName,
+      displayAll: true,
       page: paramsGetReport.page,
       size: paramsGetReport.size,
     });
@@ -47,31 +45,19 @@ export function ListReport(): JSX.Element {
     getDataDetailReport,
     {
       onSuccess: (res) => {
+        console.log(res?.data?.content);
         setDataInit(res?.data?.content);
       },
     }
   );
 
-  const onChangePagination = (page: number): void => {
-    console.log("sdasdasdasd", typeof page);
-    setParamsGetReport({...paramsGetReport, page: page});
-  };
   console.log("dataInit", dataInit);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-  };
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
     setParamsGetReport({...paramsGetReport, renterName: valueSearch});
   };
+
   const listSearchText = [
     {
       placeHolder: "Tìm kiếm...",
@@ -80,6 +66,7 @@ export function ListReport(): JSX.Element {
       tooltip: "Từ khóa: Tiêu đề",
     },
   ];
+
   const listDatePicker = [
     {
       onChange: (startTime: number, endTime: number): void => {
@@ -89,6 +76,7 @@ export function ListReport(): JSX.Element {
       title: "Ngày tạo",
     },
   ];
+
   const columns: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -102,7 +90,7 @@ export function ListReport(): JSX.Element {
       title: "Tên người dùng",
       dataIndex: "fullName",
       key: "fullName",
-      width: 120,
+      width: 100,
       align: "center",
     },
     {
@@ -110,7 +98,7 @@ export function ListReport(): JSX.Element {
       key: "phoneNumber",
       dataIndex: "phoneNumber",
       align: "center",
-      width: 120,
+      width: 80,
     },
     {
       title: "Loại báo cáo",
@@ -127,7 +115,7 @@ export function ListReport(): JSX.Element {
       width: 170,
     },
     {
-      title: "Trạng thái báo cáo",
+      title: "Trạng tháio",
       dataIndex: "reportStatus",
       key: "reportStatus",
       align: "center",
@@ -139,62 +127,42 @@ export function ListReport(): JSX.Element {
       key: "createAt",
       align: "center",
       width: 120,
+      render: (_, dataIndex) => (<span>{formatDateTime(dataIndex.createAt)}</span>)
     },
     {
-      title: "Thao tác",
+      title: "Chi tiết",
       key: "action",
       dataIndex: "action",
       align: "center",
-      render: () => (
+      render: (_, dataIndex) => (
         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div
-          onClick={showModal}
+        <Button
+          onClick={() => goToDetailReport(dataIndex.reportId)}
+          type="primary"
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            borderRadius: "16px"
           }}
         >
-          <div style={{marginLeft: 8}}>
-            <EditOutlined style={{fontSize: 22, color: "blue"}} />
-          </div>
-        </div>
+            Xem
+        </Button>
       ),
       fixed: "right",
       width: 80,
-    },
-  ];
-  const listInputUser = [
-    {
-      title: "Tên người dùng",
-      placeHolder: "Nhập tên người dùng",
-      type: "input",
-    },
-    {
-      title: "Ảnh đại diện",
-      placeHolder: "Nhập tên người dùng",
-      type: "uploadFile",
-    },
-    {
-      title: "Email",
-      placeHolder: "Nhập Email",
-      type: "input",
-    },
-    {
-      title: "Sách còn lại",
-      placeHolder: "Nhập số sách còn lại",
-      type: "input",
-    },
-    {
-      title: "Số đơn giao dịch",
-      placeHolder: "Nhập số đơn",
-      type: "input",
     },
   ];
 
   useEffect(() => {
     refetch();
   }, [paramsGetReport]);
+
+  const goToDetailReport = (idValue: number): void => {
+    router.push({
+      pathname: "/detail_report",
+      query: {
+        id: idValue,
+      },
+    });
+  };
 
   return (
     <div className="manager-user-container">
@@ -214,72 +182,13 @@ export function ListReport(): JSX.Element {
         />
       )}
 
-      <div className="pagination-table">
+      {/* <div className="pagination-table">
         <Pagination
           onChange={onChangePagination}
           defaultCurrent={1}
           total={data?.data?.totalElements}
         />
-      </div>
-      <Modal
-        title="Sửa thông tin người dùng"
-        open={isModalOpen}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
-      >
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
-        >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div>
-                {listInputUser.map((item, index) => (
-                  <div key={index}>
-                    {item.type === "input" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <InputGlobal
-                          name="username"
-                          placeholder={item.placeHolder}
-                          style={{width: "80%"}}
-                          onPressEnter={(): void => handleSubmit()}
-                        />
-                        <ErrorMessageGlobal name="username" />
-                      </div>
-                    )}
-                    {item.type === "uploadFile" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <div style={{width: "80%"}}>
-                          <UploadFileGlobal
-                            handleChange={() => console.log("uploadFile")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </Formik>
-      </Modal>
+      </div> */}
     </div>
   );
 }

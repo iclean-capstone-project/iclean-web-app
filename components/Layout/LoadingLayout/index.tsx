@@ -26,7 +26,7 @@ function LoadingLayout({children}: LoadingLayoutProps): JSX.Element {
       router.events.off("routeChangeComplete", handleComplete);
       router.events.off("routeChangeError", handleComplete);
     };
-  });
+  }, []);
 
   return (
     <div className="loading-layout">

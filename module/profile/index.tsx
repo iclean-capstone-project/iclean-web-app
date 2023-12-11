@@ -1,291 +1,198 @@
-import React, {useState} from "react";
-import {ColumnsType} from "antd/es/table";
-import {Image, Modal, Table} from "antd";
-import {EditOutlined} from "@ant-design/icons";
-import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {Formik} from "formik";
-import UploadFileGlobal from "@app/components/UploadFileGlobal";
-
-interface DataType {
-  key: string;
-  name: string;
-  avatar: string;
-  address: string;
-  description: string;
-  transport: string;
-  phoneNumber: string;
-  total: string;
-}
+import {FormOutlined} from "@ant-design/icons";
+import { IUpdateProfileData, IUserData, getInfoUser, } from "@app/api/ApiProfile";
+import {
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Form,
+  Image,
+  Input,
+  Row,
+  Upload,
+  notification,
+} from "antd";
+import React, {useEffect, useState} from "react";
 
 export function Profile(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState<boolean>(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [userData, setUserData] = useState<IUserData>();
+  const [r, setR] = useState<string>("");
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  // getInfoUser()
+  //   .then((res: { data: any; }) => {
+  //     setUserData(res.data);
+  //     console.log(res);
+  //   })
+  //   .catch((err: any) => {
+  //     console.log(err);
+  //   });
+  // useEffect(() => {
+  // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getInfoUser();
+        setUserData(res.data);
+        console.log(res);
+        setR(res.data.roleName);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (!userData) {
+      fetchData();
+    }
+  }, [userData]);
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+    const requestData = {
+      fullName: 'John Doe',
+      dateOfBirth: '1990-01-01',
+      fileImage: 'base64encodedimage',
+    };
+
+    // Prepare the data for the updateProfile function
+    const updatedProfileData: IUpdateProfileData = {
+      fullName: values.fullName,
+      dateOfBirth: "",
+      fileImage: "", // Add the logic to get the fileImage data if needed
+    };
+
+    console.log(updatedProfileData);
+
+  };
+    
+    const editInfo = () => {
+      setIsEdit(false);
+    };
+    
+    const handleImageChange = (info: any) => {
+      console.log(info.file.status);
+      if (info.file.status === 'done') {
+        console.log(info.file.response.url);
+        setSelectedImage(info.file.response.url);
+    }
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-  };
-  const handleSearch = (valueSearch: string): void => {
-    console.log("Ssss");
-  };
-  const listSearchText = [
-    {
-      placeHolder: "Tìm kiếm...",
-      onSearch: handleSearch,
-      maxLength: 255,
-      tooltip: "Từ khóa: Tiêu đề",
-    },
-  ];
-  const listDatePicker = [
-    {
-      onChange: (startTime: number, endTime: number): void => {
-        console.log("sss");
-      },
-      tooltip: "Ngày tạo",
-      title: "Ngày tạo",
-    },
-  ];
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "STT",
-      dataIndex: "stt",
-      key: "stt",
-      align: "center",
-      width: 50,
-      render: (_, dataIndex) => <div>{data.indexOf(dataIndex) + 1}</div>,
-    },
-    {
-      title: "Tên người dùng",
-      dataIndex: "user_name",
-      key: "name",
-      width: 150,
-      align: "center",
-    },
-    {
-      title: "Ảnh đại diện",
-      dataIndex: "avatar",
-      key: "image",
-      render: (_, dataIndex) => (
-        <div>
-          <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
-            preview={false}
-            src={dataIndex.avatar}
-          />
-        </div>
-      ),
-      align: "center",
-      width: 100,
-    },
-    {
-      title: "Email",
-      key: "email",
-      dataIndex: "description",
-      align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 100,
-    },
-    {
-      title: "Ngày tạo",
-      dataIndex: "time_created",
-      key: "time_created",
-      align: "center",
-      width: 80,
-    },
-    {
-      title: "Sách còn lại",
-      dataIndex: "numberOfBook",
-      key: "time_created",
-      align: "center",
-      width: 80,
-    },
-    {
-      title: "Số đơn giao dịch",
-      dataIndex: "transactions",
-      key: "time_created",
-      align: "center",
-      width: 80,
-    },
-    {
-      title: "Thao tác",
-      key: "action",
-      dataIndex: "action",
-      align: "center",
-      render: () => (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div
-          onClick={showModal}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div style={{marginLeft: 8}}>
-            <EditOutlined style={{fontSize: 22, color: "blue"}} />
-          </div>
-        </div>
-      ),
-      fixed: "right",
-      width: 50,
-    },
-  ];
-  const listInputUser = [
-    {
-      title: "Tên người dùng",
-      placeHolder: "Nhập tên người dùng",
-      type: "input",
-    },
-    {
-      title: "Ảnh đại diện",
-      placeHolder: "Nhập tên người dùng",
-      type: "uploadFile",
-    },
-    {
-      title: "Email",
-      placeHolder: "Nhập Email",
-      type: "input",
-    },
-    {
-      title: "Sách còn lại",
-      placeHolder: "Nhập số sách còn lại",
-      type: "input",
-    },
-    {
-      title: "Số đơn giao dịch",
-      placeHolder: "Nhập số đơn",
-      type: "input",
-    },
-  ];
-  const data: any = [
-    {
-      user_name: "Nguyễn văn A",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn B",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn C",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn D",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-    {
-      user_name: "Nguyễn văn E",
-      avatar:
-        "https://salt.tikicdn.com/cache/w1200/ts/product/df/7d/da/d340edda2b0eacb7ddc47537cddb5e08.jpg",
-      email: "bìa cứng, mua lẻ",
-      time_created: "12/02/2023",
-      numberOfBook: 200,
-      transactions: 120,
-    },
-  ];
+  const init : IUserData = {
+    fullName: 'string',
+    phoneNumber: 'string',
+    roleName: "role",
+    dateOfBirth: 'string',
+    defaultAddress: 'string',
+    avatar: 'string',
+    isRegistration: true
+  }
 
   return (
-    <div className="manager-user-container">
-      <FilterGroupGlobal
-        listSearchText={listSearchText}
-        listDatePicker={listDatePicker}
-      />
-      <Table
-        style={{marginTop: 10}}
-        scroll={{x: 1000, y: 500}}
-        columns={columns}
-        dataSource={data}
-      />
-      <Modal
-        title="Sửa thông tin người dùng"
-        open={isModalOpen}
-        onOk={handleSubmit}
-        onCancel={handleCancel}
-      >
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
-        >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div>
-                {listInputUser.map((item, index) => (
-                  <div key={index}>
-                    {item.type === "input" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <InputGlobal
-                          name="username"
-                          placeholder={item.placeHolder}
-                          style={{width: "80%"}}
-                          onPressEnter={(): void => handleSubmit()}
-                        />
-                        <ErrorMessageGlobal name="username" />
-                      </div>
-                    )}
-                    {item.type === "uploadFile" && (
-                      <div
-                        style={{
-                          marginBottom: 12,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
-                        <div style={{width: "80%"}}>
-                          <UploadFileGlobal
-                            handleChange={() => console.log("uploadFile")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+    <div className="profile-container">
+      <Row>
+        <Col span={4}>
+        </Col>
+        <Col span={16}>
+          <Card>
+            <Form
+              name="profile"
+              onFinish={onFinish}
+              autoComplete="off"
+              layout="vertical"
+              initialValues={init}
+            >
+              <div style={{display: "flex", margin: "24px 0px"}}>
+                <div
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                    marginRight: "24px",
+                  }}
+                >
+                  <Image src={selectedImage || userData?.avatar} style={{objectFit: "cover", height: "100%"}} />
+                </div>
+                <div>
+                  <h2>{userData?.fullName}</h2>
+                  <Upload 
+                    maxCount={1}
+                    showUploadList={false}
+                    onChange={handleImageChange}
+                  >
+                    <Button
+                      style={{padding: "0", border: "none", color: "#1890ff"}}
+                    >
+                      Tải ảnh đại diện
+                    </Button>
+                  </Upload>
+                </div>
               </div>
-            );
-          }}
-        </Formik>
-      </Modal>
+              <Form.Item  label="Họ và tên" name="fullName">
+                <Row>
+                  <Col span={22}>
+                    <Input
+                      value={userData?.fullName}
+                      readOnly={isEdit}
+                      size={"large"}
+                      placeholder="Họ và tên"
+                    />
+                  </Col>
+                  <Col span={2} style={{display: "flex", justifyContent: "end"}}>
+                    <Button
+                      onClick={editInfo}
+                      type="primary"
+                      size="large"
+                      icon={<FormOutlined />}
+                    ></Button>
+                  </Col>
+                </Row>
+              </Form.Item>
+
+              <Form.Item label="Vai trò" name="roleName">
+                <Input
+                  readOnly={isEdit}
+                  size={"large"}
+                  placeholder="Vai trò"
+                />
+              </Form.Item>
+
+              <Form.Item label="Số điện thoại" name="phoneNumber">
+                <Input
+                  name="phoneNumber"
+                  readOnly={isEdit}
+                  size={"large"}
+                  placeholder="Số điện thoại"
+                />
+              </Form.Item>
+
+              <Form.Item label="DatePicker" name="datePicker">
+                <DatePicker style={{width: "100%", height: "40px"}} inputReadOnly={true}/>
+              </Form.Item>
+
+              <Form.Item label="Địa chỉ" name="defaultAddress">
+                <Input
+                  readOnly={isEdit}
+                  size={"large"}
+                  placeholder="Địa chỉ"
+                />
+              </Form.Item>
+
+              <Form.Item wrapperCol={{span: 20}}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{width: "200px", height: "40px"}}
+                >
+                  Lưu
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 }

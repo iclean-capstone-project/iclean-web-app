@@ -91,22 +91,15 @@ export function ListApply(): JSX.Element {
       ),
     },
     {
-      title: "Họ và tên",
-      dataIndex: "fullName",
-      key: "fullName",
-      align: "center",
-      width: 170,
-    },
-    {
       title: "Ảnh đại diện",
       dataIndex: "personalAvatar",
       key: "image",
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.personalAvatar}
           />
@@ -116,25 +109,18 @@ export function ListApply(): JSX.Element {
       width: 140,
     },
     {
+      title: "Họ và tên",
+      dataIndex: "fullName",
+      key: "fullName",
+      align: "center",
+      width: 170,
+    },
+    {
       title: "Email",
       key: "email",
       dataIndex: "email",
       align: "center",
       width: 220,
-    },
-    {
-      title: "SĐT",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      align: "center",
-      width: 140,
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
-      align: "center",
-      width: 140,
     },
     {
       title: "Tạm trú",
@@ -161,10 +147,10 @@ export function ListApply(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.status === "WAITING_FOR_APPROVE" && (
-            <Tag color="cyan">{dataIndex.status}</Tag>
+            <Tag color="cyan">{"Chờ duyệt"}</Tag>
           )}
           {dataIndex.status === "WAITING_FOR_CONFIRM" && (
-            <Tag color="lime">{dataIndex.status}</Tag>
+            <Tag color="lime">{"Chờ xác nhận"}</Tag>
           )}
           {dataIndex.status === "DISABLED" && (
             <Tag color="red">{dataIndex.status}</Tag>

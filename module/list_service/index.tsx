@@ -5,6 +5,7 @@ import {EditOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
 import {getAllService, IGetListServiceRes} from "@app/api/ApiService";
+import { formatDateTime } from "@app/utils/formatTime";
 
 interface DataType {
   serviceId: string;
@@ -104,6 +105,11 @@ export function ListService(): JSX.Element {
       key: "createAt",
       align: "center",
       width: 100,
+      render: (_: any, dataIndex: any) => {
+        return <span>
+          {formatDateTime(dataIndex.createAt)}
+        </span>
+      }
     },
     {
       title: "Thao tác",

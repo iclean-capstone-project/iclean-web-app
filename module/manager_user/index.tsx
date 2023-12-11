@@ -31,6 +31,7 @@ export function ManagerUser(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataUserInit, setDataUserInit] = useState<any>([]);
   const [paramFilter, setParamFilter] = useState<string>("");
+  const [modal, contextHolder] = Modal.useModal();
 
   const user = useSelector((state: IRootState) => state.user);
   // console.log("user", user?.userInformationDto?.roleName);
@@ -115,17 +116,10 @@ export function ManagerUser(): JSX.Element {
       dataIndex: "stt",
       key: "stt",
       align: "center",
-      width: 80,
+      width: 70,
       render: (_, dataIndex) => (
         <div>{dataUserInit.indexOf(dataIndex) + 1}</div>
       ),
-    },
-    {
-      title: "Tên người dùng",
-      dataIndex: "fullName",
-      key: "fullName",
-      width: 150,
-      align: "center",
     },
     {
       title: "Ảnh đại diện",
@@ -134,16 +128,23 @@ export function ManagerUser(): JSX.Element {
       render: (_, dataIndex) => (
         <div>
           <Image
-            style={{borderRadius: 100}}
-            width={100}
-            height={100}
+            style={{borderRadius: 55}}
+            width={55}
+            height={55}
             preview={false}
             src={dataIndex.avatar}
           />
         </div>
       ),
       align: "center",
-      width: 130,
+      width: 100,
+    },
+    {
+      title: "Tên người dùng",
+      dataIndex: "fullName",
+      key: "fullName",
+      width: 150,
+      align: "center",
     },
     {
       title: "Số điện thoại",
@@ -156,13 +157,6 @@ export function ManagerUser(): JSX.Element {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      align: "center",
-      width: 120,
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
       align: "center",
       width: 120,
     },
@@ -218,7 +212,15 @@ export function ManagerUser(): JSX.Element {
             {user?.userInformationDto?.roleName === "admin" ? (
               <Tooltip title={dataIndex?.isLocked ? "Ban user" : "Unban User"}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div onClick={() => handleBanOrUnbanUser(dataIndex.userId)}>
+                <div onClick={async () => {
+                      const confirmed = await modal.confirm({
+                        title: "Xác nhận",
+                        content: (<span>{dataIndex?.isLocked ? "Bạn có muốn khoá người dùng này" : "Bạn có muốn mở khoá người dùng này"}</span>),
+                        onOk: () => {
+                          handleBanOrUnbanUser(dataIndex.userId)
+                        }
+                      });
+                    }}>
                   <SyncOutlined
                     style={{
                       fontSize: 22,
@@ -340,6 +342,7 @@ export function ManagerUser(): JSX.Element {
           }}
         </Formik>
       </Modal>
+      {contextHolder}
     </div>
   );
 }

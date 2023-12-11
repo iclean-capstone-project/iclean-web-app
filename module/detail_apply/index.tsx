@@ -137,6 +137,7 @@ export function DetailApply(): JSX.Element {
 
             {/* )} */}
             <Button
+              loading={acceptApplyMutate.isLoading}
               style={{
                 borderRadius: 12,
                 backgroundColor: "red",
@@ -156,6 +157,9 @@ export function DetailApply(): JSX.Element {
           <HelperInfo dataInfoHelper={dataInit} />
         </div>
         <div className="list-service">
+          <div>
+              <h2>Dịch vụ đăng kí</h2>
+            </div>
           <ListServiceApply
             listService={dataInit?.services}
             listServiceConfirmed={listServiceConfirmed}
