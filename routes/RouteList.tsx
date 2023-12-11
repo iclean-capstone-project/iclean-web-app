@@ -3,8 +3,8 @@ import {
   BlockOutlined,
   FileExclamationOutlined,
   IdcardOutlined,
+  LineChartOutlined,
   LogoutOutlined,
-  MoneyCollectOutlined,
   PicRightOutlined,
   SettingOutlined,
   UserOutlined,
@@ -77,6 +77,12 @@ const routes: IRoute[] = [
     name: "Nạp rút tiền",
     isSidebar: true,
     icon: <LogoutOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/dashboard",
+    name: "Thống kê",
+    isSidebar: true,
+    icon: <LineChartOutlined className="icon-sidebar" />,
   },
 ];
 

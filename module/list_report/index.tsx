@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Button, Modal, Pagination, Table} from "antd";
+import {Button, Table} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
 import {
@@ -10,7 +10,6 @@ import {
 } from "@app/api/ApiReport";
 import {LoadingGlobal} from "@app/components/Loading";
 import { formatDateTime } from "@app/utils/formatTime";
-import { DetailReport } from "../detail_report";
 import { useRouter } from "next/router";
 
 interface DataType {
@@ -25,14 +24,12 @@ interface DataType {
 }
 
 export function ListReport(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataInit, setDataInit] = useState<any>([]);
   const [paramsGetReport, setParamsGetReport] = useState<IParamGetAllReport>({
     renterName: "",
     page: 1,
     size: 10,
   });
-  const [itemSelected, setItemSelected] = useState<number>(1)
   const router = useRouter()
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
@@ -54,25 +51,7 @@ export function ListReport(): JSX.Element {
     }
   );
 
-  const onChangePagination = (page: number): void => {
-    console.log("sdasdasdasd", typeof page);
-    setParamsGetReport({...paramsGetReport, page: page});
-  };
-
   console.log("dataInit", dataInit);
-  const showModal = (reportId : number) => {
-    setItemSelected(reportId)
-    setIsModalOpen(true);
-    console.log(itemSelected);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-  };
 
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
