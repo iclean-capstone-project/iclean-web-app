@@ -10,6 +10,13 @@ export function ListApply(): JSX.Element {
   const router = useRouter();
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
   const [keyTabSelected, setKeyTabSelected] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  const displayedData = dataApply.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const getDataListApply = (): Promise<IGetAllApplyRes> =>
     // IGetAllBookingRes
@@ -203,8 +210,13 @@ export function ListApply(): JSX.Element {
           style={{marginTop: 10}}
           scroll={{x: 600, y: 500}}
           columns={columns}
-          dataSource={dataApply}
-          pagination={false}
+          dataSource={displayedData}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: dataApply.length,
+            onChange: (page) => setCurrentPage(page),
+          }}
         />
       )}
     </div>

@@ -66,6 +66,13 @@ export function DepositWithdraw(): JSX.Element {
   const [isModalHistoryOpen, setIsModalHistoryOpen] = useState<boolean>(false);
   const [dataTransactionHistory, setDataTransactionHistory] = useState<any>([]);
   const [selectedUserPhone, setSelectedUserPhone] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  const displayedData = dataUserInit.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const user = useSelector((state: IRootState) => state.user);
   console.log(user);
@@ -411,8 +418,13 @@ export function DepositWithdraw(): JSX.Element {
         style={{marginTop: 10}}
         scroll={{x: 800, y: 500}}
         columns={columns}
-        dataSource={dataUserInit}
-        pagination={false}
+        dataSource={displayedData}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: dataUserInit.length,
+          onChange: (page) => setCurrentPage(page),
+        }}
       />
       <Modal
         title="Yêu cầu"

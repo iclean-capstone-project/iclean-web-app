@@ -27,6 +27,13 @@ export function ListBooking(): JSX.Element {
     number | undefined
   >(undefined);
   const [keyTabSelected, setKeyTabSelected] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  const displayedData = dataBooking.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   // action reject - post
   const rejectBookingMutate = useMutation(rejectAproveBooking);
@@ -295,9 +302,14 @@ export function ListBooking(): JSX.Element {
         style={{marginTop: 10}}
         scroll={{x: 600, y: 505}}
         columns={columns}
-        dataSource={dataBooking}
+        dataSource={displayedData}
         className="table-list-booking"
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: dataBooking.length,
+          onChange: (page) => setCurrentPage(page),
+        }}
       />
       <Modal
         title="Chi tiết đơn hàng"

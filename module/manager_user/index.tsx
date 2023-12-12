@@ -32,6 +32,13 @@ export function ManagerUser(): JSX.Element {
   const [dataUserInit, setDataUserInit] = useState<any>([]);
   const [paramFilter, setParamFilter] = useState<string>("");
   const [modal, contextHolder] = Modal.useModal();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  const displayedData = dataUserInit.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const user = useSelector((state: IRootState) => state.user);
   // console.log("user", user?.userInformationDto?.roleName);
@@ -280,8 +287,13 @@ export function ManagerUser(): JSX.Element {
         style={{marginTop: 10}}
         scroll={{x: 800, y: 550}}
         columns={columns}
-        dataSource={dataUserInit}
-        pagination={false}
+        dataSource={displayedData }
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: dataUserInit.length, // Tổng số phần tử
+          onChange: (page) => setCurrentPage(page),
+        }}
       />
       <Modal
         title="Sửa thông tin người dùng"
