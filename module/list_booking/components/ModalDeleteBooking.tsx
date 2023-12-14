@@ -14,8 +14,8 @@ interface IProps {
   bookingId: number | undefined;
   handleCancel: any;
   isModalDeleteBooking: any;
-  handleCancelModalViewDetail: any;
-  refetchListBooking: any;
+  handleCancelModalViewDetail?: any;
+  refetchListBooking?: any;
 }
 
 interface IListOptionReasonReject {

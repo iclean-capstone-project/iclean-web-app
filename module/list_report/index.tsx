@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Button, Table} from "antd";
+import {Button, Pagination, Table} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
 import {
@@ -31,6 +31,10 @@ export function ListReport(): JSX.Element {
     size: 10,
   });
   const router = useRouter();
+
+  const onChangePagination = (value: any): void => {
+      console.log(value)
+  }
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
     getAllReport({
@@ -184,13 +188,13 @@ export function ListReport(): JSX.Element {
         />
       )}
 
-      {/* <div className="pagination-table">
+      <div className="pagination-table">
         <Pagination
           onChange={onChangePagination}
           defaultCurrent={1}
           total={data?.data?.totalElements}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
