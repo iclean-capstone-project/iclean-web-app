@@ -158,8 +158,8 @@ export function DetailApply(): JSX.Element {
         </div>
         <div className="list-service">
           <div>
-              <h2>Dịch vụ đăng kí</h2>
-            </div>
+            <h2>Dịch vụ đăng kí</h2>
+          </div>
           <ListServiceApply
             listService={dataInit?.services}
             listServiceConfirmed={listServiceConfirmed}

@@ -39,19 +39,19 @@ export interface IGetTransactionHistory {
     dateOfBirth?: number;
     email?: number;
     facebookUid?: null;
-    data?: IGetListTransactionHistory,
+    data?: IGetListTransactionHistory;
   };
 }
 
 export interface IGetListTransactionHistory {
-    requestId?: number;
-    pageNumber?: number;
-    pageSize?: number;
-    totalElements?: number;
-    totalPages?: number;
-    numberOfElements?: number;
-    sortBy?: null;
-    content?: IItemTransactionHistory[];
+  requestId?: number;
+  pageNumber?: number;
+  pageSize?: number;
+  totalElements?: number;
+  totalPages?: number;
+  numberOfElements?: number;
+  sortBy?: null;
+  content?: IItemTransactionHistory[];
 }
 
 export interface IItemTransactionHistory {
@@ -76,10 +76,12 @@ function moneyRequestValidated(
 export interface IParamsGetAllTransactionHistory {
   page?: number;
   size?: number;
-  phoneNumber?: string,
+  phoneNumber?: string;
 }
 
-function transactionHistory(params: IParamsGetAllTransactionHistory): Promise<IGetTransactionHistory> {
+function transactionHistory(
+  params: IParamsGetAllTransactionHistory
+): Promise<IGetTransactionHistory> {
   return fetcher({
     url: path.sendRequest,
     method: "get",

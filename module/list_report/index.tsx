@@ -9,8 +9,8 @@ import {
   IParamGetAllReport,
 } from "@app/api/ApiReport";
 import {LoadingGlobal} from "@app/components/Loading";
-import { formatDateTime } from "@app/utils/formatTime";
-import { useRouter } from "next/router";
+import {formatDateTime} from "@app/utils/formatTime";
+import {useRouter} from "next/router";
 
 interface DataType {
   key: string;
@@ -30,7 +30,7 @@ export function ListReport(): JSX.Element {
     page: 1,
     size: 10,
   });
-  const router = useRouter()
+  const router = useRouter();
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
     getAllReport({
@@ -127,7 +127,9 @@ export function ListReport(): JSX.Element {
       key: "createAt",
       align: "center",
       width: 120,
-      render: (_, dataIndex) => (<span>{formatDateTime(dataIndex.createAt)}</span>)
+      render: (_, dataIndex) => (
+        <span>{formatDateTime(dataIndex.createAt)}</span>
+      ),
     },
     {
       title: "Chi tiết",
@@ -140,10 +142,10 @@ export function ListReport(): JSX.Element {
           onClick={() => goToDetailReport(dataIndex.reportId)}
           type="primary"
           style={{
-            borderRadius: "16px"
+            borderRadius: "16px",
           }}
         >
-            Xem
+          Xem
         </Button>
       ),
       fixed: "right",

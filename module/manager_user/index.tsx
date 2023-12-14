@@ -219,15 +219,23 @@ export function ManagerUser(): JSX.Element {
             {user?.userInformationDto?.roleName === "admin" ? (
               <Tooltip title={dataIndex?.isLocked ? "Ban user" : "Unban User"}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div onClick={async () => {
-                      const confirmed = await modal.confirm({
-                        title: "Xác nhận",
-                        content: (<span>{dataIndex?.isLocked ? "Bạn có muốn khoá người dùng này" : "Bạn có muốn mở khoá người dùng này"}</span>),
-                        onOk: () => {
-                          handleBanOrUnbanUser(dataIndex.userId)
-                        }
-                      });
-                    }}>
+                <div
+                  onClick={async () => {
+                    const confirmed = await modal.confirm({
+                      title: "Xác nhận",
+                      content: (
+                        <span>
+                          {dataIndex?.isLocked
+                            ? "Bạn có muốn khoá người dùng này"
+                            : "Bạn có muốn mở khoá người dùng này"}
+                        </span>
+                      ),
+                      onOk: () => {
+                        handleBanOrUnbanUser(dataIndex.userId);
+                      },
+                    });
+                  }}
+                >
                   <SyncOutlined
                     style={{
                       fontSize: 22,
@@ -287,7 +295,7 @@ export function ManagerUser(): JSX.Element {
         style={{marginTop: 10}}
         scroll={{x: 800, y: 550}}
         columns={columns}
-        dataSource={displayedData }
+        dataSource={displayedData}
         pagination={{
           current: currentPage,
           pageSize: pageSize,

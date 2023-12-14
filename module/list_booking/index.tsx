@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Image, Modal, notification, Table, Tabs, Tag, Tooltip} from "antd";
+import {
+  Button,
+  Image,
+  Modal,
+  notification,
+  Table,
+  Tabs,
+  Tag,
+  Tooltip,
+} from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -16,8 +25,8 @@ import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalV
 import "./index.scss";
 import {itemsTab} from "@app/module/list_booking/listDataDefault";
 import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
-import { formatDateTime } from "@app/utils/formatTime";
-import { formatMoney } from "@app/utils/formatMoney";
+import {formatDateTime} from "@app/utils/formatTime";
+import {formatMoney} from "@app/utils/formatMoney";
 
 export function ListBooking(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +45,6 @@ export function ListBooking(): JSX.Element {
   );
 
   // action reject - post
-  const rejectBookingMutate = useMutation(rejectAproveBooking);
   const getDataListBooking = (): Promise<any> =>
     // IGetAllBookingRes
     getAllBooking({
@@ -58,29 +66,26 @@ export function ListBooking(): JSX.Element {
     setBookingIdSelected(id);
   };
 
-  const showModalDeleteBooking = (id: number) => {
-    setIsModalDeleteBooking(true);
-    setBookingIdSelected(id);
-  };
+  
 
-  const handleAcceptBooking = (id?: number) => {
-    if (id) {
-      rejectBookingMutate.mutate(
-        {
-          id: id,
-          action: "approved",
-        },
-        {
-          onSuccess: () => {
-            notification.success({
-              message: "Phê duyệt thành công!",
-            });
-            dataListBooking.refetch();
-          },
-        }
-      );
-    }
-  };
+  // const handleAcceptBooking = (id?: number) => {
+  //   if (id) {
+  //     rejectBookingMutate.mutate(
+  //       {
+  //         id: id,
+  //         action: "approved",
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           notification.success({
+  //             message: "Phê duyệt thành công!",
+  //           });
+  //           dataListBooking.refetch();
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -179,10 +184,8 @@ export function ListBooking(): JSX.Element {
       align: "center",
       width: 140,
       render: (_: any, dataIndex: any) => {
-        return <span>
-          {formatDateTime(dataIndex.orderDate)}
-        </span>
-      }
+        return <span>{formatDateTime(dataIndex.orderDate)}</span>;
+      },
     },
     {
       title: "Tổng giá",
@@ -190,7 +193,9 @@ export function ListBooking(): JSX.Element {
       key: "totalPrice",
       align: "center",
       width: 140,
-      render: (_:any, dataIndex: any) => (<span>{formatMoney(dataIndex.totalPrice)}</span>)
+      render: (_: any, dataIndex: any) => (
+        <span>{formatMoney(dataIndex.totalPrice)}</span>
+      ),
     },
     {
       title: "Giá thực tế",
@@ -198,7 +203,9 @@ export function ListBooking(): JSX.Element {
       key: "totalPriceActual",
       align: "center",
       width: 140,
-      render: (_:any, dataIndex: any) => (<span>{formatMoney(dataIndex.totalPriceActual)}</span>)
+      render: (_: any, dataIndex: any) => (
+        <span>{formatMoney(dataIndex.totalPriceActual)}</span>
+      ),
     },
     {
       title: "Trạng thái đơn hàng",
@@ -210,25 +217,25 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.bookingStatus === "NOT_YET" && (
-            <Tag color="cyan">{"Chưa duyệt"}</Tag>
+            <Tag color="cyan">Chưa duyệt</Tag>
           )}
           {dataIndex.bookingStatus === "ON_CART" && (
-            <Tag color="volcano">{"Đang chờ"}</Tag>
+            <Tag color="volcano">Đang chờ</Tag>
           )}
           {dataIndex.bookingStatus === "REJECTED" && (
-            <Tag color="orange">{"Từ chối"}</Tag>
+            <Tag color="orange">Từ chối</Tag>
           )}
           {dataIndex.bookingStatus === "APPROVED" && (
-            <Tag color="green">{"Đã duyệt"}</Tag>
+            <Tag color="green">Đã duyệt</Tag>
           )}
           {dataIndex.bookingStatus === "FINISHED" && (
-            <Tag color="red">{"Hoàn thành"}</Tag>
+            <Tag color="red">Hoàn thành</Tag>
           )}
           {dataIndex.bookingStatus === "NO_MONEY" && (
             <Tag color="purple">{dataIndex.bookingStatus}</Tag>
           )}
           {dataIndex.bookingStatus === "CANCELED" && (
-            <Tag color="red">{"Đã huỷ"}</Tag>
+            <Tag color="red">Đã huỷ</Tag>
           )}
         </div>
       ),
@@ -251,18 +258,24 @@ export function ListBooking(): JSX.Element {
           {/* </Button> */}
           <Tooltip placement="top" title="Xem chi tiết">
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-            <div
+            <Button
+              type="primary"
+              style={{borderRadius: "25px"}}
+              onClick={() => showModal(dataIndex.bookingId)}
+            >
+              Xem chi tiết
+            </Button>
+            {/* <div
               onClick={() => showModal(dataIndex.bookingId)}
               style={{marginLeft: 8}}
             >
               <EyeOutlined style={{fontSize: 27, color: "blue"}} />
-            </div>
+            </div> */}
           </Tooltip>
 
-          {dataIndex.bookingStatus === "NOT_YET" && (
+          {/* {dataIndex.bookingStatus === "NOT_YET" && (
             <>
               <Tooltip placement="top" title="Phê duyệt">
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => handleAcceptBooking(dataIndex.bookingId)}
                   style={{marginLeft: 8}}
@@ -272,7 +285,6 @@ export function ListBooking(): JSX.Element {
               </Tooltip>
 
               <Tooltip placement="top" title="Từ chối">
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={() => showModalDeleteBooking(dataIndex.bookingId)}
                   style={{marginLeft: 8}}
@@ -283,7 +295,7 @@ export function ListBooking(): JSX.Element {
                 </div>
               </Tooltip>
             </>
-          )}
+          )} */}
         </div>
       ),
       fixed: "right",
@@ -318,7 +330,11 @@ export function ListBooking(): JSX.Element {
         onCancel={handleCancel}
         footer={false}
       >
-        <ModalViewDetailBooking bookingId={bookingIdSelected} />
+        <ModalViewDetailBooking
+          bookingId={bookingIdSelected}
+          handleCancel={handleCancel}
+          refetchListBooking={dataListBooking.refetch}
+        />
       </Modal>
 
       <ModalDeleteBooking

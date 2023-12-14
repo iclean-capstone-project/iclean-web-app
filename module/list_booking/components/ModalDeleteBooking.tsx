@@ -14,6 +14,8 @@ interface IProps {
   bookingId: number | undefined;
   handleCancel: any;
   isModalDeleteBooking: any;
+  handleCancelModalViewDetail: any;
+  refetchListBooking: any;
 }
 
 interface IListOptionReasonReject {
@@ -22,7 +24,13 @@ interface IListOptionReasonReject {
 }
 export function ModalDeleteBooking(props: IProps): JSX.Element {
   const formikRef = useRef<any>(null);
-  const {bookingId, isModalDeleteBooking, handleCancel} = props;
+  const {
+    bookingId,
+    isModalDeleteBooking,
+    handleCancel,
+    handleCancelModalViewDetail,
+    refetchListBooking
+  } = props;
   const [listRejectReason, setListRejectReason] = useState<
     IListOptionReasonReject[]
   >([]);
@@ -75,6 +83,8 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
               message: "Từ chối đơn hàng thành công!",
             });
             handleCancel();
+            handleCancelModalViewDetail();
+            refetchListBooking();
           },
           onError: () => {
             notification.error({

@@ -1,5 +1,5 @@
 import {FormOutlined} from "@ant-design/icons";
-import { IUpdateProfileData, IUserData, getInfoUser, } from "@app/api/ApiProfile";
+import {IUpdateProfileData, IUserData, getInfoUser} from "@app/api/ApiProfile";
 import {
   Button,
   Card,
@@ -51,9 +51,9 @@ export function Profile(): JSX.Element {
   const onFinish = (values: any) => {
     console.log("Success:", values);
     const requestData = {
-      fullName: 'John Doe',
-      dateOfBirth: '1990-01-01',
-      fileImage: 'base64encodedimage',
+      fullName: "John Doe",
+      dateOfBirth: "1990-01-01",
+      fileImage: "base64encodedimage",
     };
 
     // Prepare the data for the updateProfile function
@@ -64,36 +64,34 @@ export function Profile(): JSX.Element {
     };
 
     console.log(updatedProfileData);
-
   };
-    
-    const editInfo = () => {
-      setIsEdit(false);
-    };
-    
-    const handleImageChange = (info: any) => {
-      console.log(info.file.status);
-      if (info.file.status === 'done') {
-        console.log(info.file.response.url);
-        setSelectedImage(info.file.response.url);
+
+  const editInfo = () => {
+    setIsEdit(false);
+  };
+
+  const handleImageChange = (info: any) => {
+    console.log(info.file.status);
+    if (info.file.status === "done") {
+      console.log(info.file.response.url);
+      setSelectedImage(info.file.response.url);
     }
   };
 
-  const init : IUserData = {
-    fullName: 'string',
-    phoneNumber: 'string',
+  const init: IUserData = {
+    fullName: "string",
+    phoneNumber: "string",
     roleName: "role",
-    dateOfBirth: 'string',
-    defaultAddress: 'string',
-    avatar: 'string',
-    isRegistration: true
-  }
+    dateOfBirth: "string",
+    defaultAddress: "string",
+    avatar: "string",
+    isRegistration: true,
+  };
 
   return (
     <div className="profile-container">
       <Row>
-        <Col span={4}>
-        </Col>
+        <Col span={4}></Col>
         <Col span={16}>
           <Card>
             <Form
@@ -113,11 +111,14 @@ export function Profile(): JSX.Element {
                     marginRight: "24px",
                   }}
                 >
-                  <Image src={selectedImage || userData?.avatar} style={{objectFit: "cover", height: "100%"}} />
+                  <Image
+                    src={selectedImage || userData?.avatar}
+                    style={{objectFit: "cover", height: "100%"}}
+                  />
                 </div>
                 <div>
                   <h2>{userData?.fullName}</h2>
-                  <Upload 
+                  <Upload
                     maxCount={1}
                     showUploadList={false}
                     onChange={handleImageChange}
@@ -130,7 +131,7 @@ export function Profile(): JSX.Element {
                   </Upload>
                 </div>
               </div>
-              <Form.Item  label="Họ và tên" name="fullName">
+              <Form.Item label="Họ và tên" name="fullName">
                 <Row>
                   <Col span={22}>
                     <Input
@@ -140,7 +141,10 @@ export function Profile(): JSX.Element {
                       placeholder="Họ và tên"
                     />
                   </Col>
-                  <Col span={2} style={{display: "flex", justifyContent: "end"}}>
+                  <Col
+                    span={2}
+                    style={{display: "flex", justifyContent: "end"}}
+                  >
                     <Button
                       onClick={editInfo}
                       type="primary"
@@ -152,11 +156,7 @@ export function Profile(): JSX.Element {
               </Form.Item>
 
               <Form.Item label="Vai trò" name="roleName">
-                <Input
-                  readOnly={isEdit}
-                  size={"large"}
-                  placeholder="Vai trò"
-                />
+                <Input readOnly={isEdit} size={"large"} placeholder="Vai trò" />
               </Form.Item>
 
               <Form.Item label="Số điện thoại" name="phoneNumber">
@@ -169,15 +169,14 @@ export function Profile(): JSX.Element {
               </Form.Item>
 
               <Form.Item label="DatePicker" name="datePicker">
-                <DatePicker style={{width: "100%", height: "40px"}} inputReadOnly={true}/>
+                <DatePicker
+                  style={{width: "100%", height: "40px"}}
+                  inputReadOnly={true}
+                />
               </Form.Item>
 
               <Form.Item label="Địa chỉ" name="defaultAddress">
-                <Input
-                  readOnly={isEdit}
-                  size={"large"}
-                  placeholder="Địa chỉ"
-                />
+                <Input readOnly={isEdit} size={"large"} placeholder="Địa chỉ" />
               </Form.Item>
 
               <Form.Item wrapperCol={{span: 20}}>

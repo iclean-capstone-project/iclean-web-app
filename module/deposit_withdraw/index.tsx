@@ -29,8 +29,8 @@ import {
   moneyRequestValidated,
   transactionHistory,
 } from "../../api/ApiMoney";
-import { formatDateTime } from "../../utils/formatTime";
-import { formatMoney } from "@app/utils/formatMoney";
+import {formatDateTime} from "../../utils/formatTime";
+import {formatMoney} from "@app/utils/formatMoney";
 
 interface DataType {
   key: string;
@@ -97,44 +97,43 @@ export function DepositWithdraw(): JSX.Element {
     //   (user: {userId: number | undefined}) => user.userId === selectedUserId
     // );
     console.log(selectedUserPhone);
-      if (sentOtp) {
-        try {
-          const data: IMoneyRequestValidated = {
-            phoneNumber: selectedUserPhone,
-            otpToken: formData.otp,
-          };
-          console.log(data);
-          const res = moneyRequestValidated(data);
-          console.log("Yêu cầu thành công >> ", (await res).status);
-          closeModal();
-          notification.success({
-            message: "Yêu cầu thành công",
-            description: "Yêu cầu của bạn đã được xử lý thành công.",
-          });
-          setSentOtp(false);
-        } catch (err) {
-          notification.error({
-            message: "Lỗi",
-            description:
-              "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
-          });
-        }
-      } else {
-        const data: IMoneyRequest = {
-          userPhoneNumber: selectedUserPhone,
-          balance: formData.balance,
-          moneyRequestType: typeDW,
+    if (sentOtp) {
+      try {
+        const data: IMoneyRequestValidated = {
+          phoneNumber: selectedUserPhone,
+          otpToken: formData.otp,
         };
         console.log(data);
-        try {
-          moneyRequest(data);
-          console.log("Sent otp");
-        } catch (err) {
-          console.log("Erorr");
-        }
-
-        setSentOtp(true);
+        const res = moneyRequestValidated(data);
+        console.log("Yêu cầu thành công >> ", (await res).status);
+        closeModal();
+        notification.success({
+          message: "Yêu cầu thành công",
+          description: "Yêu cầu của bạn đã được xử lý thành công.",
+        });
+        setSentOtp(false);
+      } catch (err) {
+        notification.error({
+          message: "Lỗi",
+          description: "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại sau.",
+        });
       }
+    } else {
+      const data: IMoneyRequest = {
+        userPhoneNumber: selectedUserPhone,
+        balance: formData.balance,
+        moneyRequestType: typeDW,
+      };
+      console.log(data);
+      try {
+        moneyRequest(data);
+        console.log("Sent otp");
+      } catch (err) {
+        console.log("Erorr");
+      }
+
+      setSentOtp(true);
+    }
   };
 
   useEffect(() => {
@@ -223,7 +222,9 @@ export function DepositWithdraw(): JSX.Element {
       width: 100,
       fixed: "right",
       render: (_, dataIndex) => (
-        <div>{dataIndex.roleName === "employee" ? "Nhân viên" : "Khách hàng"}</div>
+        <div>
+          {dataIndex.roleName === "employee" ? "Nhân viên" : "Khách hàng"}
+        </div>
       ),
     },
     {
@@ -241,7 +242,12 @@ export function DepositWithdraw(): JSX.Element {
               justifyContent: "center",
             }}
           >
-            <Button type="link" onClick={() => showHistory(dataIndex.phoneNumber)}>Lịch sử giao dịch</Button>
+            <Button
+              type="link"
+              onClick={() => showHistory(dataIndex.phoneNumber)}
+            >
+              Lịch sử giao dịch
+            </Button>
           </div>
         );
       },
@@ -295,11 +301,11 @@ export function DepositWithdraw(): JSX.Element {
     console.log("Show history of user:", phoneNumber);
 
     const params: IParamsGetAllTransactionHistory = {
-      page: 1, 
+      page: 1,
       size: 10,
       phoneNumber: phoneNumber,
     };
-    
+
     transactionHistory(params)
       .then((response: IGetTransactionHistory) => {
         // Handle the response data here
@@ -310,18 +316,18 @@ export function DepositWithdraw(): JSX.Element {
         // Handle errors here
         console.error("Error fetching transaction history:", error);
       });
-    openModalHistory()
-  }
+    openModalHistory();
+  };
 
   const handleWithdraw = (phone: string) => {
-    setSelectedUserPhone(phone)
+    setSelectedUserPhone(phone);
     setTypeDW("withdraw");
     setTitlePopupDW("Rút tiền");
     openModal();
   };
 
   const handleDeposit = (phone: string) => {
-    setSelectedUserPhone(phone)
+    setSelectedUserPhone(phone);
     setTypeDW("deposit");
     setTitlePopupDW("Nạp tiền");
     openModal();
@@ -347,67 +353,61 @@ export function DepositWithdraw(): JSX.Element {
 
   const columnsInHistory: ColumnsType<TransactionHistory> = [
     {
-      title: 'Id',
-      dataIndex: 'requestId',
-      key: 'requestId',
+      title: "Id",
+      dataIndex: "requestId",
+      key: "requestId",
     },
     {
-      title: 'Ngày',
-      dataIndex: 'requestDate',
-      key: 'date',
+      title: "Ngày",
+      dataIndex: "requestDate",
+      key: "date",
       render: (_, dataIndex) => {
-        return (
-          <span>{formatDateTime(dataIndex.requestDate)}</span>
-        )
-      }
+        return <span>{formatDateTime(dataIndex.requestDate)}</span>;
+      },
     },
     {
-      title: 'Số tiền',
-      dataIndex: 'balance',
-      key: 'balance',
-      render: (_, dataIndex) => (<span>{formatMoney(dataIndex.balance)}</span>)
+      title: "Số tiền",
+      dataIndex: "balance",
+      key: "balance",
+      render: (_, dataIndex) => <span>{formatMoney(dataIndex.balance)}</span>,
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'requestStatus',
-      key: 'requestStatus',
+      title: "Trạng thái",
+      dataIndex: "requestStatus",
+      key: "requestStatus",
       render: (_, dataIndex) => {
         var color = "warning";
         switch (dataIndex.requestStatus) {
           case "SUCCESS":
-            color="success"
+            color = "success";
             break;
           case "CANCEL":
-            color="warning"
+            color = "warning";
             break;
           case "PENDING":
-            color="processing"
+            color = "processing";
             break;
           default:
             break;
         }
 
-        return (
-          <Tag color={color}>{dataIndex.requestStatus}</Tag>
-        )
+        return <Tag color={color}>{dataIndex.requestStatus}</Tag>;
       },
     },
     {
-      title: 'Loại',
-      dataIndex: 'requestType',
-      key: 'requestType',
+      title: "Loại",
+      dataIndex: "requestType",
+      key: "requestType",
       render: (_, dataIndex) => {
         var type;
-        if(dataIndex.requestType==="WITHDRAW") {
-          type="Rút tiền"
+        if (dataIndex.requestType === "WITHDRAW") {
+          type = "Rút tiền";
         }
-        if(dataIndex.requestType==="DEPOSIT") {
-          type="Nạp tiền"
+        if (dataIndex.requestType === "DEPOSIT") {
+          type = "Nạp tiền";
         }
-        return (
-          <span>{type}</span>
-        )
-      }
+        return <span>{type}</span>;
+      },
     },
   ];
 
