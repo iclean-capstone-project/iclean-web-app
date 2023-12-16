@@ -134,7 +134,11 @@ export function Dashboard(): JSX.Element {
     gradient2.addColorStop(1, colors.indigo.zero);
 
     dataChart?.map(
-      (item: {dayOfMonth: string | number | Date; bookingCounter: number; bookingSalesInMonth: number}) => {
+      (item: {
+        dayOfMonth: string | number | Date;
+        bookingCounter: number;
+        bookingSalesInMonth: number;
+      }) => {
         const date = new Date(item.dayOfMonth);
         const dateNum: number = date.getDate();
         bookingCounter.forEach((item1, i) => {
@@ -144,7 +148,7 @@ export function Dashboard(): JSX.Element {
         });
         bookingSalesInMonth.forEach((item1, i) => {
           if (i === dateNum) {
-            bookingSalesInMonth[i] = item.bookingSalesInMonth/1000000;
+            bookingSalesInMonth[i] = item.bookingSalesInMonth / 1000000;
           }
         });
       }
@@ -167,16 +171,16 @@ export function Dashboard(): JSX.Element {
           pointRadius: 3,
         },
         {
-            backgroundColor: gradient2,
-            label: "Doanh thu ngày: Triệu vnđ",
-            data: bookingSalesInMonth,
-            fill: true,
-            borderWidth: 2,
-            borderColor: colors.indigo.default,
-            lineTension: 0.2,
-            pointBackgroundColor: colors.indigo.default,
-            pointRadius: 3,
-          },
+          backgroundColor: gradient2,
+          label: "Doanh thu ngày: Triệu vnđ",
+          data: bookingSalesInMonth,
+          fill: true,
+          borderWidth: 2,
+          borderColor: colors.indigo.default,
+          lineTension: 0.2,
+          pointBackgroundColor: colors.indigo.default,
+          pointRadius: 3,
+        },
       ],
     };
 
@@ -250,7 +254,7 @@ export function Dashboard(): JSX.Element {
     <div className="transaction-statistics-container">
       <Row gutter={[32, 24]}>
         <Col span={6}>
-          <Card>
+          <Card style={{borderRadius: 12}}>
             <div className="card_container">
               <div className="icon_container">
                 <TeamOutlined className="icon" size={32} />
@@ -265,7 +269,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card>
+          <Card style={{borderRadius: 12}}>
             <div className="card_container">
               <div className="icon_container">
                 <SnippetsOutlined className="icon" size={32} />
@@ -280,7 +284,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card>
+          <Card style={{borderRadius: 12}}>
             <div className="card_container">
               <div className="icon_container">
                 <DollarOutlined className="icon" size={32} />
@@ -295,7 +299,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card>
+          <Card style={{borderRadius: 12}}>
             <div className="card_container">
               <div className="icon_container">
                 <BarChartOutlined className="icon" size={32} />
@@ -313,6 +317,7 @@ export function Dashboard(): JSX.Element {
       <Card
         title="Biểu đồ"
         className="mt_32"
+        style={{borderRadius: 12}}
         extra={
           <>
             <DatePicker onChange={handleDateChange} picker="month" />

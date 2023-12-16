@@ -28,9 +28,9 @@ export interface ICountBookingRes {
 }
 
 export interface IParamCountBooking {
-    month: number;
-    year: number;
-  }
+  month: number;
+  year: number;
+}
 
 const path = {
   getDashboardHome: "/dashboard/home",
@@ -44,12 +44,14 @@ function getDashboardHome(): Promise<IDashboardRes> {
   });
 }
 
-function getCountBooking(params: IParamCountBooking): Promise<ICountBookingRes> {
-    return fetcher({
-      url: path.getCountBooking,
-      method: "get",
-      params: params,
-    });
-  }
+function getCountBooking(
+  params: IParamCountBooking
+): Promise<ICountBookingRes> {
+  return fetcher({
+    url: path.getCountBooking,
+    method: "get",
+    params: params,
+  });
+}
 
 export {getDashboardHome, getCountBooking};

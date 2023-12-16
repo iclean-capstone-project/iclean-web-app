@@ -31,31 +31,31 @@ export interface IParamGetAllReport {
 }
 
 export interface IParamGetReportById {
-  reportId ?: number;
+  reportId?: number;
 }
 
 export interface IReport {
   data: {
-    reportId: number,
-    bookingDetailId: number,
-    fullName: string,
-    phoneNumber: string,
-    reportTypeDetail: string,
-    detail: string,
-    createAt: string,
-    reportStatus: string,
-    attachmentResponses: [],
-  }
-} 
+    reportId: number;
+    bookingDetailId: number;
+    fullName: string;
+    phoneNumber: string;
+    reportTypeDetail: string;
+    detail: string;
+    createAt: string;
+    reportStatus: string;
+    attachmentResponses: [];
+  };
+}
 
 export interface IReportRefund {
-  reason: string,
-  refundPercent: string,
+  reason: string;
+  refundPercent: string;
 }
 
 export interface IRes {
-  status: number,
-  message: string,
+  status: number;
+  message: string;
 }
 
 const path = {
@@ -79,7 +79,7 @@ function getReportById(id: number): Promise<IReport> {
   });
 }
 
-function putReportRefund(id: number, body : IReportRefund): Promise<any> {
+function putReportRefund(id: number, body: IReportRefund): Promise<any> {
   return fetcher({
     url: `${path.getReportById}/${id}`,
     method: "put",

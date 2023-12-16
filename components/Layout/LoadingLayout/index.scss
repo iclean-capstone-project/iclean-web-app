@@ -1,5 +1,7 @@
 .loading-layout {
   position: relative;
+  height: calc(100vh - 90px);
+  overflow-y: auto;
 
   .loading-layout-content {
     position: absolute;

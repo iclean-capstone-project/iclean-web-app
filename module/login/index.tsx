@@ -69,11 +69,11 @@ export function Login(): JSX.Element {
     const errors: Partial<UserAccount> = {};
 
     if (!values.username) {
-      errors.username = 'Vui lòng nhập tên đăng nhập';
+      errors.username = "Vui lòng nhập tên đăng nhập";
     }
 
     if (!values.password) {
-      errors.password = 'Vui lòng nhập mật khẩu';
+      errors.password = "Vui lòng nhập mật khẩu";
     }
 
     return errors;
