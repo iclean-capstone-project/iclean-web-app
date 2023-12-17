@@ -25,7 +25,6 @@ type ChartType = keyof ChartTypeRegistry;
 
 export function Dashboard(): JSX.Element {
   const canvasEl = useRef<any>();
-  const [selectedDateRange, setSelectedDateRange] = useState<[]>([]);
   const [chartLabels, setChartLabels] = useState<any>([
     "1",
     "2",
