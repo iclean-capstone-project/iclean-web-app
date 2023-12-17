@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {Button, Image, Table, Tabs, TabsProps, Tag} from "antd";
+import {Button, Image, Table, Tabs, TabsProps, Tag, notification} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {getAllApply, IGetAllApplyRes, IItemApplyRes} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
 import {LoadingGlobal} from "@app/components/Loading";
 import {useRouter} from "next/router";
+import { useSelector } from "react-redux";
+import { IRootState } from "@app/redux/store";
 
 export function ListApply(): JSX.Element {
   const router = useRouter();
+  const user = useSelector((state: IRootState) => state.user);
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
-  const [keyTabSelected, setKeyTabSelected] = useState<string>("");
+  const [keyTabSelected, setKeyTabSelected] = useState<string>(user.userInformationDto.roleName === "admin" ? "WAITING_FOR_APPROVE" : "");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
@@ -196,13 +199,28 @@ export function ListApply(): JSX.Element {
       width: 140,
     },
   ];
+
+  const chiaDon = () => {
+    notification.success({
+      message: "Thành công",
+      description:  "Chia đơn cho quản lý thành công",
+      duration: 3,
+    })
+  }
   return (
     <div className="list-apply-container">
-      <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
-      <FilterGroupGlobal
-        listSearchText={listSearchText}
-        listDatePicker={listDatePicker}
-      />
+      {user.userInformationDto.roleName === "admin" ? (
+        <></>
+      ) : (
+        <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
+      )}
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <FilterGroupGlobal
+          listSearchText={listSearchText}
+          listDatePicker={listDatePicker}
+        />
+        {user.userInformationDto.roleName==="admin" ? <Button type="primary" onClick={chiaDon} style={{borderRadius: "25px"}}>Chia đơn cho quản lý</Button> : <div></div>}
+      </div>
       {dataListApply.isLoading ? (
         <LoadingGlobal />
       ) : (

@@ -146,8 +146,16 @@ export interface IListRejectReasonRes {
   }[];
 }
 
+export interface IResSetBooking {
+  timestamp: string;
+  status: number;
+  error: string;
+  path: string;
+}
+
 const path = {
   getAllBooking: "/booking",
+  setBookingForManager: "/booking/setBookingForManager",
   rejectApproveBookingPath: "/booking/manager",
   listRejectReason: "/rejection-reason",
 
@@ -181,6 +189,13 @@ function getAllBooking(
     url: path.getAllBooking,
     method: "get",
     params: params,
+  });
+}
+
+function setBookingForManager(): Promise<IResSetBooking> {
+  return fetcher({
+    url: path.setBookingForManager,
+    method: "post",
   });
 }
 
@@ -253,4 +268,5 @@ export {
   acceptApply,
   confirmApply,
   getDetailApplyById,
+  setBookingForManager,
 };

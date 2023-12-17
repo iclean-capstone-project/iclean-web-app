@@ -41,7 +41,7 @@ export function DetailService() {
     .catch((err) => {
       console.log(err);
     })
-  }, [serviceId]);
+  }, []);
 
   const tabList = [
     {
@@ -73,15 +73,20 @@ export function DetailService() {
     console.log(values);
   };
 
+  const initialValues = {
+    serviceName: dataInit?.serviceName,
+    description: dataInit?.description,
+  }
+
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <>
-        <Form layout="vertical" onFinish={onFinish} initialValues={dataInit}>
+        <Form layout="vertical" onFinish={onFinish} initialValues={initialValues}>
           <Form.Item name={"serviceName"} label={"Tên dịch vụ"}>
-            <Input defaultValue={dataInit?.serviceName}></Input>
+            <Input></Input>
           </Form.Item>
           <Form.Item name={"description"} label={"Mô tả"}>
-            <TextArea rows={8} defaultValue={dataInit?.description}></TextArea>
+            <TextArea rows={8}></TextArea>
           </Form.Item>
           <Form.Item
             name={"serviceAvatar"}
