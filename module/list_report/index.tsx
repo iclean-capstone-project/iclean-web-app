@@ -188,7 +188,10 @@ export function ListReport(): JSX.Element {
         />
       )}
 
-      <div className="pagination-table">
+      <div
+        className="pagination-table"
+        style={{display: "flex", justifyContent: "flex-end"}}
+      >
         <Pagination
           onChange={onChangePagination}
           defaultCurrent={1}
