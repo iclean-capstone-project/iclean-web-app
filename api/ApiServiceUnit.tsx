@@ -1,5 +1,5 @@
-import { fetcher} from "./Fetcher";
-import axios from 'axios';
+import {fetcher} from "./Fetcher";
+import axios from "axios";
 import store from "@app/redux/store";
 
 export interface IResGetUnit {
@@ -15,12 +15,12 @@ export interface IUnit {
 }
 
 export interface IServicePrice {
-    id: number;
-    price: number;
-    employeeCommission: number;
-  }
+  id: number;
+  price: number;
+  employeeCommission: number;
+}
 
-export interface IBodyCreateServiceUnit {
+export interface IServiceUnitDetail {
   defaultPrice: number;
   helperCommission: number;
   unitId: number;
@@ -28,6 +28,35 @@ export interface IBodyCreateServiceUnit {
   servicePrices: IServicePrice[];
 }
 
+export interface IServiceUnitDetail1 {
+  data(data: any): unknown;
+  defaultPrice: number;
+  helperCommission: number;
+  unitId: number;
+  serviceId: number;
+  servicePrices: IServicePrice1[];
+}
+
+export interface IServicePrice1 {
+  id: number;
+  price: number;
+  employeeCommission: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface IServiceUnit {
+  serviceUnitId: number;
+  unitId: number;
+  unitDetail: string;
+  unitValue: number;
+  defaultPrice: number;
+  helperCommission: number;
+}
+
+interface IResGetServiceUnit {
+    data: IServiceUnit[],
+}
 
 interface IRes {
   status: string;
@@ -36,15 +65,17 @@ interface IRes {
 }
 
 export interface IServiceData {
-    serviceName: string;
-    description: string;
-    serviceAvatar: any;
-    serviceFileImages: any[];
-  }
+  serviceName: string;
+  description: string;
+  serviceAvatar: any;
+  serviceFileImages: any[];
+}
 
 const path = {
   getUnit: "/unit",
-  createServiceUnit: "/service-unit"
+  createServiceUnit: "/service-unit",
+  getAllServiceUnit: "/service-unit",
+  getServiceUnitDetail: "/service-unit/",
 };
 
 function getUnit(): Promise<IResGetUnit> {
@@ -54,7 +85,30 @@ function getUnit(): Promise<IResGetUnit> {
   });
 }
 
-function createServiceUnit(body : IBodyCreateServiceUnit): Promise<IRes> {
+export interface IParamGetServiceUnit {
+    serviceId: number
+}
+
+export interface IGetServiceUnitDetail {
+  data: IServiceUnitDetail1
+}
+
+function getAllServiceUnit(param : IParamGetServiceUnit): Promise<IResGetServiceUnit> {
+  return fetcher({
+    url: path.getAllServiceUnit,
+    method: "get",
+    params: param,
+  });
+}
+
+function getServiceUnitDetail(id : number): Promise<IGetServiceUnitDetail> {
+    return fetcher({
+      url: `${path.getServiceUnitDetail}/${id}`,
+      method: "get",
+    });
+  }
+
+function createServiceUnit(body: IServiceUnitDetail): Promise<IRes> {
   return fetcher({
     url: path.createServiceUnit,
     method: "post",
@@ -62,31 +116,26 @@ function createServiceUnit(body : IBodyCreateServiceUnit): Promise<IRes> {
   });
 }
 
-
-function createService(formData : FormData) {
-
-    const state = store.getState();
-    const token = state.user?.accessToken;
-    // Cấu hình header
-    console.log(token);
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`,
-        },
-    };
-    console.log(config.headers);
-    axios.post("https://iclean.azurewebsites.net/api/v1/service", formData, config)
-    .then(response => {
+function createService(formData: FormData) {
+  const state = store.getState();
+  const token = state.user?.accessToken;
+  // Cấu hình header
+  console.log(token);
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${token}`,
+    },
+  };
+  console.log(config.headers);
+  axios
+    .post("https://iclean.azurewebsites.net/api/v1/service", formData, config)
+    .then((response) => {
       console.log(response.data);
     })
-    .catch(error => {
-      console.error('Error uploading image:', error);
+    .catch((error) => {
+      console.error("Error uploading image:", error);
     });
 }
 
-export {
-    getUnit,
-    createServiceUnit,
-    createService
-};
+export {getUnit, createServiceUnit, createService, getAllServiceUnit, getServiceUnitDetail};

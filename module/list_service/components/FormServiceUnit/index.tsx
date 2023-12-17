@@ -1,4 +1,4 @@
-import { IBodyCreateServiceUnit, IUnit, createServiceUnit, getUnit } from "@app/api/ApiServiceUnit";
+import { IServiceUnitDetail, IUnit, createServiceUnit, getUnit } from "@app/api/ApiServiceUnit";
 import { formatMoney } from "@app/utils/formatMoney";
 import {Button, Col, Form, Input, Row} from "antd";
 import React, { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export function FormServiceUnit(props : IProps) {
 
   const handleOnFinish = (e: any) => {
     console.log(e);
-    const data : IBodyCreateServiceUnit = {
+    const data : IServiceUnitDetail = {
         defaultPrice: 100000,
         helperCommission: 65,
         unitId: unitId,
