@@ -1,11 +1,22 @@
 import {PlusOutlined, UploadOutlined} from "@ant-design/icons";
-import {Avatar, Button, Card, Col, Form, Image, Input, Row, Select, Upload} from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Form,
+  Image,
+  Input,
+  Row,
+  Select,
+  Upload,
+} from "antd";
 import React, {useEffect, useState} from "react";
 import {FormServiceUnit} from "../list_service/components/FormServiceUnit";
 import {IService, getServiceById} from "@app/api/ApiService";
 import {useRouter} from "next/router";
 import TextArea from "antd/lib/input/TextArea";
-import "./index.scss"
+import "./index.scss";
 
 export function DetailService() {
   const [activeTabKey, setActiveTabKey] = useState<string>("tab1");
@@ -75,13 +86,14 @@ export function DetailService() {
           <Form.Item name={"description"} label={"Mô tả"}>
             <TextArea rows={8} defaultValue={dataInit?.description}></TextArea>
           </Form.Item>
-          <Form.Item
-            name={"serviceAvatar"}
-            label={"Icon dịch vụ"}
-          >
+          <Form.Item name={"serviceAvatar"} label={"Icon dịch vụ"}>
             <div className="d_flex">
               <div className="me_2">
-                <Image src={dataInit?.serviceIcon} width={102} height={102} ></Image>
+                <Image
+                  src={dataInit?.serviceIcon}
+                  width={102}
+                  height={102}
+                ></Image>
               </div>
               <Upload listType="picture-card">
                 <div>
@@ -96,20 +108,26 @@ export function DetailService() {
             label="Hình ảnh dịch vụ"
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            >
-              <div className="d_flex">
-                {
-                  dataInit?.images.map((item, i) => (<div key={i} className="me_2" ><Image src={item.serviceImage} width={102} height={102} ></Image></div>))
-                }
-                <div>
-                  <Upload listType="picture-card">
-                    <div>
-                      <PlusOutlined />
-                      <div style={{marginTop: 8}}>Thêm ảnh</div>
-                    </div>
-                  </Upload>
+          >
+            <div className="d_flex">
+              {dataInit?.images.map((item, i) => (
+                <div key={i} className="me_2">
+                  <Image
+                    src={item.serviceImage}
+                    width={102}
+                    height={102}
+                  ></Image>
                 </div>
+              ))}
+              <div>
+                <Upload listType="picture-card">
+                  <div>
+                    <PlusOutlined />
+                    <div style={{marginTop: 8}}>Thêm ảnh</div>
+                  </div>
+                </Upload>
               </div>
+            </div>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{float: "right"}}>

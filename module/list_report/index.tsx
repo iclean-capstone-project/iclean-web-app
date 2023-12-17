@@ -33,8 +33,8 @@ export function ListReport(): JSX.Element {
   const router = useRouter();
 
   const onChangePagination = (value: any): void => {
-      console.log(value)
-  }
+    console.log(value);
+  };
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
     getAllReport({

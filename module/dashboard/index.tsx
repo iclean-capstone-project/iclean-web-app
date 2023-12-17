@@ -320,7 +320,7 @@ export function Dashboard(): JSX.Element {
         style={{borderRadius: 12}}
         extra={
           <>
-            <DatePicker onChange={handleDateChange} picker="month"/>
+            <DatePicker onChange={handleDateChange} picker="month" />
           </>
         }
       >

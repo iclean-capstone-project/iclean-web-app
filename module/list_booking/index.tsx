@@ -66,8 +66,6 @@ export function ListBooking(): JSX.Element {
     setBookingIdSelected(id);
   };
 
-  
-
   // const handleAcceptBooking = (id?: number) => {
   //   if (id) {
   //     rejectBookingMutate.mutate(

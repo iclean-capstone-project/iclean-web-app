@@ -29,7 +29,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
     isModalDeleteBooking,
     handleCancel,
     handleCancelModalViewDetail,
-    refetchListBooking
+    refetchListBooking,
   } = props;
   const [listRejectReason, setListRejectReason] = useState<
     IListOptionReasonReject[]
