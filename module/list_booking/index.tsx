@@ -10,7 +10,11 @@ import {
   Tooltip,
 } from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {getAllBooking, IListItemBooking, setBookingForManager} from "@app/api/ApiProduct";
+import {
+  getAllBooking,
+  IListItemBooking,
+  setBookingForManager,
+} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
 import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalViewDetailBooking";
 import "./index.scss";
@@ -29,7 +33,9 @@ export function ListBooking(): JSX.Element {
   const [bookingIdSelected, setBookingIdSelected] = useState<
     number | undefined
   >(undefined);
-  const [keyTabSelected, setKeyTabSelected] = useState<string>(user.userInformationDto.roleName === "admin" ? "NOT_YET" : "");
+  const [keyTabSelected, setKeyTabSelected] = useState<string>(
+    user.userInformationDto.roleName === "admin" ? "NOT_YET" : ""
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
@@ -297,18 +303,18 @@ export function ListBooking(): JSX.Element {
 
   const chiaDon = () => {
     setBookingForManager()
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     notification.success({
       message: "Thành công",
-      description:  "Chia đơn cho quản lý thành công",
+      description: "Chia đơn cho quản lý thành công",
       duration: 3,
-    })
-  }
+    });
+  };
 
   return (
     <div className="list-booking-container">
@@ -322,7 +328,17 @@ export function ListBooking(): JSX.Element {
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
         />
-        {user.userInformationDto.roleName==="admin" ? <Button type="primary" onClick={chiaDon} style={{borderRadius: "25px"}}>Chia đơn cho quản lý</Button> : <div></div>}
+        {user.userInformationDto.roleName === "admin" ? (
+          <Button
+            type="primary"
+            onClick={chiaDon}
+            style={{borderRadius: "25px"}}
+          >
+            Chia đơn cho quản lý
+          </Button>
+        ) : (
+          <div></div>
+        )}
       </div>
       <Table
         style={{marginTop: 10}}

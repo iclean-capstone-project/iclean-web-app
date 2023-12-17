@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Form, Input, Row} from "antd";
-import { IServiceUnitDetail1, getServiceUnitDetail} from "@app/api/ApiServiceUnit";
-import { formatMoney } from "@app/utils/formatMoney";
+import {
+  IServiceUnitDetail1,
+  getServiceUnitDetail,
+} from "@app/api/ApiServiceUnit";
+import {formatMoney} from "@app/utils/formatMoney";
 
 interface IProps {
-  serviceUnitId: number
-  unitDetail: string
-  defaultPrice: number
+  serviceUnitId: number;
+  unitDetail: string;
+  defaultPrice: number;
 }
 
-export function FormServiceUnit(props : IProps) {
-    const {
-      serviceUnitId,
-      unitDetail,
-      defaultPrice
-    } = props;
+export function FormServiceUnit(props: IProps) {
+  const {serviceUnitId, unitDetail, defaultPrice} = props;
 
-    const [dataInit, setDataInit] = useState<IServiceUnitDetail1>()
+  const [dataInit, setDataInit] = useState<IServiceUnitDetail1>();
 
-    useEffect(() => {
-      getServiceUnitDetail(serviceUnitId)
-      .then((res) => {
-        console.log(res);
-        setDataInit(res.data)
-      })
-    },[])
-
+  useEffect(() => {
+    getServiceUnitDetail(serviceUnitId).then((res) => {
+      console.log(res);
+      setDataInit(res.data);
+    });
+  }, []);
 
   const handleOnFinish = (e: any) => {
     console.log(e);
@@ -34,17 +31,19 @@ export function FormServiceUnit(props : IProps) {
   const initialValues = {
     unit: unitDetail,
     defaultPrice: formatMoney(defaultPrice),
-  }
+  };
 
   return (
     <div>
-      <Form 
-      onFinish={handleOnFinish}
-      initialValues={initialValues}
-      key={unitDetail}
+      <Form
+        onFinish={handleOnFinish}
+        initialValues={initialValues}
+        key={unitDetail}
       >
         <Row gutter={[16, 8]}>
-        <Col span={24}><h4>Chi tiết dịch vụ</h4></Col>
+          <Col span={24}>
+            <h4>Chi tiết dịch vụ</h4>
+          </Col>
           <Col span={10}>
             <Form.Item name="unit" label="Đơn vị">
               <Input></Input>
@@ -57,7 +56,9 @@ export function FormServiceUnit(props : IProps) {
           </Col>
           {dataInit?.servicePrices.map((item, index) => (
             <>
-              <Col span={24}><h4>{`${item.startTime} - ${item.endTime}`}</h4></Col>
+              <Col span={24}>
+                <h4>{`${item.startTime} - ${item.endTime}`}</h4>
+              </Col>
               <Col span={10}>
                 <Form.Item name={item.id} label="Giá">
                   <Input defaultValue={item.price}></Input>
@@ -72,7 +73,9 @@ export function FormServiceUnit(props : IProps) {
           ))}
         </Row>
         <Form.Item>
-            <Button type="primary" htmlType="submit" style={{float: "right"}}>Lưu</Button>
+          <Button type="primary" htmlType="submit" style={{float: "right"}}>
+            Lưu
+          </Button>
         </Form.Item>
       </Form>
     </div>

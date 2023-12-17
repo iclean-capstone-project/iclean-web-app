@@ -8,20 +8,18 @@ export interface ISystemParameter {
 }
 
 export interface IResSystemParameter {
-    data: ISystemParameter[]
+  data: ISystemParameter[];
 }
 
 const path = {
-    getSystemParameter: "/system-parameter",
+  getSystemParameter: "/system-parameter",
 };
 
-function getSystemParameter() : Promise<IResSystemParameter> {
-    return fetcher({
-        url: path.getSystemParameter,
-        method: "get",
-    })
+function getSystemParameter(): Promise<IResSystemParameter> {
+  return fetcher({
+    url: path.getSystemParameter,
+    method: "get",
+  });
 }
 
-export {
-    getSystemParameter,
-}
+export {getSystemParameter};

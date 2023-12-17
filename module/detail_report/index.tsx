@@ -25,7 +25,7 @@ export function DetailReport(): JSX.Element {
     getReportById(
       router?.query?.id ? parseInt(router.query.id as string, 10) : 1
     );
-    useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
+  useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
     onSuccess: (res) => {
       setDataInit(res.data);
       console.log(res);

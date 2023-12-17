@@ -55,7 +55,7 @@ export interface IServiceUnit {
 }
 
 interface IResGetServiceUnit {
-    data: IServiceUnit[],
+  data: IServiceUnit[];
 }
 
 interface IRes {
@@ -86,14 +86,16 @@ function getUnit(): Promise<IResGetUnit> {
 }
 
 export interface IParamGetServiceUnit {
-    serviceId: number
+  serviceId: number;
 }
 
 export interface IGetServiceUnitDetail {
-  data: IServiceUnitDetail1
+  data: IServiceUnitDetail1;
 }
 
-function getAllServiceUnit(param : IParamGetServiceUnit): Promise<IResGetServiceUnit> {
+function getAllServiceUnit(
+  param: IParamGetServiceUnit
+): Promise<IResGetServiceUnit> {
   return fetcher({
     url: path.getAllServiceUnit,
     method: "get",
@@ -101,12 +103,12 @@ function getAllServiceUnit(param : IParamGetServiceUnit): Promise<IResGetService
   });
 }
 
-function getServiceUnitDetail(id : number): Promise<IGetServiceUnitDetail> {
-    return fetcher({
-      url: `${path.getServiceUnitDetail}/${id}`,
-      method: "get",
-    });
-  }
+function getServiceUnitDetail(id: number): Promise<IGetServiceUnitDetail> {
+  return fetcher({
+    url: `${path.getServiceUnitDetail}/${id}`,
+    method: "get",
+  });
+}
 
 function createServiceUnit(body: IServiceUnitDetail): Promise<IRes> {
   return fetcher({
@@ -138,4 +140,10 @@ function createService(formData: FormData) {
     });
 }
 
-export {getUnit, createServiceUnit, createService, getAllServiceUnit, getServiceUnitDetail};
+export {
+  getUnit,
+  createServiceUnit,
+  createService,
+  getAllServiceUnit,
+  getServiceUnitDetail,
+};
