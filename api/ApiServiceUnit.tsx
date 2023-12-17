@@ -20,12 +20,42 @@ export interface IServicePrice {
   employeeCommission: number;
 }
 
-export interface IBodyCreateServiceUnit {
+export interface IServiceUnitDetail {
   defaultPrice: number;
   helperCommission: number;
   unitId: number;
   serviceId: number;
   servicePrices: IServicePrice[];
+}
+
+export interface IServiceUnitDetail1 {
+  data(data: any): unknown;
+  defaultPrice: number;
+  helperCommission: number;
+  unitId: number;
+  serviceId: number;
+  servicePrices: IServicePrice1[];
+}
+
+export interface IServicePrice1 {
+  id: number;
+  price: number;
+  employeeCommission: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface IServiceUnit {
+  serviceUnitId: number;
+  unitId: number;
+  unitDetail: string;
+  unitValue: number;
+  defaultPrice: number;
+  helperCommission: number;
+}
+
+interface IResGetServiceUnit {
+  data: IServiceUnit[];
 }
 
 interface IRes {
@@ -44,6 +74,8 @@ export interface IServiceData {
 const path = {
   getUnit: "/unit",
   createServiceUnit: "/service-unit",
+  getAllServiceUnit: "/service-unit",
+  getServiceUnitDetail: "/service-unit/",
 };
 
 function getUnit(): Promise<IResGetUnit> {
@@ -53,7 +85,32 @@ function getUnit(): Promise<IResGetUnit> {
   });
 }
 
-function createServiceUnit(body: IBodyCreateServiceUnit): Promise<IRes> {
+export interface IParamGetServiceUnit {
+  serviceId: number;
+}
+
+export interface IGetServiceUnitDetail {
+  data: IServiceUnitDetail1;
+}
+
+function getAllServiceUnit(
+  param: IParamGetServiceUnit
+): Promise<IResGetServiceUnit> {
+  return fetcher({
+    url: path.getAllServiceUnit,
+    method: "get",
+    params: param,
+  });
+}
+
+function getServiceUnitDetail(id: number): Promise<IGetServiceUnitDetail> {
+  return fetcher({
+    url: `${path.getServiceUnitDetail}/${id}`,
+    method: "get",
+  });
+}
+
+function createServiceUnit(body: IServiceUnitDetail): Promise<IRes> {
   return fetcher({
     url: path.createServiceUnit,
     method: "post",
@@ -83,4 +140,10 @@ function createService(formData: FormData) {
     });
 }
 
-export {getUnit, createServiceUnit, createService};
+export {
+  getUnit,
+  createServiceUnit,
+  createService,
+  getAllServiceUnit,
+  getServiceUnitDetail,
+};

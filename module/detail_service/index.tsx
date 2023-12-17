@@ -1,35 +1,23 @@
-import {PlusOutlined, UploadOutlined} from "@ant-design/icons";
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Form,
-  Image,
-  Input,
-  Row,
-  Select,
-  Upload,
-} from "antd";
 import React, {useEffect, useState} from "react";
-import {FormServiceUnit} from "../list_service/components/FormServiceUnit";
-import {IService, getServiceById} from "@app/api/ApiService";
 import {useRouter} from "next/router";
+import {Button, Card, Form, Image, Input, Upload} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {IService, getServiceById} from "@app/api/ApiService";
 import TextArea from "antd/lib/input/TextArea";
+
+import {IServiceUnit, getAllServiceUnit} from "@app/api/ApiServiceUnit";
+import {FormServiceUnit} from "./components/FormServiceUnit";
 import "./index.scss";
 
 export function DetailService() {
   const [activeTabKey, setActiveTabKey] = useState<string>("tab1");
-  const [unit, setUnit] = useState<number>(1);
   const [dataInit, setDataInit] = useState<IService>();
+  const [serviceUnit, setServiceUnit] = useState<IServiceUnit[]>([]);
   const router = useRouter();
 
   const onTabChange = (key: string) => {
     setActiveTabKey(key);
-    console.log(unit);
   };
-
-  console.log("object");
 
   const serviceId = router?.query?.id
     ? parseInt(router.query.id as string, 10)
@@ -44,7 +32,16 @@ export function DetailService() {
       .catch((err) => {
         console.log(err);
       });
-  }, [serviceId]);
+
+    getAllServiceUnit({serviceId: serviceId})
+      .then((res) => {
+        console.log(res);
+        setServiceUnit(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const tabList = [
     {
@@ -76,15 +73,24 @@ export function DetailService() {
     console.log(values);
   };
 
+  const initialValues = {
+    serviceName: dataInit?.serviceName,
+    description: dataInit?.description,
+  };
+
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <>
-        <Form layout="vertical" onFinish={onFinish} initialValues={dataInit}>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={initialValues}
+        >
           <Form.Item name={"serviceName"} label={"Tên dịch vụ"}>
-            <Input defaultValue={dataInit?.serviceName}></Input>
+            <Input></Input>
           </Form.Item>
           <Form.Item name={"description"} label={"Mô tả"}>
-            <TextArea rows={8} defaultValue={dataInit?.description}></TextArea>
+            <TextArea rows={8}></TextArea>
           </Form.Item>
           <Form.Item name={"serviceAvatar"} label={"Icon dịch vụ"}>
             <div className="d_flex">
@@ -137,9 +143,30 @@ export function DetailService() {
         </Form>
       </>
     ),
-    tab2: <FormServiceUnit unitId={unit} serviceId={1}></FormServiceUnit>,
-    tab3: <FormServiceUnit unitId={unit + 1} serviceId={1}></FormServiceUnit>,
-    tab4: <FormServiceUnit unitId={unit + 2} serviceId={1}></FormServiceUnit>,
+    tab2: (
+      <FormServiceUnit
+        key={1}
+        serviceUnitId={serviceUnit[0]?.serviceUnitId}
+        unitDetail={serviceUnit[0]?.unitDetail}
+        defaultPrice={serviceUnit[0]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
+    tab3: (
+      <FormServiceUnit
+        key={2}
+        serviceUnitId={serviceUnit[1]?.serviceUnitId}
+        unitDetail={serviceUnit[1]?.unitDetail}
+        defaultPrice={serviceUnit[1]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
+    tab4: (
+      <FormServiceUnit
+        key={3}
+        serviceUnitId={serviceUnit[2]?.serviceUnitId}
+        unitDetail={serviceUnit[2]?.unitDetail}
+        defaultPrice={serviceUnit[2]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
   };
 
   return (

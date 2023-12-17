@@ -28,7 +28,7 @@ const routes: IRoute[] = [
   },
   {
     path: "/manager_user",
-    name: "Quản lí",
+    name: "Quản lý",
     isSidebar: true,
     icon: <UserOutlined className="icon-sidebar" />,
   },

@@ -1,13 +1,14 @@
 import React, {useState} from "react";
-import {ColumnsType} from "antd/es/table";
+import {useQuery} from "react-query";
+import {useRouter} from "next/router";
 import {Button, Image, Table, Tag} from "antd";
 import {EditOutlined} from "@ant-design/icons";
+
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {useQuery} from "react-query";
+import {ColumnsType} from "antd/es/table";
 import {getAllService, IGetListServiceRes} from "@app/api/ApiService";
 import {formatDateTime} from "@app/utils/formatTime";
 import {PopupAddService} from "./components/PopupAddService";
-import {useRouter} from "next/router";
 
 interface DataType {
   serviceId: number;
@@ -33,7 +34,7 @@ export function ListService(): JSX.Element {
   console.log(data);
   console.log("dataInit", dataInit);
   const handleSearch = (valueSearch: string): void => {
-    console.log("Ssss");
+    console.log(valueSearch);
   };
   const listSearchText = [
     {

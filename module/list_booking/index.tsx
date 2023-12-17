@@ -9,33 +9,33 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {
   getAllBooking,
   IListItemBooking,
-  rejectAproveBooking,
+  setBookingForManager,
 } from "@app/api/ApiProduct";
-import {useMutation, useQuery} from "react-query";
+import {useQuery} from "react-query";
 import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalViewDetailBooking";
 import "./index.scss";
 import {itemsTab} from "@app/module/list_booking/listDataDefault";
 import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
 import {formatDateTime} from "@app/utils/formatTime";
 import {formatMoney} from "@app/utils/formatMoney";
+import {useSelector} from "react-redux";
+import {IRootState} from "@app/redux/store";
 
 export function ListBooking(): JSX.Element {
+  const user = useSelector((state: IRootState) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeleteBooking, setIsModalDeleteBooking] = useState(false);
   const [dataBooking, setDataBooking] = useState<IListItemBooking[]>([]);
   const [bookingIdSelected, setBookingIdSelected] = useState<
     number | undefined
   >(undefined);
-  const [keyTabSelected, setKeyTabSelected] = useState<string>("");
+  const [keyTabSelected, setKeyTabSelected] = useState<string>(
+    user.userInformationDto.roleName === "admin" ? "NOT_YET" : ""
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
@@ -301,13 +301,45 @@ export function ListBooking(): JSX.Element {
     },
   ];
 
+  const chiaDon = () => {
+    setBookingForManager()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    notification.success({
+      message: "Thành công",
+      description: "Chia đơn cho quản lý thành công",
+      duration: 3,
+    });
+  };
+
   return (
     <div className="list-booking-container">
-      <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
-      <FilterGroupGlobal
-        listSearchText={listSearchText}
-        listDatePicker={listDatePicker}
-      />
+      {user.userInformationDto.roleName === "admin" ? (
+        <></>
+      ) : (
+        <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
+      )}
+      <div className="filter">
+        <FilterGroupGlobal
+          listSearchText={listSearchText}
+          listDatePicker={listDatePicker}
+        />
+        {user.userInformationDto.roleName === "admin" ? (
+          <Button
+            type="primary"
+            onClick={chiaDon}
+            style={{borderRadius: "25px"}}
+          >
+            Chia đơn cho quản lý
+          </Button>
+        ) : (
+          <div></div>
+        )}
+      </div>
       <Table
         style={{marginTop: 10}}
         scroll={{x: 600, y: 505}}

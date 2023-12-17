@@ -1,5 +1,5 @@
 import {
-  IBodyCreateServiceUnit,
+  IServiceUnitDetail,
   IUnit,
   createServiceUnit,
   getUnit,
@@ -31,7 +31,7 @@ export function FormServiceUnit(props: IProps) {
 
   const handleOnFinish = (e: any) => {
     console.log(e);
-    const data: IBodyCreateServiceUnit = {
+    const data: IServiceUnitDetail = {
       defaultPrice: 100000,
       helperCommission: 65,
       unitId: unitId,
