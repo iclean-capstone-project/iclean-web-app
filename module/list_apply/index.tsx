@@ -13,7 +13,7 @@ export function ListApply(): JSX.Element {
   const user = useSelector((state: IRootState) => state.user);
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
   const [keyTabSelected, setKeyTabSelected] = useState<string>(
-    user.userInformationDto.roleName === "admin" ? "WAITING_FOR_APPROVE" : ""
+    user.userInformationDto?.roleName === "admin" ? "WAITING_FOR_APPROVE" : ""
   );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
@@ -211,7 +211,7 @@ export function ListApply(): JSX.Element {
   };
   return (
     <div className="list-apply-container">
-      {user.userInformationDto.roleName === "admin" ? (
+      {user.userInformationDto?.roleName === "admin" ? (
         <></>
       ) : (
         <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
@@ -221,7 +221,7 @@ export function ListApply(): JSX.Element {
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
         />
-        {user.userInformationDto.roleName === "admin" ? (
+        {user.userInformationDto?.roleName === "admin" ? (
           <Button
             type="primary"
             onClick={chiaDon}

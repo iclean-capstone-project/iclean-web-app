@@ -7,7 +7,11 @@ export default function ManagerUserPage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
     <div>
-      {user.userInformationDto.roleName === "admin" ? <ManagerUser /> : <div />}
+      {user.userInformationDto?.roleName === "admin" ? (
+        <ManagerUser />
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

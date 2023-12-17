@@ -34,7 +34,7 @@ export function ListBooking(): JSX.Element {
     number | undefined
   >(undefined);
   const [keyTabSelected, setKeyTabSelected] = useState<string>(
-    user.userInformationDto.roleName === "admin" ? "NOT_YET" : ""
+    user.userInformationDto?.roleName === "admin" ? "NOT_YET" : ""
   );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
@@ -318,7 +318,7 @@ export function ListBooking(): JSX.Element {
 
   return (
     <div className="list-booking-container">
-      {user.userInformationDto.roleName === "admin" ? (
+      {user.userInformationDto?.roleName === "admin" ? (
         <></>
       ) : (
         <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
@@ -328,7 +328,7 @@ export function ListBooking(): JSX.Element {
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
         />
-        {user.userInformationDto.roleName === "admin" ? (
+        {user.userInformationDto?.roleName === "admin" ? (
           <Button
             type="primary"
             onClick={chiaDon}

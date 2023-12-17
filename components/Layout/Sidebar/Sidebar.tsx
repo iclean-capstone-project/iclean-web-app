@@ -32,6 +32,7 @@ const RenderMenu = memo(() => {
   const pathName = router.route;
 
   const {isOpen} = useSelector((state: IRootState) => state.menu);
+  const user = useSelector((state: IRootState) => state.user);
 
   const openKeysDefault = useMemo(() => {
     const arrIndexPath = [];
@@ -76,7 +77,11 @@ const RenderMenu = memo(() => {
         });
         itemsTmp.push(getItem(item.name, item.path, item.icon, tmpChidren));
       } else if (item.isSidebar) {
-        itemsTmp.push(getItem(item.name, item.path, item.icon));
+        if (item.isRole) {
+          if (user.userInformationDto?.roleName === item.isRole) {
+            itemsTmp.push(getItem(item.name, item.path, item.icon));
+          }
+        } else itemsTmp.push(getItem(item.name, item.path, item.icon));
       }
     });
 

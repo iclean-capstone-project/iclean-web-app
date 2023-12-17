@@ -7,7 +7,7 @@ export default function DashboardPage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
     <div>
-      {user.userInformationDto.roleName === "admin" ? <Dashboard /> : <div />}
+      {user.userInformationDto?.roleName === "admin" ? <Dashboard /> : <div />}
     </div>
   );
 }

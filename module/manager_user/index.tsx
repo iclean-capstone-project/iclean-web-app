@@ -24,6 +24,7 @@ interface DataType {
   description: string;
   transport: string;
   phoneNumber: string;
+  roleName: any;
   isLocked: boolean;
 }
 
@@ -181,6 +182,16 @@ export function ManagerUser(): JSX.Element {
       align: "center",
       width: 100,
       fixed: "right",
+      render: (_, dataIndex) => (
+        <div>
+          {dataIndex.roleName === "admin" ? (
+            <div>Quản trị viên</div>
+          ) : undefined}
+          {dataIndex.roleName === "manager" ? <div>Quản lí</div> : undefined}
+          {dataIndex.roleName === "employee" ? <div>Nhân viên</div> : undefined}
+          {dataIndex.roleName === "renter" ? <div>Khách hàng</div> : undefined}
+        </div>
+      ),
     },
     {
       title: "Trạng thái",
@@ -192,7 +203,7 @@ export function ManagerUser(): JSX.Element {
       render: (_, dataIndex) => {
         return (
           <div>
-            {dataIndex?.isLocked ? (
+            {!dataIndex?.isLocked ? (
               <Tag color="green">Unlock</Tag>
             ) : (
               <Tag color="magenta">Locked</Tag>
@@ -217,7 +228,7 @@ export function ManagerUser(): JSX.Element {
             }}
           >
             {user?.userInformationDto?.roleName === "admin" ? (
-              <Tooltip title={dataIndex?.isLocked ? "Ban user" : "Unban User"}>
+              <Tooltip title={!dataIndex?.isLocked ? "Ban user" : "Unban User"}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div
                   onClick={async () => {
@@ -225,7 +236,7 @@ export function ManagerUser(): JSX.Element {
                       title: "Xác nhận",
                       content: (
                         <span>
-                          {dataIndex?.isLocked
+                          {!dataIndex?.isLocked
                             ? "Bạn có muốn khoá người dùng này"
                             : "Bạn có muốn mở khoá người dùng này"}
                         </span>
@@ -239,7 +250,7 @@ export function ManagerUser(): JSX.Element {
                   <SyncOutlined
                     style={{
                       fontSize: 22,
-                      color: dataIndex?.isLocked ? "red" : "green",
+                      color: !dataIndex?.isLocked ? "red" : "green",
                     }}
                   />
                 </div>

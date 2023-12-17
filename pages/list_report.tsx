@@ -7,7 +7,7 @@ export default function ListReportPage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
     <div>
-      {user.userInformationDto.roleName === "manager" ? (
+      {user.userInformationDto?.roleName === "manager" ? (
         <ListReport />
       ) : (
         <div />
