@@ -179,21 +179,21 @@ export function DetailReport(): JSX.Element {
           })}
         </Row>
         {/* {dataInit?.reportStatus === "PROCESSING" && ( */}
-          <div>
-            <h2 className="title">Hình ảnh chứng minh</h2>
-            <Row>
-              {dataInit?.attachmentResponses.map((item: any, index: number) => (
-                <Col span={3} key={index}>
-                  <Image
-                    src={item.bookingAttachmentLink}
-                    width={150}
-                    height={150}
-                    className="img"
-                  />
-                </Col>
-              ))}
-            </Row>
-          </div>
+        <div>
+          <h2 className="title">Hình ảnh chứng minh</h2>
+          <Row>
+            {dataInit?.attachmentResponses.map((item: any, index: number) => (
+              <Col span={3} key={index}>
+                <Image
+                  src={item.bookingAttachmentLink}
+                  width={150}
+                  height={150}
+                  className="img"
+                />
+              </Col>
+            ))}
+          </Row>
+        </div>
         {/* )} */}
       </Card>
       {dataInit?.reportStatus === "PROCESSING" && (
