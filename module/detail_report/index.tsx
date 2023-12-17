@@ -178,7 +178,7 @@ export function DetailReport(): JSX.Element {
             );
           })}
         </Row>
-        {dataInit?.reportStatus === "PROCESSING" && (
+        {/* {dataInit?.reportStatus === "PROCESSING" && ( */}
           <div>
             <h2 className="title">Hình ảnh chứng minh</h2>
             <Row>
@@ -194,7 +194,7 @@ export function DetailReport(): JSX.Element {
               ))}
             </Row>
           </div>
-        )}
+        {/* )} */}
       </Card>
       {dataInit?.reportStatus === "PROCESSING" && (
         <Card className="refund">
