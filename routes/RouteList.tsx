@@ -100,7 +100,7 @@ const routes: IRoute[] = [
     name: "Cấu hình",
     isSidebar: true,
     icon: <SettingOutlined className="icon-sidebar" />,
-    isRole: "admin"
+    isRole: "admin",
   },
 ];
 

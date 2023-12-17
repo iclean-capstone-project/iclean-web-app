@@ -140,7 +140,10 @@ export function ManagerUser(): JSX.Element {
             width={55}
             height={55}
             preview={false}
-            src={dataIndex.avatar}
+            src={
+              dataIndex.avatar ??
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
           />
         </div>
       ),
@@ -204,9 +207,9 @@ export function ManagerUser(): JSX.Element {
         return (
           <div>
             {!dataIndex?.isLocked ? (
-              <Tag color="green">Unlock</Tag>
+              <Tag color="green">Hoạt động</Tag>
             ) : (
-              <Tag color="magenta">Locked</Tag>
+              <Tag color="magenta">Bị cấm</Tag>
             )}
           </div>
         );

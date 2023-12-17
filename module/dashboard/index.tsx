@@ -14,6 +14,7 @@ import {
   getCountBooking,
   getDashboardHome,
 } from "@app/api/ApiDashboard";
+import {formatMoney} from "@app/utils/formatMoney";
 
 type ChartTypeRegistry = {
   bar: Chart;
@@ -291,7 +292,7 @@ export function Dashboard(): JSX.Element {
               <div className="figure_container">
                 <span className="figure_title">Tổng doanh thu</span>
                 <span className="figure_content">
-                  {dataInit?.getSumOfIncome}
+                  {formatMoney(dataInit?.getSumOfIncome)}
                 </span>
               </div>
             </div>
