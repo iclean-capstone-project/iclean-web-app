@@ -292,7 +292,7 @@ export function Dashboard(): JSX.Element {
               <div className="figure_container">
                 <span className="figure_title">Tổng doanh thu</span>
                 <span className="figure_content">
-                  {dataInit?.sumOfAllServiceRegistration}
+                  {dataInit?.getSumOfIncome}
                 </span>
               </div>
             </div>
@@ -320,7 +320,7 @@ export function Dashboard(): JSX.Element {
         style={{borderRadius: 12}}
         extra={
           <>
-            <DatePicker onChange={handleDateChange} picker="month" />
+            <DatePicker onChange={handleDateChange} picker="month"/>
           </>
         }
       >

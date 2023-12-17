@@ -11,7 +11,7 @@ import {
   notification,
 } from "antd";
 import React, {useState} from "react";
-import {useMutation, useQuery} from "react-query";
+import {useQuery} from "react-query";
 import {useRouter} from "next/router";
 import "./style.scss";
 import TextArea from "antd/lib/input/TextArea";
@@ -25,7 +25,7 @@ export function DetailReport(): JSX.Element {
     getReportById(
       router?.query?.id ? parseInt(router.query.id as string, 10) : 1
     );
-  const {data} = useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
+    useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
     onSuccess: (res) => {
       setDataInit(res.data);
       console.log(res);
@@ -177,10 +177,10 @@ export function DetailReport(): JSX.Element {
         </Row>
         <h2 className="title">Hình ảnh chứng minh</h2>
         <Row>
-          {image.map((item) => (
-            <Col span={3}>
+          {dataInit?.attachmentResponses.map((item: any, index: number) => (
+            <Col span={3} key={index}>
               <Image
-                src={item.src}
+                src={item.bookingAttachmentLink}
                 width={150}
                 height={150}
                 className="img"
