@@ -45,6 +45,11 @@ const routes: IRoute[] = [
     icon: <BlockOutlined className="icon-sidebar" />,
   },
   {
+    path: "/detail_service",
+    name: "Chi tiết dịch vụ",
+    isSidebar: false,
+  },
+  {
     path: "/list_apply",
     name: "Ứng tuyển",
     isSidebar: true,
@@ -83,6 +88,12 @@ const routes: IRoute[] = [
     name: "Thống kê",
     isSidebar: true,
     icon: <LineChartOutlined className="icon-sidebar" />,
+  },
+  {
+    path: "/setting",
+    name: "Cấu hình",
+    isSidebar: true,
+    icon: <SettingOutlined className="icon-sidebar" />,
   },
 ];
 

@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Image, Table, Tag} from "antd";
+import {Button, Image, Table, Tag} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
 import {getAllService, IGetListServiceRes} from "@app/api/ApiService";
 import {formatDateTime} from "@app/utils/formatTime";
+import { PopupAddService } from "./components/PopupAddService";
+import { useRouter } from "next/router";
 
 interface DataType {
-  serviceId: string;
+  serviceId: number;
   serviceImage: string;
   serviceName: string;
   isDeleted: string;
@@ -18,6 +20,8 @@ interface DataType {
 export function ListService(): JSX.Element {
   const [dataInit, setDataInit] = useState<any>([]);
   const getDataListService = (): Promise<IGetListServiceRes> => getAllService();
+  const [isOpenPopupAddService, setIsOpenPopupAddService] = useState<boolean>(false)
+  const router = useRouter()
 
   const {data} = useQuery(["GET_LIST_SERVICE"], getDataListService, {
     onSuccess: (res) => {
@@ -38,6 +42,16 @@ export function ListService(): JSX.Element {
       tooltip: "Từ khóa: Tiêu đề",
     },
   ];
+
+  const viewService = (serviceId : number) => {
+    router.push({
+      pathname: "/detail_service",
+      query: {
+        id: serviceId,
+      },
+    })
+  }
+
   const listDatePicker = [
     {
       onChange: (startTime: number, endTime: number): void => {
@@ -114,7 +128,7 @@ export function ListService(): JSX.Element {
       key: "action",
       dataIndex: "action",
       align: "center",
-      render: () => (
+      render: (_, dataIndex) => (
         <div
           style={{
             display: "flex",
@@ -122,7 +136,7 @@ export function ListService(): JSX.Element {
             justifyContent: "center",
           }}
         >
-          <div style={{marginLeft: 8}}>
+          <div style={{marginLeft: 8}} onClick={() => viewService(dataIndex.serviceId)}>
             <EditOutlined style={{fontSize: 22, color: "blue"}} />
           </div>
         </div>
@@ -132,12 +146,19 @@ export function ListService(): JSX.Element {
     },
   ];
 
+  const closeModal = () => {
+    setIsOpenPopupAddService(false)
+  }
+
   return (
     <div className="manager-user-container">
-      <FilterGroupGlobal
-        listSearchText={listSearchText}
-        listDatePicker={listDatePicker}
-      />
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <FilterGroupGlobal
+          listSearchText={listSearchText}
+          listDatePicker={listDatePicker}
+        />
+        <Button type="primary" onClick={() => setIsOpenPopupAddService(true)}>Thêm dịch vụ</Button>
+      </div>
       <Table
         style={{marginTop: 10}}
         scroll={{x: 1000, y: 550}}
@@ -145,6 +166,7 @@ export function ListService(): JSX.Element {
         dataSource={dataInit}
         pagination={false}
       />
+      <PopupAddService open={isOpenPopupAddService} close={closeModal}></PopupAddService>
     </div>
   );
 }
