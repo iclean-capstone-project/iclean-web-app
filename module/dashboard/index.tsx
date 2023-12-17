@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
-import {Button, Card, Col, DatePicker, Row, Table} from "antd";
+import { Button, Card, Col, DatePicker, Row, Table } from "antd";
 import {
   BarChartOutlined,
   DollarOutlined,
@@ -8,13 +8,13 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import "./index.scss";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import {
   IParamCountBooking,
   getCountBooking,
   getDashboardHome,
 } from "@app/api/ApiDashboard";
-import {formatMoney} from "@app/utils/formatMoney";
+import { formatMoney } from "@app/utils/formatMoney";
 
 type ChartTypeRegistry = {
   bar: Chart;
@@ -227,7 +227,7 @@ export function Dashboard(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <Button
           type="primary"
-          style={{borderRadius: "25px"}}
+          style={{ borderRadius: "25px" }}
           onClick={() => handleViewMore(dataIndex.helperInformationId)}
         >
           Xem chi tiết
@@ -254,7 +254,7 @@ export function Dashboard(): JSX.Element {
     <div className="transaction-statistics-container">
       <Row gutter={[32, 24]}>
         <Col span={6}>
-          <Card style={{borderRadius: 12}}>
+          <Card style={{ borderRadius: 12 }}>
             <div className="card_container">
               <div className="icon_container">
                 <TeamOutlined className="icon" size={32} />
@@ -269,7 +269,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{borderRadius: 12}}>
+          <Card style={{ borderRadius: 12 }}>
             <div className="card_container">
               <div className="icon_container">
                 <SnippetsOutlined className="icon" size={32} />
@@ -284,7 +284,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{borderRadius: 12}}>
+          <Card style={{ borderRadius: 12 }}>
             <div className="card_container">
               <div className="icon_container">
                 <DollarOutlined className="icon" size={32} />
@@ -299,7 +299,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{borderRadius: 12}}>
+          <Card style={{ borderRadius: 12 }}>
             <div className="card_container">
               <div className="icon_container">
                 <BarChartOutlined className="icon" size={32} />
@@ -317,7 +317,7 @@ export function Dashboard(): JSX.Element {
       <Card
         title="Biểu đồ"
         className="mt_32"
-        style={{borderRadius: 12}}
+        style={{ borderRadius: 12 }}
         extra={
           <>
             <DatePicker onChange={handleDateChange} picker="month" />
@@ -327,7 +327,7 @@ export function Dashboard(): JSX.Element {
         <canvas id="myChart" ref={canvasEl} height={50} />
       </Card>
 
-      <Card title={"Nhân viên chăm chỉ"} className="mt_32 mb_32">
+      <Card title={"Nhân viên chăm chỉ"} className="mt_32 mb_32" style={{ borderRadius: 12 }}>
         <Table columns={columns} dataSource={dataInit?.topEmployees}></Table>
       </Card>
     </div>

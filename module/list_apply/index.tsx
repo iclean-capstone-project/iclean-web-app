@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {Button, Image, Table, Tabs, TabsProps, Tag, notification} from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Image, Table, Tabs, TabsProps, Tag, notification } from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {getAllApply, IGetAllApplyRes, IItemApplyRes} from "@app/api/ApiProduct";
-import {useQuery} from "react-query";
-import {LoadingGlobal} from "@app/components/Loading";
-import {useRouter} from "next/router";
-import {useSelector} from "react-redux";
-import {IRootState} from "@app/redux/store";
+import { getAllApply, IGetAllApplyRes, IItemApplyRes } from "@app/api/ApiProduct";
+import { useQuery } from "react-query";
+import { LoadingGlobal } from "@app/components/Loading";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { IRootState } from "@app/redux/store";
 
 export function ListApply(): JSX.Element {
   const router = useRouter();
@@ -79,7 +79,7 @@ export function ListApply(): JSX.Element {
       placeHolder: "Tìm kiếm...",
       onSearch: handleSearch,
       maxLength: 255,
-      tooltip: "Từ khóa: Tiêu đề",
+      tooltip: "Tìm kiếm",
     },
   ];
   const listDatePicker = [
@@ -109,7 +109,7 @@ export function ListApply(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 55}}
+            style={{ borderRadius: 55 }}
             width={55}
             height={55}
             preview={false}
@@ -142,7 +142,7 @@ export function ListApply(): JSX.Element {
       dataIndex: "placeOfResidence",
       key: "placeOfResidence",
       align: "center",
-      width: 200,
+      width: 250,
     },
     {
       title: "Quê quán",
@@ -158,7 +158,7 @@ export function ListApply(): JSX.Element {
       key: "status",
       align: "center",
       fixed: "right",
-      width: 170,
+      width: 120,
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.status === "WAITING_FOR_APPROVE" && (
@@ -168,10 +168,10 @@ export function ListApply(): JSX.Element {
             <Tag color="lime">{"Chờ xác nhận"}</Tag>
           )}
           {dataIndex.status === "DISABLED" && (
-            <Tag color="red">{dataIndex.status}</Tag>
+            <Tag color="red">{"Từ chối"}</Tag>
           )}
           {dataIndex.status === "ONLINE" && (
-            <Tag color="green">{dataIndex.status}</Tag>
+            <Tag color="green">{"Hoạt động"}</Tag>
           )}
         </div>
       ),
@@ -192,7 +192,7 @@ export function ListApply(): JSX.Element {
           {/* <div>{dataIndex.helperInformationId}</div> */}
           <Button
             onClick={() => goToDetailApply(dataIndex.helperInformationId)}
-            style={{fontSize: 13}}
+            style={{ fontSize: 13 }}
             shape="round"
             type="primary"
           >
@@ -219,7 +219,7 @@ export function ListApply(): JSX.Element {
       ) : (
         <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       )}
-      <div style={{display: "flex", justifyContent: "space-between"}}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <FilterGroupGlobal
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
@@ -228,7 +228,7 @@ export function ListApply(): JSX.Element {
           <Button
             type="primary"
             onClick={chiaDon}
-            style={{borderRadius: "25px"}}
+            style={{ borderRadius: "25px" }}
           >
             Chia đơn cho quản lý
           </Button>
@@ -240,8 +240,8 @@ export function ListApply(): JSX.Element {
         <LoadingGlobal />
       ) : (
         <Table
-          style={{marginTop: 10}}
-          scroll={{x: 600, y: 500}}
+          style={{ marginTop: 10 }}
+          scroll={{ x: 600, y: 500 }}
           columns={columns}
           dataSource={displayedData}
           pagination={{
