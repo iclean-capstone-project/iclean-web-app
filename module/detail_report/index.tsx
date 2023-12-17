@@ -49,6 +49,7 @@ export function DetailReport(): JSX.Element {
           message: "Yêu cầu thành công",
           description: "Yêu cầu của bạn đã được xử lý thành công.",
         });
+        router.push("/list_report");
       })
       .catch((err) => {
         console.log(err);
