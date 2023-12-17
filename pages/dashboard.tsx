@@ -3,15 +3,11 @@ import {IRootState} from "@app/redux/store";
 import React from "react";
 import {useSelector} from "react-redux";
 
-export default function dashboard() {
+export default function DashboardPage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
-    <>
-      {user.userInformationDto.roleName === "admin" ? (
-        <Dashboard></Dashboard>
-      ) : (
-        <div></div>
-      )}
-    </>
+    <div>
+      {user.userInformationDto.roleName === "admin" ? <Dashboard /> : <div />}
+    </div>
   );
 }

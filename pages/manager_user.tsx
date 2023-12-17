@@ -3,15 +3,11 @@ import React from "react";
 import {useSelector} from "react-redux";
 import ManagerUser from ".";
 
-export default function manager_user() {
+export default function ManagerUserPage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
-    <>
-      {user.userInformationDto.roleName === "admin" ? (
-        <ManagerUser></ManagerUser>
-      ) : (
-        <div></div>
-      )}
-    </>
+    <div>
+      {user.userInformationDto.roleName === "admin" ? <ManagerUser /> : <div />}
+    </div>
   );
 }

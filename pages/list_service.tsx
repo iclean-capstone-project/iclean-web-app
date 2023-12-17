@@ -3,15 +3,15 @@ import {IRootState} from "@app/redux/store";
 import React from "react";
 import {useSelector} from "react-redux";
 
-export default function list_service() {
+export default function ListServicePage() {
   const user = useSelector((state: IRootState) => state.user);
   return (
-    <>
-      {user.userInformationDto.roleName === "admin" ? (
-        <ListService></ListService>
+    <div>
+      {user?.userInformationDto?.roleName === "admin" ? (
+        <ListService />
       ) : (
-        <div></div>
+        <div />
       )}
-    </>
+    </div>
   );
 }
