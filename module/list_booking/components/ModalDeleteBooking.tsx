@@ -1,15 +1,15 @@
-import React, {useRef, useState} from "react";
-import {Select, Input, Modal, notification} from "antd";
+import React, { useRef, useState } from "react";
+import { Select, Input, Modal, notification } from "antd";
 import {
   getListRejectReason,
   IListRejectReasonRes,
   rejectAproveBooking,
 } from "@app/api/ApiProduct";
-import {useMutation, useQuery} from "react-query";
-import {Formik} from "formik";
-import {openModalConfirm} from "@app/components/ModalConfirm";
+import { useMutation, useQuery } from "react-query";
+import { Formik } from "formik";
+import { openModalConfirm } from "@app/components/ModalConfirm";
 
-const {TextArea} = Input;
+const { TextArea } = Input;
 interface IProps {
   bookingId: number | undefined;
   handleCancel: any;
@@ -38,7 +38,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
   const getDataRejectReason = (): Promise<IListRejectReasonRes> =>
     getListRejectReason();
 
-  const {data} = useQuery(["GET_DATA_REJECT_REASON"], getDataRejectReason, {
+  const { data } = useQuery(["GET_DATA_REJECT_REASON"], getDataRejectReason, {
     onSuccess: (res) => {
       const newArray: IListOptionReasonReject[] = [];
       // eslint-disable-next-line no-unused-expressions
@@ -97,7 +97,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
   };
 
   return (
-    <div style={{marginTop: 10}}>
+    <div style={{ marginTop: 10 }}>
       <Formik
         innerRef={formikRef}
         initialValues={{
@@ -107,16 +107,16 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
         onSubmit={handleDeleteBooking}
         validateOnChange
         validateOnBlur
-        // validationSchema={LoginValidation}
+      // validationSchema={LoginValidation}
       >
-        {({handleSubmit, handleChange, values, setFieldValue}): JSX.Element => {
+        {({ handleSubmit, handleChange, values, setFieldValue }): JSX.Element => {
           return (
             <Modal
               title="Từ chối đơn hàng"
               okText="Từ chối"
               cancelText="Huỷ"
               okButtonProps={{
-                style: {background: "red", color: "white", borderColor: "red"},
+                style: { background: "red", color: "white", borderColor: "red" },
               }}
               open={isModalDeleteBooking}
               onOk={() => {
@@ -141,13 +141,13 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
                 }}
               >
                 <div
-                  style={{width: "35%", color: "#495057", fontWeight: "500"}}
+                  style={{ width: "35%", color: "#495057", fontWeight: "500" }}
                 >
                   Loại lí do
                 </div>
                 <Select
                   placeholder="Chọn lí do"
-                  style={{width: "100%"}}
+                  style={{ width: "100%" }}
                   value={values.rejectionReasonId}
                   onChange={(value) =>
                     setFieldValue("rejectionReasonId", value)
@@ -164,7 +164,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
                 }}
               >
                 <div
-                  style={{width: "35%", color: "#495057", fontWeight: "500"}}
+                  style={{ width: "35%", color: "#495057", fontWeight: "500" }}
                 >
                   Mô tả chi tiết
                 </div>
@@ -173,7 +173,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
                   value={values.rejectionReasonDetail}
                   onChange={handleChange}
                   placeholder="Nhập chi tiết lí do"
-                  autoSize={{minRows: 2, maxRows: 6}}
+                  autoSize={{ minRows: 2, maxRows: 6 }}
                 />
               </div>
             </Modal>

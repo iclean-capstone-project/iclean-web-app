@@ -1,6 +1,6 @@
-import {ISystemParameter, getSystemParameter} from "@app/api/ApiSystem";
-import {Button, Card, Col, Form, Input, Row} from "antd";
-import React, {useEffect, useState} from "react";
+import { ISystemParameter, getSystemParameter } from "@app/api/ApiSystem";
+import { Button, Card, Col, Form, Input, Row } from "antd";
+import React, { useEffect, useState } from "react";
 
 export function Setting() {
   const [dataInit, setDataInit] = useState<ISystemParameter[]>();
@@ -54,12 +54,12 @@ export function Setting() {
                   name={item.parameterField}
                   label={genLabel(item.parameterField)}
                 >
-                  <Input defaultValue={item.parameterValue}></Input>
+                  <Input style={{ borderRadius: 6 }} defaultValue={item.parameterValue}></Input>
                 </Form.Item>
               </Col>
             ))}
           </Row>
-          <Button type="primary" htmlType="submit" style={{float: "right"}}>
+          <Button type="primary" htmlType="submit" style={{ float: "right" }}>
             Lưu
           </Button>
         </Form>
