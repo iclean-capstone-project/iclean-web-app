@@ -4,6 +4,7 @@ import {
   getDetailBooking,
   IDetailBookingRes,
   rejectAproveBooking,
+  sendMoney,
 } from "@app/api/ApiProduct";
 import {useMutation, useQuery} from "react-query";
 import {formatDateTime} from "@app/utils/formatTime";
@@ -96,6 +97,23 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
         />
       </div>
     );
+  }
+
+  const handleSendMoney = () => {
+    console.log("send money");
+    sendMoney(bookingId)
+    .then((res) => {
+      console.log(res);
+      notification.success({
+        message: "Chuyển tiền thành công"
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+      notification.success({
+        message: "Chuyển tiền không thành công"
+      })
+    })
   }
 
   return (
@@ -191,8 +209,21 @@ export function ModalViewDetailBooking(props: IProps): JSX.Element {
             onClick={handleAcceptBooking}
             type="primary"
             style={{borderRadius: "25px"}}
-          >
+            >
             Phê duyệt
+          </Button>
+        </div>
+      )}
+      {dataDetailBookingInit?.data?.currentStatus === "FINISHED" && (
+        <div
+          style={{marginTop: 30, display: "flex", justifyContent: "flex-end"}}
+        >
+          <Button
+            onClick={handleSendMoney}
+            type="primary"
+            style={{borderRadius: "25px"}}
+          >
+            Chuyển tiền
           </Button>
         </div>
       )}

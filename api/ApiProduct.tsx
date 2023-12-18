@@ -158,6 +158,7 @@ const path = {
   setBookingForManager: "/booking/setBookingForManager",
   rejectApproveBookingPath: "/booking/manager",
   listRejectReason: "/rejection-reason",
+  sendMoney: "money-request/sendMoney/",
 
   getAllApply: "/helper-registration",
   cancelApplyPath: "/helper-registration/cancellation",
@@ -259,15 +260,22 @@ function confirmApply(params: {
   });
 }
 
-export interface IResSetApply {
+export interface IRes {
   status: string;
   message: string;
   data: null;
 }
 
-function setApplyForManager(): Promise<IResSetApply> {
+function setApplyForManager(): Promise<IRes> {
   return fetcher({
     url: path.setApplyForManager,
+    method: "post",
+  });
+}
+
+function sendMoney(id : number | undefined): Promise<IRes> {
+  return fetcher({
+    url: `${path.sendMoney}/${id}`,
     method: "post",
   });
 }
@@ -284,4 +292,5 @@ export {
   getDetailApplyById,
   setBookingForManager,
   setApplyForManager,
+  sendMoney,
 };
