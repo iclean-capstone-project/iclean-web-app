@@ -19,9 +19,12 @@ export function FormServiceUnit(props: IProps) {
 
   useEffect(() => {
     getServiceUnitDetail(serviceUnitId).then((res) => {
-      console.log(res);
+      console.log("Unit >>> ",res);
       setDataInit(res.data);
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }, []);
 
   const handleOnFinish = (e: any) => {
@@ -38,7 +41,7 @@ export function FormServiceUnit(props: IProps) {
       <Form
         onFinish={handleOnFinish}
         initialValues={initialValues}
-        key={unitDetail}
+        // key={unitDetail}
       >
         <Row gutter={[16, 8]}>
           <Col span={24}>
