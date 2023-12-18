@@ -47,7 +47,7 @@ export function Profile(): JSX.Element {
     console.log("Success:", values);
     const requestData = {
       fullName: "John Doe",
-      dateOfBirth: "1990-01-01",
+      dateOfBirth: "1990-01-01",  
       fileImage: "base64encodedimage",
     };
 

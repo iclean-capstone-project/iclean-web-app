@@ -75,28 +75,22 @@ export function DetailService() {
     console.log(values);
   };
 
+  console.log("dataInit", dataInit);
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
-      <>
+      <div>
         {dataInit && (
           <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item name={"serviceName"} label={"Tên dịch vụ"}>
-              <Input type="text" defaultValue={dataInit?.serviceName}></Input>
+            <Form.Item name="serviceName" label="Tên dịch vụ">
+              <Input type="text" value={dataInit?.serviceName} />
             </Form.Item>
-            <Form.Item name={"description"} label={"Mô tả"}>
-              <TextArea
-                rows={8}
-                defaultValue={dataInit?.description}
-              ></TextArea>
+            <Form.Item name="description" label="Mô tả">
+              <TextArea rows={8} value={dataInit?.description} />
             </Form.Item>
-            <Form.Item name={"serviceAvatar"} label={"Icon dịch vụ"}>
+            <Form.Item name="serviceAvatar" label="Icon dịch vụ">
               <div className="d_flex">
                 <div className="me_2">
-                  <Image
-                    src={dataInit?.serviceIcon}
-                    width={102}
-                    height={102}
-                  ></Image>
+                  <Image src={dataInit?.serviceIcon} width={102} height={102} />
                 </div>
                 <Upload listType="picture-card">
                   <div>
@@ -107,7 +101,7 @@ export function DetailService() {
               </div>
             </Form.Item>
             <Form.Item
-              name={"serviceFileImages"}
+              name="serviceFileImages"
               label="Hình ảnh dịch vụ"
               valuePropName="fileList"
               getValueFromEvent={normFile}
@@ -115,11 +109,7 @@ export function DetailService() {
               <div className="d_flex">
                 {dataInit?.images.map((item, i) => (
                   <div key={i} className="me_2">
-                    <Image
-                      src={item.serviceImage}
-                      width={102}
-                      height={102}
-                    ></Image>
+                    <Image src={item.serviceImage} width={102} height={102} />
                   </div>
                 ))}
                 <div>
@@ -139,7 +129,7 @@ export function DetailService() {
             </Form.Item>
           </Form>
         )}
-      </>
+      </div>
     ),
     tab2: (
       <FormServiceUnit
@@ -147,7 +137,7 @@ export function DetailService() {
         serviceUnitId={serviceUnit[0]?.serviceUnitId}
         unitDetail={serviceUnit[0]?.unitDetail}
         defaultPrice={serviceUnit[0]?.defaultPrice}
-      ></FormServiceUnit>
+      />
     ),
     tab3: (
       <FormServiceUnit
@@ -155,7 +145,7 @@ export function DetailService() {
         serviceUnitId={serviceUnit[1]?.serviceUnitId}
         unitDetail={serviceUnit[1]?.unitDetail}
         defaultPrice={serviceUnit[1]?.defaultPrice}
-      ></FormServiceUnit>
+      />
     ),
     tab4: (
       <FormServiceUnit
@@ -163,7 +153,7 @@ export function DetailService() {
         serviceUnitId={serviceUnit[2]?.serviceUnitId}
         unitDetail={serviceUnit[2]?.unitDetail}
         defaultPrice={serviceUnit[2]?.defaultPrice}
-      ></FormServiceUnit>
+      />
     ),
   };
 
