@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Button, Image, Table, Tabs, TabsProps, Tag, notification } from "antd";
+import React, {useEffect, useState} from "react";
+import {Button, Image, Table, Tabs, TabsProps, Tag, notification} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {getAllApply, IGetAllApplyRes, IItemApplyRes, setApplyForManager} from "@app/api/ApiProduct";
+import {
+  getAllApply,
+  IGetAllApplyRes,
+  IItemApplyRes,
+  setApplyForManager,
+} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
 import {LoadingGlobal} from "@app/components/Loading";
 import {useRouter} from "next/router";
-import { useSelector } from "react-redux";
-import { IRootState } from "@app/redux/store";
+import {useSelector} from "react-redux";
+import {IRootState} from "@app/redux/store";
 
 export function ListApply(): JSX.Element {
   const router = useRouter();
@@ -109,7 +114,7 @@ export function ListApply(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{ borderRadius: 55 }}
+            style={{borderRadius: 55}}
             width={55}
             height={55}
             preview={false}
@@ -192,7 +197,7 @@ export function ListApply(): JSX.Element {
           {/* <div>{dataIndex.helperInformationId}</div> */}
           <Button
             onClick={() => goToDetailApply(dataIndex.helperInformationId)}
-            style={{ fontSize: 13 }}
+            style={{fontSize: 13}}
             shape="round"
             type="primary"
           >
@@ -207,22 +212,22 @@ export function ListApply(): JSX.Element {
 
   const chiaDon = () => {
     setApplyForManager()
-    .then((res) => {
-      console.log(res);
-      notification.success({
-        message: "Thành công",
-        description:  "Chia đơn cho quản lý thành công",
-        duration: 3,
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: "Thành công",
+          description: "Chia đơn cho quản lý thành công",
+          duration: 3,
+        });
       })
-    })
-    .catch(() => {
-      notification.warning({
-        message: "Không thành công",
-        description:  "Không còn đơn chưa chia",
-        duration: 3,
-      })
-    })
-  }
+      .catch(() => {
+        notification.warning({
+          message: "Không thành công",
+          description: "Không còn đơn chưa chia",
+          duration: 3,
+        });
+      });
+  };
   return (
     <div className="list-apply-container">
       {user.userInformationDto?.roleName === "admin" ? (
@@ -230,7 +235,7 @@ export function ListApply(): JSX.Element {
       ) : (
         <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       )}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{display: "flex", justifyContent: "space-between"}}>
         <FilterGroupGlobal
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
@@ -239,7 +244,7 @@ export function ListApply(): JSX.Element {
           <Button
             type="primary"
             onClick={chiaDon}
-            style={{ borderRadius: "25px" }}
+            style={{borderRadius: "25px"}}
           >
             Chia đơn cho quản lý
           </Button>
@@ -251,8 +256,8 @@ export function ListApply(): JSX.Element {
         <LoadingGlobal />
       ) : (
         <Table
-          style={{ marginTop: 10 }}
-          scroll={{ x: 600, y: 500 }}
+          style={{marginTop: 10}}
+          scroll={{x: 600, y: 500}}
           columns={columns}
           dataSource={displayedData}
           pagination={{

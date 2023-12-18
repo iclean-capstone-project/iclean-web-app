@@ -32,8 +32,7 @@ export function DetailService() {
       .catch((err) => {
         console.log(err);
       });
-
-    }, []);
+  }, []);
 
   useEffect(() => {
     getAllServiceUnit({serviceId: serviceId})
@@ -44,7 +43,7 @@ export function DetailService() {
       .catch((err) => {
         console.log(err);
       });
-  }, [])
+  }, []);
 
   const tabList = [
     {
@@ -79,16 +78,16 @@ export function DetailService() {
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <>
-        {dataInit && 
-          <Form
-            layout="vertical"
-            onFinish={onFinish}
-          >
+        {dataInit && (
+          <Form layout="vertical" onFinish={onFinish}>
             <Form.Item name={"serviceName"} label={"Tên dịch vụ"}>
               <Input type="text" defaultValue={dataInit?.serviceName}></Input>
             </Form.Item>
             <Form.Item name={"description"} label={"Mô tả"}>
-              <TextArea rows={8} defaultValue={dataInit?.description}></TextArea>
+              <TextArea
+                rows={8}
+                defaultValue={dataInit?.description}
+              ></TextArea>
             </Form.Item>
             <Form.Item name={"serviceAvatar"} label={"Icon dịch vụ"}>
               <div className="d_flex">
@@ -139,7 +138,7 @@ export function DetailService() {
               </Button>
             </Form.Item>
           </Form>
-        }
+        )}
       </>
     ),
     tab2: (

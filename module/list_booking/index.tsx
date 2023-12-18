@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Button,
   Image,
@@ -15,15 +15,15 @@ import {
   IListItemBooking,
   setBookingForManager,
 } from "@app/api/ApiProduct";
-import { useQuery } from "react-query";
-import { ModalViewDetailBooking } from "@app/module/list_booking/components/ModalViewDetailBooking";
+import {useQuery} from "react-query";
+import {ModalViewDetailBooking} from "@app/module/list_booking/components/ModalViewDetailBooking";
 import "./index.scss";
-import { itemsTab } from "@app/module/list_booking/listDataDefault";
-import { ModalDeleteBooking } from "@app/module/list_booking/components/ModalDeleteBooking";
-import { formatDateTime } from "@app/utils/formatTime";
-import { formatMoney } from "@app/utils/formatMoney";
-import { useSelector } from "react-redux";
-import { IRootState } from "@app/redux/store";
+import {itemsTab} from "@app/module/list_booking/listDataDefault";
+import {ModalDeleteBooking} from "@app/module/list_booking/components/ModalDeleteBooking";
+import {formatDateTime} from "@app/utils/formatTime";
+import {formatMoney} from "@app/utils/formatMoney";
+import {useSelector} from "react-redux";
+import {IRootState} from "@app/redux/store";
 
 export function ListBooking(): JSX.Element {
   const user = useSelector((state: IRootState) => state.user);
@@ -149,7 +149,7 @@ export function ListBooking(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{ borderRadius: 55 }}
+            style={{borderRadius: 55}}
             width={55}
             height={55}
             preview={false}
@@ -261,7 +261,7 @@ export function ListBooking(): JSX.Element {
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
             <Button
               type="primary"
-              style={{ borderRadius: "25px" }}
+              style={{borderRadius: "25px"}}
               onClick={() => showModal(dataIndex.bookingId)}
             >
               Xem chi tiết
@@ -306,23 +306,23 @@ export function ListBooking(): JSX.Element {
 
   const chiaDon = () => {
     setBookingForManager()
-    .then((res) => {
-      console.log(res);
-      notification.success({
-        message: "Thành công",
-        description:  "Chia đơn cho quản lý thành công",
-        duration: 3,
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: "Thành công",
+          description: "Chia đơn cho quản lý thành công",
+          duration: 3,
+        });
       })
-    })
-    .catch((err) => {
-      console.log(err);
-      notification.warning({
-        message: "Không thành công",
-        description:  "Không còn đơn chưa chia",
-        duration: 3,
-      })
-    })
-  }
+      .catch((err) => {
+        console.log(err);
+        notification.warning({
+          message: "Không thành công",
+          description: "Không còn đơn chưa chia",
+          duration: 3,
+        });
+      });
+  };
 
   return (
     <div className="list-booking-container">
@@ -340,7 +340,7 @@ export function ListBooking(): JSX.Element {
           <Button
             type="primary"
             onClick={chiaDon}
-            style={{ borderRadius: "25px" }}
+            style={{borderRadius: "25px"}}
           >
             Chia đơn cho quản lý
           </Button>
@@ -349,8 +349,8 @@ export function ListBooking(): JSX.Element {
         )}
       </div>
       <Table
-        style={{ marginTop: 10 }}
-        scroll={{ x: 600, y: 505 }}
+        style={{marginTop: 10}}
+        scroll={{x: 600, y: 505}}
         columns={columns}
         dataSource={displayedData}
         className="table-list-booking"

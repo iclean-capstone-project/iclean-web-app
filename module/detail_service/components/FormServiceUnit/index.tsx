@@ -20,13 +20,14 @@ export function FormServiceUnit(props: IProps) {
   const [dataInit, setDataInit] = useState<IServiceUnitDetail1>();
 
   useEffect(() => {
-    getServiceUnitDetail(serviceUnitId).then((res) => {
-      console.log("Unit >>> ",res);
-      setDataInit(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    getServiceUnitDetail(serviceUnitId)
+      .then((res) => {
+        console.log("Unit >>> ", res);
+        setDataInit(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   interface IDataItem {
@@ -60,15 +61,15 @@ export function FormServiceUnit(props: IProps) {
 
     
     editServceUnit(serviceUnitId, a)
-    .then((res) => {
-      console.log(res);
-      notification.success({
-        message: "Cập nhật giá thành công"
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: "Cập nhật giá thành công",
+        });
       })
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const initialValues = {
