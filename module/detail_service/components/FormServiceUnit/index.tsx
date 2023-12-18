@@ -105,12 +105,12 @@ export function FormServiceUnit(props: IProps) {
               </Col>
               <Col span={10}>
                 <Form.Item name={`price${item.id}`} label="Giá (vnđ)">
-                  <Input defaultValue={item.price}></Input>
+                  <Input defaultValue={formatMoney(item.price)}></Input>
                 </Form.Item>
               </Col>
               <Col span={14}>
                 <Form.Item name={`commission${item.id}`} label="Hoa hồng (%)">
-                  <Input defaultValue={item.employeeCommission}></Input>
+                  <Input defaultValue={`${item.employeeCommission}%`}></Input>
                 </Form.Item>
               </Col>
             </>
