@@ -299,14 +299,19 @@ export function ListBooking(): JSX.Element {
     setBookingForManager()
     .then((res) => {
       console.log(res);
+      notification.success({
+        message: "Thành công",
+        description:  "Chia đơn cho quản lý thành công",
+        duration: 3,
+      })
     })
     .catch((err) => {
       console.log(err);
-    })
-    notification.success({
-      message: "Thành công",
-      description:  "Chia đơn cho quản lý thành công",
-      duration: 3,
+      notification.warning({
+        message: "Không thành công",
+        description:  "Không còn đơn chưa chia",
+        duration: 3,
+      })
     })
   }
 

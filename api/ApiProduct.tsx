@@ -163,6 +163,7 @@ const path = {
   cancelApplyPath: "/helper-registration/cancellation",
   acceptApplyPath: "/helper-registration/acceptance",
   confirmApplyPath: "/helper-registration/confirmation",
+  setApplyForManager: "/helper-registration/setManager",
 };
 
 function rejectAproveBooking(params: {
@@ -258,6 +259,19 @@ function confirmApply(params: {
   });
 }
 
+export interface IResSetApply {
+  status: string;
+  message: string;
+  data: null;
+}
+
+function setApplyForManager(): Promise<IResSetApply> {
+  return fetcher({
+    url: path.setApplyForManager,
+    method: "post",
+  });
+}
+
 export {
   getAllBooking,
   rejectAproveBooking,
@@ -269,4 +283,5 @@ export {
   confirmApply,
   getDetailApplyById,
   setBookingForManager,
+  setApplyForManager,
 };

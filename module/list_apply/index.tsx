@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Image, Table, Tabs, TabsProps, Tag, notification} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {getAllApply, IGetAllApplyRes, IItemApplyRes} from "@app/api/ApiProduct";
+import {getAllApply, IGetAllApplyRes, IItemApplyRes, setApplyForManager} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
 import {LoadingGlobal} from "@app/components/Loading";
 import {useRouter} from "next/router";
@@ -201,10 +201,21 @@ export function ListApply(): JSX.Element {
   ];
 
   const chiaDon = () => {
-    notification.success({
-      message: "Thành công",
-      description:  "Chia đơn cho quản lý thành công",
-      duration: 3,
+    setApplyForManager()
+    .then((res) => {
+      console.log(res);
+      notification.success({
+        message: "Thành công",
+        description:  "Chia đơn cho quản lý thành công",
+        duration: 3,
+      })
+    })
+    .catch(() => {
+      notification.warning({
+        message: "Không thành công",
+        description:  "Không còn đơn chưa chia",
+        duration: 3,
+      })
     })
   }
   return (
