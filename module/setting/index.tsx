@@ -1,5 +1,5 @@
-import { ISystemParameter, getSystemParameter } from "@app/api/ApiSystem";
-import { Button, Card, Col, Form, Input, Row } from "antd";
+import { ISystemParameter, editSystemParameter, getSystemParameter } from "@app/api/ApiSystem";
+import { Button, Card, Col, Form, Input, Row, notification } from "antd";
 import React, { useEffect, useState } from "react";
 
 export function Setting() {
@@ -16,7 +16,86 @@ export function Setting() {
   }, []);
 
   const handleSubmit = (e: any) => {
-    console.log(e);
+    var a = []
+    var i = 0;
+    if(e.max_update_minutes != undefined) {
+      console.log(e.max_update_minutes);
+      a[i++] = {
+        parameterId: 1,
+        parameterValue: e.max_update_minutes
+      }
+    }
+    if(e.max_end_time_minutes != undefined) {
+      console.log(e.max_end_time_minutes);
+      a[i++] = {
+        parameterId: 2,
+        parameterValue: e.max_end_time_minutes
+      }
+    }
+    if(e.max_distance != undefined) {
+      console.log(e.max_distance);
+      a[i++] = {
+        parameterId: 3,
+        parameterValue: e.max_distance
+      }
+    }
+    if(e.point_to_money != undefined) {
+      console.log(e.point_to_money);
+      a[i++] = {
+        parameterId: 4,
+        parameterValue: e.point_to_money
+      }
+    }
+    if(e.request_booking_count != undefined) {
+      console.log(e.request_booking_count);
+      a[i++] = {
+        parameterId: 5,
+        parameterValue: e.request_booking_count
+      }
+    }
+    if(e.delay_minutes != undefined) {
+      console.log(e.delay_minutes);
+      a[i++] = {
+        parameterId: 6,
+        parameterValue: e.delay_minutes
+      }
+    }
+    if(e.max_minutes_send_money != undefined) {
+      console.log(e.max_minutes_send_money);
+      a[i++] = {
+        parameterId: 7,
+        parameterValue: e.max_minutes_send_money
+      }
+    }
+    if(e.max_minutes_cancel_booking != undefined) {
+      console.log(e.max_minutes_cancel_booking);
+      a[i++] = {
+        parameterId: 8,
+        parameterValue: e.max_minutes_cancel_booking
+      }
+    }
+    if(e.otp_message_default != undefined) {
+      console.log(e.otp_message_default);
+      a[i++] = {
+        parameterId: 9,
+        parameterValue: e.otp_message_default
+      }
+    }
+    console.log(a);
+    editSystemParameter(a)
+    .then((res) => {
+      console.log(res);
+      notification.success({
+        message: "Thành công",
+        description: "Cài đặt hệ thống thành công"
+      })
+    })
+    .catch((err) => {
+      notification.error({
+        message: "Không thành công",
+        description: "Cài đặt hệ thống không thành công"
+      })
+    })
   };
 
   const genLabel = (name: string): string => {
