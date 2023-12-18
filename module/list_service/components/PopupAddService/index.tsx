@@ -151,6 +151,7 @@ export function PopupAddService(props: IProps) {
 
   return (
     <Modal
+      className="border_radius"
       title={"Thêm dịch vụ"}
       open={open}
       footer={[]}
@@ -158,6 +159,7 @@ export function PopupAddService(props: IProps) {
       width={1000}
     >
       <Card
+        className="border_radius"
         style={{width: "100%"}}
         tabList={tabList}
         activeTabKey={activeTabKey}

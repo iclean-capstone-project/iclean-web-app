@@ -12,6 +12,7 @@ import {
   Upload,
   notification,
 } from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 export function Profile(): JSX.Element {
@@ -32,21 +33,15 @@ export function Profile(): JSX.Element {
   // }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getInfoUser();
-        setUserData(res.data);
-        console.log(res);
-        setR(res.data.roleName);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    if (!userData) {
-      fetchData();
-    }
-  }, [userData]);
+    getInfoUser()
+    .then((res) => {
+      console.log(res);
+      setUserData(res.data)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }, []);
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -78,28 +73,17 @@ export function Profile(): JSX.Element {
     }
   };
 
-  const init: IUserData = {
-    fullName: "string",
-    phoneNumber: "string",
-    roleName: "role",
-    dateOfBirth: "string",
-    defaultAddress: "string",
-    avatar: "string",
-    isRegistration: true,
-  };
-
   return (
     <div className="profile-container">
       <Row>
         <Col span={4}></Col>
         <Col span={16}>
           <Card style={{ borderRadius: 12 }}>
-            <Form
+            {userData && <Form
               name="profile"
               onFinish={onFinish}
               autoComplete="off"
               layout="vertical"
-              initialValues={init}
             >
               <div style={{ display: "flex", margin: "24px 0px" }}>
                 <div
@@ -156,8 +140,8 @@ export function Profile(): JSX.Element {
                 </Row>
               </Form.Item>
 
-              <Form.Item label="Vai trò" name="Quản lý">
-                <Input readOnly={isEdit} style={{ borderRadius: 6 }} size={"large"} placeholder="Vai trò" />
+              <Form.Item label="Vai trò" name="roleName">
+                <Input readOnly={isEdit} style={{ borderRadius: 6 }} size={"large"} placeholder="Vai trò" defaultValue={userData.roleName}/>
               </Form.Item>
 
               <Form.Item label="Số điện thoại" name="phoneNumber">
@@ -167,18 +151,20 @@ export function Profile(): JSX.Element {
                   size={"large"}
                   placeholder="Số điện thoại"
                   style={{ borderRadius: 6 }}
+                  defaultValue={userData.phoneNumber}
                 />
               </Form.Item>
 
-              <Form.Item label="DatePicker" name="datePicker">
+              <Form.Item label="DatePicker" name="dateOfBirth">
                 <DatePicker
                   style={{ width: "100%", height: "40px", borderRadius: 6 }}
                   inputReadOnly={true}
+                  defaultValue={moment(userData.dateOfBirth)}
                 />
               </Form.Item>
 
               <Form.Item label="Địa chỉ" name="defaultAddress">
-                <Input readOnly={isEdit} size={"large"} style={{ borderRadius: 6 }} placeholder="Địa chỉ" />
+                <Input readOnly={isEdit} size={"large"} style={{ borderRadius: 6 }} placeholder="Địa chỉ" defaultValue={userData.defaultAddress}/>
               </Form.Item>
 
               <Form.Item wrapperCol={{ span: 20 }}>
@@ -190,7 +176,7 @@ export function Profile(): JSX.Element {
                   Lưu
                 </Button>
               </Form.Item>
-            </Form>
+            </Form>}
           </Card>
         </Col>
       </Row>

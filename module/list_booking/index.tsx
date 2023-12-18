@@ -362,6 +362,7 @@ export function ListBooking(): JSX.Element {
         }}
       />
       <Modal
+        className="border_radius"
         title="Chi tiết đơn hàng"
         open={isModalOpen}
         onOk={handleSubmit}

@@ -112,6 +112,7 @@ export function ModalDeleteBooking(props: IProps): JSX.Element {
         {({ handleSubmit, handleChange, values, setFieldValue }): JSX.Element => {
           return (
             <Modal
+              className="border_radius"
               title="Từ chối đơn hàng"
               okText="Từ chối"
               cancelText="Huỷ"

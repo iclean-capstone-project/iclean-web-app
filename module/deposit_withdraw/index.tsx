@@ -434,6 +434,8 @@ export function DepositWithdraw(): JSX.Element {
         open={isModalOpen}
         onCancel={closeModal}
         footer={null}
+        className="border_radius"
+        style={{borderRadius: "8px"}}
       >
         <Form
           name="deposit-withdraw"
@@ -467,6 +469,7 @@ export function DepositWithdraw(): JSX.Element {
         </Form>
       </Modal>
       <Modal
+        className="border_radius"
         title="Lịch sử giao dịch"
         open={isModalHistoryOpen}
         onCancel={closeHistoryModal}

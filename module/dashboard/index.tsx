@@ -254,7 +254,7 @@ export function Dashboard(): JSX.Element {
     <div className="transaction-statistics-container">
       <Row gutter={[32, 24]}>
         <Col span={6}>
-          <Card style={{ borderRadius: 12 }}>
+          <Card className="border_radius">
             <div className="card_container">
               <div className="icon_container">
                 <TeamOutlined className="icon" size={32} />
@@ -269,7 +269,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{ borderRadius: 12 }}>
+          <Card className="border_radius">
             <div className="card_container">
               <div className="icon_container">
                 <SnippetsOutlined className="icon" size={32} />
@@ -284,7 +284,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{ borderRadius: 12 }}>
+          <Card className="border_radius">
             <div className="card_container">
               <div className="icon_container">
                 <DollarOutlined className="icon" size={32} />
@@ -299,7 +299,7 @@ export function Dashboard(): JSX.Element {
           </Card>
         </Col>
         <Col span={6}>
-          <Card style={{ borderRadius: 12 }}>
+          <Card className="border_radius">
             <div className="card_container">
               <div className="icon_container">
                 <BarChartOutlined className="icon" size={32} />
@@ -316,8 +316,7 @@ export function Dashboard(): JSX.Element {
       </Row>
       <Card
         title="Biểu đồ"
-        className="mt_32"
-        style={{ borderRadius: 12 }}
+        className="mt_32 border_radius"
         extra={
           <>
             <DatePicker onChange={handleDateChange} picker="month" />
@@ -327,7 +326,7 @@ export function Dashboard(): JSX.Element {
         <canvas id="myChart" ref={canvasEl} height={50} />
       </Card>
 
-      <Card title={"Nhân viên chăm chỉ"} className="mt_32 mb_32" style={{ borderRadius: 12 }}>
+      <Card title={"Nhân viên chăm chỉ"} className="mt_32 mb_32 border_radius">
         <Table columns={columns} dataSource={dataInit?.topEmployees}></Table>
       </Card>
     </div>

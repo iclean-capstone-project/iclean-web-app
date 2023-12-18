@@ -123,7 +123,7 @@ export function Setting() {
 
   return (
     <div>
-      <Card>
+      <Card className="border_radius">
         <h2>Thông số</h2>
         <Form onFinish={handleSubmit} layout="vertical">
           <Row gutter={[48, 24]}>

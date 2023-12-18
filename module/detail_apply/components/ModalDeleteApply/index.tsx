@@ -66,6 +66,7 @@ export function ModalDeleteApply(props: IProps): JSX.Element {
         {({handleSubmit, handleChange, values, setFieldValue}): JSX.Element => {
           return (
             <Modal
+              className="border_radius"
               title="Từ chối đơn ứng tuyển"
               okText="Từ chối"
               cancelText="Huỷ"
