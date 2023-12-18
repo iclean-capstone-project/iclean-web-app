@@ -9,7 +9,6 @@ import {
   Row,
   Select,
   notification,
-  TabsProps,
 } from "antd";
 import React, {useEffect, useState} from "react";
 import {useQuery} from "react-query";
@@ -129,23 +128,6 @@ export function DetailReport(): JSX.Element {
     },
   ];
 
-  const image = [
-    {
-      src: "/img/imagereport.png",
-    },
-    {
-      src: "/img/imagereport.png",
-    },
-    {
-      src: "/img/imagereport.png",
-    },
-    {
-      src: "/img/imagereport.png",
-    },
-    {
-      src: "/img/imagereport.png",
-    },
-  ];
   return (
     <div className="detail_report_container">
       <Card className="detail_report" style={{borderRadius: 12}}>

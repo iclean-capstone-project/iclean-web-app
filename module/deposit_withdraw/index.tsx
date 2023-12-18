@@ -435,7 +435,6 @@ export function DepositWithdraw(): JSX.Element {
         onCancel={closeModal}
         footer={null}
         className="border_radius"
-        style={{borderRadius: "8px"}}
       >
         <Form
           name="deposit-withdraw"

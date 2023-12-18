@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Button, Pagination, Table, Tag} from "antd";
+import {Button, Pagination, Table, Tabs, TabsProps, Tag} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {useQuery} from "react-query";
 import {
@@ -11,6 +11,7 @@ import {
 import {LoadingGlobal} from "@app/components/Loading";
 import {formatDateTime} from "@app/utils/formatTime";
 import {useRouter} from "next/router";
+import moment from "moment";
 
 interface DataType {
   key: string;
@@ -25,6 +26,9 @@ interface DataType {
 
 export function ListReport(): JSX.Element {
   const [dataInit, setDataInit] = useState<any>([]);
+  const [currentTab, setCurrentTab] = useState<string>("all");
+  const [filteredData, setFilteredData] = useState<any>([]);
+  const [dateRange, setDateRange] = useState<any>([]);
   const [paramsGetReport, setParamsGetReport] = useState<IParamGetAllReport>({
     renterName: "",
     page: 1,
@@ -44,6 +48,17 @@ export function ListReport(): JSX.Element {
       size: paramsGetReport.size,
     });
 
+    useEffect(() => {
+      const filteredData = dataInit.filter((item: { reportStatus: string; }) => {
+        if (currentTab === "all") {
+          return true;
+        } else {
+          return item.reportStatus === currentTab;
+        }
+      });
+      setFilteredData(filteredData)
+    }, [dataInit, currentTab]);
+
   const {refetch, data, isLoading} = useQuery(
     ["GET_DETAIL_REPORT"],
     getDataDetailReport,
@@ -58,7 +73,7 @@ export function ListReport(): JSX.Element {
   console.log("dataInit", dataInit);
 
   const handleSearch = (valueSearch: string): void => {
-    console.log("Ssss");
+    console.log(valueSearch);
     setParamsGetReport({...paramsGetReport, renterName: valueSearch});
   };
 
@@ -74,7 +89,8 @@ export function ListReport(): JSX.Element {
   const listDatePicker = [
     {
       onChange: (startTime: number, endTime: number): void => {
-        console.log("sss");
+        console.log(startTime, endTime);
+        setDateRange([startTime, endTime])
       },
       tooltip: "Ngày tạo",
       title: "Ngày tạo",
@@ -183,8 +199,32 @@ export function ListReport(): JSX.Element {
     });
   };
 
+  const itemsTab: TabsProps["items"] = [
+    {
+      key: "all",
+      label: "Tất cả",
+    },
+    {
+      key: "PROCESSING",
+      label: "Chờ duyệt",
+    },
+    {
+      key: "PROCESSED",
+      label: "Đã xử lý",
+    },
+    {
+      key: "REJECTED",
+      label: "Từ chối",
+    },
+  ];
+
+  const onChangeTab = (key : string) => {
+    setCurrentTab(key);
+  }
+
   return (
     <div className="manager-user-container">
+      <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       <FilterGroupGlobal
         listSearchText={listSearchText}
         listDatePicker={listDatePicker}
@@ -196,7 +236,7 @@ export function ListReport(): JSX.Element {
           style={{marginTop: 10}}
           scroll={{x: 600, y: 550}}
           columns={columns}
-          dataSource={dataInit}
+          dataSource={filteredData}
           pagination={false}
         />
       )}
