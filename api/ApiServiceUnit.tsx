@@ -24,7 +24,7 @@ export interface IServiceUnitDetail {
   defaultPrice: number;
   helperCommission: number;
   unitId: number;
-  serviceId: number;
+  serviceId?: number;
   servicePrices: IServicePrice[];
 }
 

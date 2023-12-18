@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {Button, Card, Form, Image, Input, Upload} from "antd";
+import {Button, Card, Form, Image, Input, Upload, notification} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {IService, getServiceById} from "@app/api/ApiService";
 import TextArea from "antd/lib/input/TextArea";
@@ -8,12 +8,16 @@ import TextArea from "antd/lib/input/TextArea";
 import {IServiceUnit, getAllServiceUnit} from "@app/api/ApiServiceUnit";
 import {FormServiceUnit} from "./components/FormServiceUnit";
 import "./index.scss";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { IRootState } from "@app/redux/store";
 
 export function DetailService() {
   const [activeTabKey, setActiveTabKey] = useState<string>("tab1");
   const [dataInit, setDataInit] = useState<IService>();
   const [serviceUnit, setServiceUnit] = useState<IServiceUnit[]>([]);
   const router = useRouter();
+  const userInfo = useSelector((state: IRootState) => state.user);
 
   const onTabChange = (key: string) => {
     setActiveTabKey(key);
@@ -72,7 +76,52 @@ export function DetailService() {
   };
 
   const onFinish = async (values: any) => {
-    console.log(values);
+      console.log("values", values);
+      try {
+        const formData = new FormData();
+
+        const name = values.serviceName ? values.serviceName : dataInit?.serviceName
+        const des = values.description ? values.description : dataInit?.description
+  
+        formData.append("serviceName", name);
+        formData.append("description", des);
+  
+        // values.serviceFileImages.forEach((image: any, index: number) => {
+        //   formData.append(`serviceFileImages`, image.originFileObj);
+        // });
+  
+        // formData.append(
+        //   "serviceAvatar",
+        //   values.serviceAvatar.fileList[0].originFileObj
+        // );
+  
+        const endPoint = `https://iclean.azurewebsites.net/api/v1/service/${serviceId}`
+        const response = await axios
+          .put(endPoint , formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Authorization": `Bearer ${userInfo.accessToken}`,
+            },
+          })
+          .then((res) => {
+            notification.success({
+              message: "Thành công",
+              description: "Cập nhật dịch vụ thành công.",
+            });
+            console.log("response", res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            notification.error({
+              message: "Không thành công",
+              description: "Cập nhật dịch vụ không thành công.",
+            });
+          })
+  
+      } catch (error) {
+        // console.error('Lỗi khi upload ảnh:', error);
+        // setUploadStatus('Upload thất bại!');
+      }
   };
 
   console.log("dataInit", dataInit);
@@ -82,10 +131,10 @@ export function DetailService() {
         {dataInit && (
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item name="serviceName" label="Tên dịch vụ">
-              <Input type="text" value={dataInit?.serviceName} />
+              <Input type="text" defaultValue={dataInit?.serviceName} />
             </Form.Item>
             <Form.Item name="description" label="Mô tả">
-              <TextArea rows={8} value={dataInit?.description} />
+              <TextArea rows={8} defaultValue={dataInit?.description} />
             </Form.Item>
             <Form.Item name="serviceAvatar" label="Icon dịch vụ">
               <div className="d_flex">

@@ -1,5 +1,6 @@
 import {FormOutlined} from "@ant-design/icons";
-import {IUpdateProfileData, IUserData, getInfoUser} from "@app/api/ApiProfile";
+import {IUserData, getInfoUser} from "@app/api/ApiProfile";
+import { IRootState } from "@app/redux/store";
 import {
   Button,
   Card,
@@ -12,25 +13,22 @@ import {
   Upload,
   notification,
 } from "antd";
+import axios from "axios";
 import moment from "moment";
 import React, {useEffect, useState} from "react";
+import { useSelector } from "react-redux";
 
 export function Profile(): JSX.Element {
   const [isEdit, setIsEdit] = useState<boolean>(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [userData, setUserData] = useState<IUserData>();
-  const [r, setR] = useState<string>("");
+  const userInfo = useSelector((state: IRootState) => state.user);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
-  // getInfoUser()
-  //   .then((res: { data: any; }) => {
-  //     setUserData(res.data);
-  //     console.log(res);
-  //   })
-  //   .catch((err: any) => {
-  //     console.log(err);
-  //   });
-  // useEffect(() => {
-  // }, []);
+  const handleDateChange = (date: any, dateString: string) => {
+    setSelectedDate(dateString);
+  };
+
 
   useEffect(() => {
     getInfoUser()
@@ -43,33 +41,52 @@ export function Profile(): JSX.Element {
       });
   }, []);
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-    const requestData = {
-      fullName: "John Doe",
-      dateOfBirth: "1990-01-01",  
-      fileImage: "base64encodedimage",
-    };
-
-    // Prepare the data for the updateProfile function
-    const updatedProfileData: IUpdateProfileData = {
-      fullName: values.fullName,
-      dateOfBirth: "",
-      fileImage: "", // Add the logic to get the fileImage data if needed
-    };
-
-    console.log(updatedProfileData);
-  };
-
+  
   const editInfo = () => {
     setIsEdit(false);
   };
-
+  
   const handleImageChange = (info: any) => {
     console.log(info.file.status);
     if (info.file.status === "done") {
       console.log(info.file.response.url);
       setSelectedImage(info.file.response.url);
+    }
+  };
+  
+
+  const onFinish = async (values: any) => {
+    console.log("values", values);
+    try {
+      const formData = new FormData();
+      formData.append("fullName ",  values?.fullName ? values.fullName : userData?.fullName);
+      formData.append("dateOfBirth ", selectedDate);
+      console.log(selectedDate);
+
+      formData.append(
+        "fileImage",
+        values.avatar.fileList[0].originFileObj
+      );
+
+      const response = await axios
+        .put("https://iclean.azurewebsites.net/api/v1/profile", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${userInfo.accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          notification.success({
+            message: "Thành công",
+            description: "Cập nhật thông tin thành công.",
+          });
+        });
+
+      console.log("response", response);
+    } catch (error) {
+      // console.error('Lỗi khi upload ảnh:', error);
+      // setUploadStatus('Upload thất bại!');
     }
   };
 
@@ -103,17 +120,19 @@ export function Profile(): JSX.Element {
                   </div>
                   <div>
                     <h2>{userData?.fullName}</h2>
-                    <Upload
-                      maxCount={1}
-                      showUploadList={false}
-                      onChange={handleImageChange}
-                    >
-                      <Button
-                        style={{padding: "0", border: "none", color: "#1890ff"}}
+                    <Form.Item name={"avatar"}>
+                      <Upload
+                        maxCount={1}
+                        showUploadList={false}
+                        onChange={handleImageChange}
                       >
-                        Tải ảnh đại diện
-                      </Button>
-                    </Upload>
+                        <Button
+                          style={{padding: "0", border: "none", color: "#1890ff"}}
+                        >
+                          Tải ảnh đại diện
+                        </Button>
+                      </Upload>
+                    </Form.Item>
                   </div>
                 </div>
                 <Form.Item label="Họ và tên" name="fullName">
@@ -166,6 +185,7 @@ export function Profile(): JSX.Element {
                   <DatePicker
                     style={{width: "100%", height: "40px", borderRadius: 6}}
                     inputReadOnly={true}
+                    onChange={handleDateChange}
                     defaultValue={moment(userData.dateOfBirth)}
                   />
                 </Form.Item>

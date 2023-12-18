@@ -26,6 +26,7 @@ export function PopupAddService(props: IProps) {
   const [unit, setUnit] = useState<number>(1);
 
   const userInfo = useSelector((state: IRootState) => state.user);
+  const [serviceId, setServiceId] = useState<number>();
 
   console.log("user", userInfo);
   const onTabChange = (key: string) => {
@@ -88,10 +89,11 @@ export function PopupAddService(props: IProps) {
             message: "Thành công",
             description: "Thêm mới dịch vụ thành công.",
           });
+          console.log("response", res.data);
+          setServiceId(res.data.data)
           setActiveTabKey("tab2");
         });
 
-      console.log("response", response);
     } catch (error) {
       // console.error('Lỗi khi upload ảnh:', error);
       // setUploadStatus('Upload thất bại!');
@@ -101,20 +103,6 @@ export function PopupAddService(props: IProps) {
   const handleChangeUnit = (e: any) => {
     console.log(e);
     setUnit(e);
-  };
-
-  const nextTab = () => {
-    switch (activeTabKey) {
-      case "tab1":
-        setActiveTabKey("tab2");
-        break;
-      case "tab2":
-        setActiveTabKey("tab3");
-        break;
-      case "tab3":
-        setActiveTabKey("tab4");
-        break;
-    }
   };
 
   const contentList: Record<string, React.ReactNode> = {
@@ -173,14 +161,14 @@ export function PopupAddService(props: IProps) {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" style={{float: "right"}}>
-            Tiếp tục
+            Lưu
           </Button>
         </Form.Item>
       </Form>
     ),
-    tab2: <FormServiceUnit unitId={unit} serviceId={1} />,
-    tab3: <FormServiceUnit unitId={unit + 1} serviceId={1} />,
-    tab4: <FormServiceUnit unitId={unit + 2} serviceId={1} />,
+    tab2: <FormServiceUnit unitId={unit} serviceId={serviceId}/>,
+    tab3: <FormServiceUnit unitId={unit + 1} serviceId={serviceId}/>,
+    tab4: <FormServiceUnit unitId={unit + 2} serviceId={serviceId}/>,
   };
 
   return (
