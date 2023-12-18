@@ -61,7 +61,7 @@ export function Dashboard(): JSX.Element {
   const router = useRouter();
   const [dataInit, setDataInit] = useState<any>();
   const [dataChart, setDataChart] = useState<any>();
-  const [month, setMonth] = useState<number>(new Date().getMonth());
+  const [month, setMonth] = useState<number>(new Date().getMonth()+1);
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const chartType: ChartType = "bar";
 
