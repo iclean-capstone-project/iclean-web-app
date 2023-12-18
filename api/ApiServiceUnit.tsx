@@ -76,6 +76,7 @@ const path = {
   createServiceUnit: "/service-unit",
   getAllServiceUnit: "/service-unit",
   getServiceUnitDetail: "/service-unit/",
+  editServceUnit: "/service-unit/",
 };
 
 function getUnit(): Promise<IResGetUnit> {
@@ -91,6 +92,16 @@ export interface IParamGetServiceUnit {
 
 export interface IGetServiceUnitDetail {
   data: IServiceUnitDetail1;
+}
+
+export interface IEditServceUnit {
+  defaultPrice: number;
+  helperCommission: number;
+  servicePriceRequests?: {
+    id: number;
+    price: number;
+    employeeCommission: number;
+  }[];
 }
 
 function getAllServiceUnit(
@@ -114,6 +125,14 @@ function createServiceUnit(body: IServiceUnitDetail): Promise<IRes> {
   return fetcher({
     url: path.createServiceUnit,
     method: "post",
+    data: body,
+  });
+}
+
+function editServceUnit(id: number, body: IEditServceUnit): Promise<IRes> {
+  return fetcher({
+    url: `${path.editServceUnit}${id}`,
+    method: "put",
     data: body,
   });
 }
@@ -146,4 +165,5 @@ export {
   createService,
   getAllServiceUnit,
   getServiceUnitDetail,
+  editServceUnit
 };

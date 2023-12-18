@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Form, Input, Row} from "antd";
+import {Button, Col, Form, Input, Row, notification} from "antd";
 import {
+  IEditServceUnit,
   IServiceUnitDetail1,
+  editServceUnit,
   getServiceUnitDetail,
 } from "@app/api/ApiServiceUnit";
 import {formatMoney} from "@app/utils/formatMoney";
@@ -29,6 +31,22 @@ export function FormServiceUnit(props: IProps) {
 
   const handleOnFinish = (e: any) => {
     console.log(e);
+    var a : IEditServceUnit = {
+      defaultPrice: defaultPrice,
+      helperCommission: 65,
+      servicePriceRequests: dataInit?.servicePrices
+    }
+    
+    editServceUnit(serviceUnitId, a)
+    .then((res) => {
+      console.log(res);
+      notification.success({
+        message: "Cập nhật giá thành công"
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   };
 
   const initialValues = {
@@ -63,12 +81,12 @@ export function FormServiceUnit(props: IProps) {
                 <h4>{`${item.startTime} - ${item.endTime}`}</h4>
               </Col>
               <Col span={10}>
-                <Form.Item name={item.id} label="Giá">
+                <Form.Item name={`price${item.id}`} label="Giá">
                   <Input defaultValue={item.price}></Input>
                 </Form.Item>
               </Col>
               <Col span={14}>
-                <Form.Item name="commission1" label="Hoa hồng">
+                <Form.Item name={`commission${item.id}`} label="Hoa hồng">
                   <Input defaultValue={item.employeeCommission}></Input>
                 </Form.Item>
               </Col>
