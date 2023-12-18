@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import { useRouter } from "next/router";
-import { Button, Image, Table, Tag } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import React, {useState} from "react";
+import {useQuery} from "react-query";
+import {useRouter} from "next/router";
+import {Button, Image, Table, Tag} from "antd";
+import {EditOutlined} from "@ant-design/icons";
 
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import { ColumnsType } from "antd/es/table";
-import { getAllService, IGetListServiceRes } from "@app/api/ApiService";
-import { formatDateTime } from "@app/utils/formatTime";
-import { PopupAddService } from "./components/PopupAddService";
+import {ColumnsType} from "antd/es/table";
+import {getAllService, IGetListServiceRes} from "@app/api/ApiService";
+import {formatDateTime} from "@app/utils/formatTime";
+import {PopupAddService} from "./components/PopupAddService";
 
 interface DataType {
   serviceId: number;
@@ -25,7 +25,7 @@ export function ListService(): JSX.Element {
     useState<boolean>(false);
   const router = useRouter();
 
-  const { data } = useQuery(["GET_LIST_SERVICE"], getDataListService, {
+  const {data} = useQuery(["GET_LIST_SERVICE"], getDataListService, {
     onSuccess: (res) => {
       console.log("res1111", res?.data);
       setDataInit(res?.data ?? []);
@@ -81,7 +81,7 @@ export function ListService(): JSX.Element {
       render: (_, dataIndex) => (
         <div>
           <Image
-            style={{ borderRadius: 100 }}
+            style={{borderRadius: 100}}
             width={80}
             height={80}
             preview={false}
@@ -139,10 +139,10 @@ export function ListService(): JSX.Element {
           }}
         >
           <div
-            style={{ marginLeft: 8 }}
+            style={{marginLeft: 8}}
             onClick={() => viewService(dataIndex.serviceId)}
           >
-            <EditOutlined style={{ fontSize: 22, color: "blue" }} />
+            <EditOutlined style={{fontSize: 22, color: "blue"}} />
           </div>
         </div>
       ),
@@ -157,7 +157,7 @@ export function ListService(): JSX.Element {
 
   return (
     <div className="manager-user-container">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{display: "flex", justifyContent: "space-between"}}>
         <FilterGroupGlobal
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
@@ -167,8 +167,8 @@ export function ListService(): JSX.Element {
         </Button>
       </div>
       <Table
-        style={{ marginTop: 10 }}
-        scroll={{ x: 1000, y: 550 }}
+        style={{marginTop: 10}}
+        scroll={{x: 1000, y: 550}}
         columns={columns}
         dataSource={dataInit}
         pagination={false}

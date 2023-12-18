@@ -1,4 +1,4 @@
-import { IReport, getReportById, putReportRefund } from "@app/api/ApiReport";
+import {IReport, getReportById, putReportRefund} from "@app/api/ApiReport";
 import {
   Button,
   Card,
@@ -9,14 +9,14 @@ import {
   Row,
   Select,
   notification,
-  TabsProps
+  TabsProps,
 } from "antd";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { useRouter } from "next/router";
+import React, {useEffect, useState} from "react";
+import {useQuery} from "react-query";
+import {useRouter} from "next/router";
 import "./style.scss";
 import TextArea from "antd/lib/input/TextArea";
-import { formatMoney } from "@app/utils/formatMoney";
+import {formatMoney} from "@app/utils/formatMoney";
 
 export function DetailReport(): JSX.Element {
   const [dataInit, setDataInit] = useState<any>(undefined);
@@ -148,7 +148,7 @@ export function DetailReport(): JSX.Element {
   ];
   return (
     <div className="detail_report_container">
-      <Card className="detail_report" style={{ borderRadius: 12 }}>
+      <Card className="detail_report" style={{borderRadius: 12}}>
         <h2 className="title">Khách hàng</h2>
         <Row gutter={[60, 32]}>
           {customer.map((item) => {
@@ -159,7 +159,7 @@ export function DetailReport(): JSX.Element {
                   <Input
                     value={item.defaultValue}
                     className="report_item-info"
-                    style={{ borderRadius: 6 }}
+                    style={{borderRadius: 6}}
                   />
                 </div>
               </Col>
@@ -176,7 +176,7 @@ export function DetailReport(): JSX.Element {
                   <Input
                     value={item.defaultValue}
                     className="report_item-info"
-                    style={{ borderRadius: 6 }}
+                    style={{borderRadius: 6}}
                   />
                 </div>
               </Col>
@@ -202,19 +202,19 @@ export function DetailReport(): JSX.Element {
         {/* )} */}
       </Card>
       {dataInit?.reportStatus === "PROCESSING" && (
-        <Card className="refund" style={{ borderRadius: 12 }}>
+        <Card className="refund" style={{borderRadius: 12}}>
           <Form onFinish={handleFinish}>
             <Row gutter={[20, 20]}>
               <Col span={4}>
                 <Form.Item name="refundPercent" label="Mức đền bù">
                   <Select
                     defaultValue={0}
-                    style={{ width: 120 }}
+                    style={{width: 120}}
                     options={[
-                      { value: "20", label: "20%" },
-                      { value: "30", label: "30%" },
-                      { value: "40", label: "40%" },
-                      { value: "0", label: "Không đền bù" },
+                      {value: "20", label: "20%"},
+                      {value: "30", label: "30%"},
+                      {value: "40", label: "40%"},
+                      {value: "0", label: "Không đền bù"},
                     ]}
                   />
                 </Form.Item>

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { ColumnsType } from "antd/es/table";
-import { Button, Pagination, Table, Tag } from "antd";
+import React, {useEffect, useState} from "react";
+import {ColumnsType} from "antd/es/table";
+import {Button, Pagination, Table, Tag} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import { useQuery } from "react-query";
+import {useQuery} from "react-query";
 import {
   getAllReport,
   IGetListReportRes,
   IParamGetAllReport,
 } from "@app/api/ApiReport";
-import { LoadingGlobal } from "@app/components/Loading";
-import { formatDateTime } from "@app/utils/formatTime";
-import { useRouter } from "next/router";
+import {LoadingGlobal} from "@app/components/Loading";
+import {formatDateTime} from "@app/utils/formatTime";
+import {useRouter} from "next/router";
 
 interface DataType {
   key: string;
@@ -44,7 +44,7 @@ export function ListReport(): JSX.Element {
       size: paramsGetReport.size,
     });
 
-  const { refetch, data, isLoading } = useQuery(
+  const {refetch, data, isLoading} = useQuery(
     ["GET_DETAIL_REPORT"],
     getDataDetailReport,
     {
@@ -59,7 +59,7 @@ export function ListReport(): JSX.Element {
 
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
-    setParamsGetReport({ ...paramsGetReport, renterName: valueSearch });
+    setParamsGetReport({...paramsGetReport, renterName: valueSearch});
   };
 
   const listSearchText = [
@@ -193,8 +193,8 @@ export function ListReport(): JSX.Element {
         <LoadingGlobal />
       ) : (
         <Table
-          style={{ marginTop: 10 }}
-          scroll={{ x: 600, y: 550 }}
+          style={{marginTop: 10}}
+          scroll={{x: 600, y: 550}}
           columns={columns}
           dataSource={dataInit}
           pagination={false}
@@ -203,7 +203,11 @@ export function ListReport(): JSX.Element {
 
       <div
         className="pagination-table"
-        style={{ display: "flex", justifyContent: "flex-end", paddingTop: "17px" }}
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          paddingTop: "17px",
+        }}
       >
         <Pagination
           onChange={onChangePagination}

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Chart from "chart.js/auto";
-import { Button, Card, Col, DatePicker, Row, Table } from "antd";
+import {Button, Card, Col, DatePicker, Row, Table} from "antd";
 import {
   BarChartOutlined,
   DollarOutlined,
@@ -8,13 +8,13 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import "./index.scss";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import {
   IParamCountBooking,
   getCountBooking,
   getDashboardHome,
 } from "@app/api/ApiDashboard";
-import { formatMoney } from "@app/utils/formatMoney";
+import {formatMoney} from "@app/utils/formatMoney";
 
 type ChartTypeRegistry = {
   bar: Chart;
@@ -61,7 +61,7 @@ export function Dashboard(): JSX.Element {
   const router = useRouter();
   const [dataInit, setDataInit] = useState<any>();
   const [dataChart, setDataChart] = useState<any>();
-  const [month, setMonth] = useState<number>(new Date().getMonth()+1);
+  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const chartType: ChartType = "bar";
 
@@ -143,12 +143,12 @@ export function Dashboard(): JSX.Element {
         const dateNum: number = date.getDate();
         bookingCounter.forEach((item1, i) => {
           if (i === dateNum) {
-            bookingCounter[i-1] = item.bookingCounter;
+            bookingCounter[i - 1] = item.bookingCounter;
           }
         });
         bookingSalesInMonth.forEach((item1, i) => {
           if (i === dateNum) {
-            bookingSalesInMonth[i-1] = item.bookingSalesInMonth / 1000000;
+            bookingSalesInMonth[i - 1] = item.bookingSalesInMonth / 1000000;
           }
         });
       }
@@ -227,7 +227,7 @@ export function Dashboard(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <Button
           type="primary"
-          style={{ borderRadius: "25px" }}
+          style={{borderRadius: "25px"}}
           onClick={() => handleViewMore(dataIndex.helperInformationId)}
         >
           Xem chi tiết

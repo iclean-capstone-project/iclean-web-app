@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { ColumnsType } from "antd/es/table";
-import { Image, Modal, notification, Table, Tag, Tooltip } from "antd";
-import { StopOutlined, SyncOutlined } from "@ant-design/icons";
+import React, {useEffect, useState} from "react";
+import {ColumnsType} from "antd/es/table";
+import {Image, Modal, notification, Table, Tag, Tooltip} from "antd";
+import {StopOutlined, SyncOutlined} from "@ant-design/icons";
 
-import { InputGlobal } from "@app/components/InputGlobal";
+import {InputGlobal} from "@app/components/InputGlobal";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import { Formik } from "formik";
+import {Formik} from "formik";
 import UploadFileGlobal from "@app/components/UploadFileGlobal";
-import { useMutation, useQuery } from "react-query";
-import ApiUser, { IGetListUser } from "@app/api/ApiUser";
+import {useMutation, useQuery} from "react-query";
+import ApiUser, {IGetListUser} from "@app/api/ApiUser";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
-import { useSelector } from "react-redux";
-import { IRootState } from "@app/redux/store";
+import {useSelector} from "react-redux";
+import {IRootState} from "@app/redux/store";
 
 interface DataType {
   key: string;
@@ -57,7 +57,7 @@ export function ManagerUser(): JSX.Element {
       role: paramFilter,
     });
 
-  const { refetch } = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
+  const {refetch} = useQuery(["GET_DATE_LIST_USER"], getDataListUser, {
     onSuccess: (res) => {
       console.log("RES USER", res?.data);
       setDataUserInit(res?.data?.content ?? []);
@@ -136,7 +136,7 @@ export function ManagerUser(): JSX.Element {
       render: (_, dataIndex) => (
         <div>
           <Image
-            style={{ borderRadius: 55 }}
+            style={{borderRadius: 55}}
             width={55}
             height={55}
             preview={false}
@@ -306,8 +306,8 @@ export function ManagerUser(): JSX.Element {
     <div className="manager-user-container">
       <FilterGroupGlobal listSelectOption={listSelectOption} />
       <Table
-        style={{ marginTop: 10 }}
-        scroll={{ x: 800, y: 550 }}
+        style={{marginTop: 10}}
+        scroll={{x: 800, y: 550}}
         columns={columns}
         dataSource={displayedData}
         pagination={{
@@ -328,9 +328,9 @@ export function ManagerUser(): JSX.Element {
           onSubmit={handleSubmit}
           validateOnChange
           validateOnBlur
-        // validationSchema={LoginValidation}
+          // validationSchema={LoginValidation}
         >
-          {({ handleSubmit }): JSX.Element => {
+          {({handleSubmit}): JSX.Element => {
             return (
               <div>
                 {listInputUser.map((item, index) => (
@@ -343,11 +343,11 @@ export function ManagerUser(): JSX.Element {
                           alignItems: "center",
                         }}
                       >
-                        <span style={{ width: "20%" }}>{`${item.title}:  `}</span>
+                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
                         <InputGlobal
                           name="username"
                           placeholder={item.placeHolder}
-                          style={{ width: "80%" }}
+                          style={{width: "80%"}}
                           onPressEnter={(): void => handleSubmit()}
                         />
                         <ErrorMessageGlobal name="username" />
@@ -361,8 +361,8 @@ export function ManagerUser(): JSX.Element {
                           alignItems: "center",
                         }}
                       >
-                        <span style={{ width: "20%" }}>{`${item.title}:  `}</span>
-                        <div style={{ width: "80%" }}>
+                        <span style={{width: "20%"}}>{`${item.title}:  `}</span>
+                        <div style={{width: "80%"}}>
                           <UploadFileGlobal
                             handleChange={() => console.log("uploadFile")}
                           />

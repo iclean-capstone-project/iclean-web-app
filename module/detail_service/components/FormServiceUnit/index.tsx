@@ -20,33 +20,34 @@ export function FormServiceUnit(props: IProps) {
   const [dataInit, setDataInit] = useState<IServiceUnitDetail1>();
 
   useEffect(() => {
-    getServiceUnitDetail(serviceUnitId).then((res) => {
-      console.log("Unit >>> ",res);
-      setDataInit(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    getServiceUnitDetail(serviceUnitId)
+      .then((res) => {
+        console.log("Unit >>> ", res);
+        setDataInit(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleOnFinish = (e: any) => {
     console.log(e);
-    var a : IEditServceUnit = {
+    var a: IEditServceUnit = {
       defaultPrice: defaultPrice,
       helperCommission: 65,
-      servicePriceRequests: dataInit?.servicePrices
-    }
-    
+      servicePriceRequests: dataInit?.servicePrices,
+    };
+
     editServceUnit(serviceUnitId, a)
-    .then((res) => {
-      console.log(res);
-      notification.success({
-        message: "Cập nhật giá thành công"
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: "Cập nhật giá thành công",
+        });
       })
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const initialValues = {

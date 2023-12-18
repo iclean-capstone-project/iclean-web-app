@@ -165,5 +165,5 @@ export {
   createService,
   getAllServiceUnit,
   getServiceUnitDetail,
-  editServceUnit
+  editServceUnit,
 };

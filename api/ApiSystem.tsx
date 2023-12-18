@@ -28,11 +28,11 @@ function getSystemParameter(): Promise<IResSystemParameter> {
   });
 }
 
-function editSystemParameter(body : IBodySystemSetting[]): Promise<any> {
+function editSystemParameter(body: IBodySystemSetting[]): Promise<any> {
   return fetcher({
     url: path.getSystemParameter,
     method: "put",
-    data: body
+    data: body,
   });
 }
 
