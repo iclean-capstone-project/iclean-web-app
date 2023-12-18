@@ -61,7 +61,7 @@ export function Dashboard(): JSX.Element {
   const router = useRouter();
   const [dataInit, setDataInit] = useState<any>();
   const [dataChart, setDataChart] = useState<any>();
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
+  const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const chartType: ChartType = "bar";
 
@@ -96,12 +96,12 @@ export function Dashboard(): JSX.Element {
 
   let bookingCounter = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
   ];
 
   let bookingSalesInMonth = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
   ];
 
   useEffect(() => {
@@ -143,12 +143,12 @@ export function Dashboard(): JSX.Element {
         const dateNum: number = date.getDate();
         bookingCounter.forEach((item1, i) => {
           if (i === dateNum) {
-            bookingCounter[i] = item.bookingCounter;
+            bookingCounter[i-1] = item.bookingCounter;
           }
         });
         bookingSalesInMonth.forEach((item1, i) => {
           if (i === dateNum) {
-            bookingSalesInMonth[i] = item.bookingSalesInMonth / 1000000;
+            bookingSalesInMonth[i-1] = item.bookingSalesInMonth / 1000000;
           }
         });
       }
