@@ -13,7 +13,7 @@ export interface IGetListServiceRes {
 }
 
 export interface IResGetService {
-  data: IService
+  data: IService;
 }
 
 export interface IService {
@@ -22,7 +22,7 @@ export interface IService {
   description: string;
   serviceIcon: string;
   createAt: string;
-  images: {serviceImage: string;} []
+  images: {serviceImage: string}[];
 }
 
 const path = {

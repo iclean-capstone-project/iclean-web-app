@@ -17,6 +17,7 @@ export interface IRoute {
   isLanding?: boolean;
   icon?: ReactNode;
   children?: IRoute[];
+  isRole?: any;
 }
 
 const routes: IRoute[] = [
@@ -31,6 +32,7 @@ const routes: IRoute[] = [
     name: "Quản lý",
     isSidebar: true,
     icon: <UserOutlined className="icon-sidebar" />,
+    isRole: "admin",
   },
   {
     path: "/list_booking",
@@ -43,6 +45,7 @@ const routes: IRoute[] = [
     name: "Dịch vụ",
     isSidebar: true,
     icon: <BlockOutlined className="icon-sidebar" />,
+    isRole: "admin",
   },
   {
     path: "/detail_service",
@@ -65,6 +68,7 @@ const routes: IRoute[] = [
     name: "Khiếu nại",
     isSidebar: true,
     icon: <FileExclamationOutlined className="icon-sidebar" />,
+    isRole: "manager",
   },
   {
     path: "/detail_report",
@@ -82,18 +86,21 @@ const routes: IRoute[] = [
     name: "Nạp rút tiền",
     isSidebar: true,
     icon: <LogoutOutlined className="icon-sidebar" />,
+    isRole: "manager",
   },
   {
     path: "/dashboard",
     name: "Thống kê",
     isSidebar: true,
     icon: <LineChartOutlined className="icon-sidebar" />,
+    isRole: "admin",
   },
   {
     path: "/setting",
     name: "Cấu hình",
     isSidebar: true,
     icon: <SettingOutlined className="icon-sidebar" />,
+    isRole: "admin",
   },
 ];
 

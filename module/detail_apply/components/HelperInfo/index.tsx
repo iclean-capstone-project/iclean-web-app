@@ -9,7 +9,7 @@ interface IProps {
 export function HelperInfo(props: IProps): JSX.Element {
   const {dataInfoHelper} = props;
   console.log(dataInfoHelper?.status);
-  var status = dataInfoHelper?.status;
+  let status = dataInfoHelper?.status;
   if (status === "WAITING_FOR_APPROVE") {
     status = "Chờ phê duyệt";
   } else if (status === "WAITING_FOR_CONFIRM") {
@@ -24,7 +24,10 @@ export function HelperInfo(props: IProps): JSX.Element {
           style={{borderRadius: "50%"}}
           width={150}
           height={150}
-          src={dataInfoHelper?.personalAvatar}
+          src={
+            dataInfoHelper?.personalAvatar ??
+            "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+          }
         />
         <h3>{dataInfoHelper?.fullName}</h3>
       </div>
@@ -35,7 +38,10 @@ export function HelperInfo(props: IProps): JSX.Element {
             className="image-attachment"
             width={60}
             height={60}
-            src={item}
+            src={
+              item ??
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
           />
         ))}
       </div>

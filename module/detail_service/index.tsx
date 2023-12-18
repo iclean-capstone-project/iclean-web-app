@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import { Button, Card, Form, Image, Input, Upload} from "antd";
+import {Button, Card, Form, Image, Input, Upload} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {IService, getServiceById} from "@app/api/ApiService";
 import TextArea from "antd/lib/input/TextArea";
 
-import { IServiceUnit, getAllServiceUnit } from "@app/api/ApiServiceUnit";
-import { FormServiceUnit } from "./components/FormServiceUnit";
-import "./index.scss"
+import {IServiceUnit, getAllServiceUnit} from "@app/api/ApiServiceUnit";
+import {FormServiceUnit} from "./components/FormServiceUnit";
+import "./index.scss";
 
 export function DetailService() {
   const [activeTabKey, setActiveTabKey] = useState<string>("tab1");
@@ -34,13 +34,13 @@ export function DetailService() {
       });
 
     getAllServiceUnit({serviceId: serviceId})
-    .then((res) => {
-      console.log(res);
-      setServiceUnit(res.data)
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .then((res) => {
+        console.log(res);
+        setServiceUnit(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const tabList = [
@@ -76,25 +76,30 @@ export function DetailService() {
   const initialValues = {
     serviceName: dataInit?.serviceName,
     description: dataInit?.description,
-  }
+  };
 
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <>
-        <Form layout="vertical" onFinish={onFinish} initialValues={initialValues}>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={initialValues}
+        >
           <Form.Item name={"serviceName"} label={"Tên dịch vụ"}>
             <Input></Input>
           </Form.Item>
           <Form.Item name={"description"} label={"Mô tả"}>
             <TextArea rows={8}></TextArea>
           </Form.Item>
-          <Form.Item
-            name={"serviceAvatar"}
-            label={"Icon dịch vụ"}
-          >
+          <Form.Item name={"serviceAvatar"} label={"Icon dịch vụ"}>
             <div className="d_flex">
               <div className="me_2">
-                <Image src={dataInit?.serviceIcon} width={102} height={102} ></Image>
+                <Image
+                  src={dataInit?.serviceIcon}
+                  width={102}
+                  height={102}
+                ></Image>
               </div>
               <Upload listType="picture-card">
                 <div>
@@ -109,20 +114,26 @@ export function DetailService() {
             label="Hình ảnh dịch vụ"
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            >
-              <div className="d_flex">
-                {
-                  dataInit?.images.map((item, i) => (<div key={i} className="me_2" ><Image src={item.serviceImage} width={102} height={102} ></Image></div>))
-                }
-                <div>
-                  <Upload listType="picture-card">
-                    <div>
-                      <PlusOutlined />
-                      <div style={{marginTop: 8}}>Thêm ảnh</div>
-                    </div>
-                  </Upload>
+          >
+            <div className="d_flex">
+              {dataInit?.images.map((item, i) => (
+                <div key={i} className="me_2">
+                  <Image
+                    src={item.serviceImage}
+                    width={102}
+                    height={102}
+                  ></Image>
                 </div>
+              ))}
+              <div>
+                <Upload listType="picture-card">
+                  <div>
+                    <PlusOutlined />
+                    <div style={{marginTop: 8}}>Thêm ảnh</div>
+                  </div>
+                </Upload>
               </div>
+            </div>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{float: "right"}}>
@@ -132,9 +143,30 @@ export function DetailService() {
         </Form>
       </>
     ),
-    tab2: <FormServiceUnit key={1} serviceUnitId={serviceUnit[0]?.serviceUnitId}  unitDetail={serviceUnit[0]?.unitDetail} defaultPrice={serviceUnit[0]?.defaultPrice}></FormServiceUnit>,
-    tab3: <FormServiceUnit key={2} serviceUnitId={serviceUnit[1]?.serviceUnitId}  unitDetail={serviceUnit[1]?.unitDetail} defaultPrice={serviceUnit[1]?.defaultPrice}></FormServiceUnit>,
-    tab4: <FormServiceUnit key={3} serviceUnitId={serviceUnit[2]?.serviceUnitId}  unitDetail={serviceUnit[2]?.unitDetail} defaultPrice={serviceUnit[2]?.defaultPrice}></FormServiceUnit>,
+    tab2: (
+      <FormServiceUnit
+        key={1}
+        serviceUnitId={serviceUnit[0]?.serviceUnitId}
+        unitDetail={serviceUnit[0]?.unitDetail}
+        defaultPrice={serviceUnit[0]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
+    tab3: (
+      <FormServiceUnit
+        key={2}
+        serviceUnitId={serviceUnit[1]?.serviceUnitId}
+        unitDetail={serviceUnit[1]?.unitDetail}
+        defaultPrice={serviceUnit[1]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
+    tab4: (
+      <FormServiceUnit
+        key={3}
+        serviceUnitId={serviceUnit[2]?.serviceUnitId}
+        unitDetail={serviceUnit[2]?.unitDetail}
+        defaultPrice={serviceUnit[2]?.defaultPrice}
+      ></FormServiceUnit>
+    ),
   };
 
   return (

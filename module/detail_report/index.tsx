@@ -1,4 +1,4 @@
-import {IReport, getReportById, putReportRefund} from "@app/api/ApiReport";
+import { IReport, getReportById, putReportRefund } from "@app/api/ApiReport";
 import {
   Button,
   Card,
@@ -9,12 +9,14 @@ import {
   Row,
   Select,
   notification,
+  TabsProps
 } from "antd";
-import React, {useState} from "react";
-import {useQuery} from "react-query";
-import {useRouter} from "next/router";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 import "./style.scss";
 import TextArea from "antd/lib/input/TextArea";
+import { formatMoney } from "@app/utils/formatMoney";
 
 export function DetailReport(): JSX.Element {
   const [dataInit, setDataInit] = useState<any>(undefined);
@@ -25,7 +27,7 @@ export function DetailReport(): JSX.Element {
     getReportById(
       router?.query?.id ? parseInt(router.query.id as string, 10) : 1
     );
-    useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
+  const getdata = useQuery(["GET_DATA_DATAIL_REPORT"], getDataReport, {
     onSuccess: (res) => {
       setDataInit(res.data);
       console.log(res);
@@ -33,6 +35,9 @@ export function DetailReport(): JSX.Element {
   });
   console.log("Data detail: ", dataInit);
 
+  useEffect(() => {
+    getdata.refetch();
+  }, [router.query.id as string]);
   const handleFinish = (value: any) => {
     setLoading(true);
     console.log(value);
@@ -44,6 +49,7 @@ export function DetailReport(): JSX.Element {
           message: "Yêu cầu thành công",
           description: "Yêu cầu của bạn đã được xử lý thành công.",
         });
+        router.push("/list_report");
       })
       .catch((err) => {
         console.log(err);
@@ -103,12 +109,12 @@ export function DetailReport(): JSX.Element {
     },
     {
       label: "Diện tích",
-      defaultValue: dataInit?.bookingDetail?.equivalent,
+      defaultValue: dataInit?.bookingDetail?.value,
       span: 12,
     },
     {
-      label: "Mã dịch vụ",
-      defaultValue: dataInit?.bookingDetail?.bookingCode,
+      label: "Giá dịch vụ",
+      defaultValue: formatMoney(dataInit?.bookingDetail?.price),
       span: 12,
     },
     {
@@ -142,7 +148,7 @@ export function DetailReport(): JSX.Element {
   ];
   return (
     <div className="detail_report_container">
-      <Card className="detail_report">
+      <Card className="detail_report" style={{ borderRadius: 12 }}>
         <h2 className="title">Khách hàng</h2>
         <Row gutter={[60, 32]}>
           {customer.map((item) => {
@@ -153,7 +159,8 @@ export function DetailReport(): JSX.Element {
                   <Input
                     value={item.defaultValue}
                     className="report_item-info"
-                  ></Input>
+                    style={{ borderRadius: 6 }}
+                  />
                 </div>
               </Col>
             );
@@ -169,61 +176,68 @@ export function DetailReport(): JSX.Element {
                   <Input
                     value={item.defaultValue}
                     className="report_item-info"
-                  ></Input>
+                    style={{ borderRadius: 6 }}
+                  />
                 </div>
               </Col>
             );
           })}
         </Row>
-        <h2 className="title">Hình ảnh chứng minh</h2>
-        <Row>
-          {dataInit?.attachmentResponses.map((item: any, index: number) => (
-            <Col span={3} key={index}>
-              <Image
-                src={item.bookingAttachmentLink}
-                width={150}
-                height={150}
-                className="img"
-              ></Image>
-            </Col>
-          ))}
-        </Row>
-      </Card>
-      <Card className="refund">
-        <Form onFinish={handleFinish}>
-          <Row gutter={[20, 20]}>
-            <Col span={4}>
-              <Form.Item name={"refundPercent"} label="Mức đền bù">
-                <Select
-                  defaultValue={0}
-                  style={{width: 120}}
-                  options={[
-                    {value: "20", label: "20%"},
-                    {value: "30", label: "30%"},
-                    {value: "40", label: "40%"},
-                    {value: "0", label: "Không đền bù"},
-                  ]}
+        {/* {dataInit?.reportStatus === "PROCESSING" && ( */}
+        <div>
+          <h2 className="title">Hình ảnh chứng minh</h2>
+          <Row>
+            {dataInit?.attachmentResponses.map((item: any, index: number) => (
+              <Col span={3} key={index}>
+                <Image
+                  src={item.bookingAttachmentLink}
+                  width={150}
+                  height={150}
+                  className="img"
                 />
-              </Form.Item>
-            </Col>
-            <Col span={2}></Col>
-            <Col span={18}>
-              <Form.Item name={"reason"} label="Lý do">
-                <TextArea rows={6}></TextArea>
-              </Form.Item>
-            </Col>
+              </Col>
+            ))}
           </Row>
-          <Button
-            loading={loading}
-            type="primary"
-            htmlType="submit"
-            size="large"
-            className="btn"
-          >
-            Xác nhận
-          </Button>
-        </Form>
+        </div>
+        {/* )} */}
       </Card>
+      {dataInit?.reportStatus === "PROCESSING" && (
+        <Card className="refund" style={{ borderRadius: 12 }}>
+          <Form onFinish={handleFinish}>
+            <Row gutter={[20, 20]}>
+              <Col span={4}>
+                <Form.Item name="refundPercent" label="Mức đền bù">
+                  <Select
+                    defaultValue={0}
+                    style={{ width: 120 }}
+                    options={[
+                      { value: "20", label: "20%" },
+                      { value: "30", label: "30%" },
+                      { value: "40", label: "40%" },
+                      { value: "0", label: "Không đền bù" },
+                    ]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={2} />
+              <Col span={18}>
+                <Form.Item name="reason" label="Lý do">
+                  <TextArea rows={6} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              size="large"
+              className="btn"
+            >
+              Xác nhận
+            </Button>
+          </Form>
+        </Card>
+      )}
     </div>
   );
 }

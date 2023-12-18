@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Button, Image, Table, Tabs, TabsProps, Tag, notification} from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Image, Table, Tabs, TabsProps, Tag, notification } from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import {getAllApply, IGetAllApplyRes, IItemApplyRes, setApplyForManager} from "@app/api/ApiProduct";
 import {useQuery} from "react-query";
@@ -12,7 +12,9 @@ export function ListApply(): JSX.Element {
   const router = useRouter();
   const user = useSelector((state: IRootState) => state.user);
   const [dataApply, setDataApply] = useState<IItemApplyRes[]>([]);
-  const [keyTabSelected, setKeyTabSelected] = useState<string>(user.userInformationDto.roleName === "admin" ? "WAITING_FOR_APPROVE" : "");
+  const [keyTabSelected, setKeyTabSelected] = useState<string>(
+    user.userInformationDto?.roleName === "admin" ? "WAITING_FOR_APPROVE" : ""
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
@@ -77,7 +79,7 @@ export function ListApply(): JSX.Element {
       placeHolder: "Tìm kiếm...",
       onSearch: handleSearch,
       maxLength: 255,
-      tooltip: "Từ khóa: Tiêu đề",
+      tooltip: "Tìm kiếm",
     },
   ];
   const listDatePicker = [
@@ -107,11 +109,14 @@ export function ListApply(): JSX.Element {
       render: (_: any, dataIndex: any) => (
         <div>
           <Image
-            style={{borderRadius: 55}}
+            style={{ borderRadius: 55 }}
             width={55}
             height={55}
             preview={false}
-            src={dataIndex.personalAvatar}
+            src={
+              dataIndex.personalAvatar ??
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
           />
         </div>
       ),
@@ -137,7 +142,7 @@ export function ListApply(): JSX.Element {
       dataIndex: "placeOfResidence",
       key: "placeOfResidence",
       align: "center",
-      width: 200,
+      width: 250,
     },
     {
       title: "Quê quán",
@@ -153,7 +158,7 @@ export function ListApply(): JSX.Element {
       key: "status",
       align: "center",
       fixed: "right",
-      width: 170,
+      width: 120,
       render: (_: any, dataIndex: any) => (
         <div>
           {dataIndex.status === "WAITING_FOR_APPROVE" && (
@@ -163,10 +168,10 @@ export function ListApply(): JSX.Element {
             <Tag color="lime">{"Chờ xác nhận"}</Tag>
           )}
           {dataIndex.status === "DISABLED" && (
-            <Tag color="red">{dataIndex.status}</Tag>
+            <Tag color="red">{"Từ chối"}</Tag>
           )}
           {dataIndex.status === "ONLINE" && (
-            <Tag color="green">{dataIndex.status}</Tag>
+            <Tag color="green">{"Hoạt động"}</Tag>
           )}
         </div>
       ),
@@ -187,7 +192,7 @@ export function ListApply(): JSX.Element {
           {/* <div>{dataIndex.helperInformationId}</div> */}
           <Button
             onClick={() => goToDetailApply(dataIndex.helperInformationId)}
-            style={{fontSize: 13}}
+            style={{ fontSize: 13 }}
             shape="round"
             type="primary"
           >
@@ -220,24 +225,34 @@ export function ListApply(): JSX.Element {
   }
   return (
     <div className="list-apply-container">
-      {user.userInformationDto.roleName === "admin" ? (
+      {user.userInformationDto?.roleName === "admin" ? (
         <></>
       ) : (
         <Tabs defaultActiveKey="all" items={itemsTab} onChange={onChangeTab} />
       )}
-      <div style={{display: "flex", justifyContent: "space-between"}}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <FilterGroupGlobal
           listSearchText={listSearchText}
           listDatePicker={listDatePicker}
         />
-        {user.userInformationDto.roleName==="admin" ? <Button type="primary" onClick={chiaDon} style={{borderRadius: "25px"}}>Chia đơn cho quản lý</Button> : <div></div>}
+        {user.userInformationDto?.roleName === "admin" ? (
+          <Button
+            type="primary"
+            onClick={chiaDon}
+            style={{ borderRadius: "25px" }}
+          >
+            Chia đơn cho quản lý
+          </Button>
+        ) : (
+          <div></div>
+        )}
       </div>
       {dataListApply.isLoading ? (
         <LoadingGlobal />
       ) : (
         <Table
-          style={{marginTop: 10}}
-          scroll={{x: 600, y: 500}}
+          style={{ marginTop: 10 }}
+          scroll={{ x: 600, y: 500 }}
           columns={columns}
           dataSource={displayedData}
           pagination={{

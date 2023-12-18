@@ -186,7 +186,10 @@ export function DepositWithdraw(): JSX.Element {
             width={55}
             height={55}
             preview={false}
-            src={dataIndex.avatar}
+            src={
+              dataIndex.avatar ??
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
           />
         </div>
       ),

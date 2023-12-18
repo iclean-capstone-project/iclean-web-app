@@ -91,7 +91,10 @@ export default function Navbar(): JSX.Element {
                   preview={false}
                   width={30}
                   height={30}
-                  src={user?.userInformationDto.avatar}
+                  src={
+                    user?.userInformationDto.avatar ??
+                    "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                  }
                   style={{borderRadius: "50%"}}
                 />
               ) : (

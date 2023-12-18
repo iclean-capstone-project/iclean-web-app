@@ -1,5 +1,5 @@
-import {FormOutlined} from "@ant-design/icons";
-import {IUpdateProfileData, IUserData, getInfoUser} from "@app/api/ApiProfile";
+import { FormOutlined } from "@ant-design/icons";
+import { IUpdateProfileData, IUserData, getInfoUser } from "@app/api/ApiProfile";
 import {
   Button,
   Card,
@@ -12,7 +12,7 @@ import {
   Upload,
   notification,
 } from "antd";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 export function Profile(): JSX.Element {
   const [isEdit, setIsEdit] = useState<boolean>(true);
@@ -93,7 +93,7 @@ export function Profile(): JSX.Element {
       <Row>
         <Col span={4}></Col>
         <Col span={16}>
-          <Card>
+          <Card style={{ borderRadius: 12 }}>
             <Form
               name="profile"
               onFinish={onFinish}
@@ -101,7 +101,7 @@ export function Profile(): JSX.Element {
               layout="vertical"
               initialValues={init}
             >
-              <div style={{display: "flex", margin: "24px 0px"}}>
+              <div style={{ display: "flex", margin: "24px 0px" }}>
                 <div
                   style={{
                     width: "100px",
@@ -113,7 +113,7 @@ export function Profile(): JSX.Element {
                 >
                   <Image
                     src={selectedImage || userData?.avatar}
-                    style={{objectFit: "cover", height: "100%"}}
+                    style={{ objectFit: "cover", height: "100%" }}
                   />
                 </div>
                 <div>
@@ -124,7 +124,7 @@ export function Profile(): JSX.Element {
                     onChange={handleImageChange}
                   >
                     <Button
-                      style={{padding: "0", border: "none", color: "#1890ff"}}
+                      style={{ padding: "0", border: "none", color: "#1890ff" }}
                     >
                       Tải ảnh đại diện
                     </Button>
@@ -139,11 +139,12 @@ export function Profile(): JSX.Element {
                       readOnly={isEdit}
                       size={"large"}
                       placeholder="Họ và tên"
+                      style={{ borderRadius: 6 }}
                     />
                   </Col>
                   <Col
                     span={2}
-                    style={{display: "flex", justifyContent: "end"}}
+                    style={{ display: "flex", justifyContent: "end" }}
                   >
                     <Button
                       onClick={editInfo}
@@ -155,8 +156,8 @@ export function Profile(): JSX.Element {
                 </Row>
               </Form.Item>
 
-              <Form.Item label="Vai trò" name="roleName">
-                <Input readOnly={isEdit} size={"large"} placeholder="Vai trò" />
+              <Form.Item label="Vai trò" name="Quản lý">
+                <Input readOnly={isEdit} style={{ borderRadius: 6 }} size={"large"} placeholder="Vai trò" />
               </Form.Item>
 
               <Form.Item label="Số điện thoại" name="phoneNumber">
@@ -165,25 +166,26 @@ export function Profile(): JSX.Element {
                   readOnly={isEdit}
                   size={"large"}
                   placeholder="Số điện thoại"
+                  style={{ borderRadius: 6 }}
                 />
               </Form.Item>
 
               <Form.Item label="DatePicker" name="datePicker">
                 <DatePicker
-                  style={{width: "100%", height: "40px"}}
+                  style={{ width: "100%", height: "40px", borderRadius: 6 }}
                   inputReadOnly={true}
                 />
               </Form.Item>
 
               <Form.Item label="Địa chỉ" name="defaultAddress">
-                <Input readOnly={isEdit} size={"large"} placeholder="Địa chỉ" />
+                <Input readOnly={isEdit} size={"large"} style={{ borderRadius: 6 }} placeholder="Địa chỉ" />
               </Form.Item>
 
-              <Form.Item wrapperCol={{span: 20}}>
+              <Form.Item wrapperCol={{ span: 20 }}>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  style={{width: "200px", height: "40px"}}
+                  style={{ width: "200px", height: "40px", borderRadius: 6 }}
                 >
                   Lưu
                 </Button>

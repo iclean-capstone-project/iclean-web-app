@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {ColumnsType} from "antd/es/table";
-import {Button, Pagination, Table} from "antd";
+import React, { useEffect, useState } from "react";
+import { ColumnsType } from "antd/es/table";
+import { Button, Pagination, Table, Tag } from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
-import {useQuery} from "react-query";
+import { useQuery } from "react-query";
 import {
   getAllReport,
   IGetListReportRes,
   IParamGetAllReport,
 } from "@app/api/ApiReport";
-import {LoadingGlobal} from "@app/components/Loading";
-import {formatDateTime} from "@app/utils/formatTime";
-import {useRouter} from "next/router";
+import { LoadingGlobal } from "@app/components/Loading";
+import { formatDateTime } from "@app/utils/formatTime";
+import { useRouter } from "next/router";
 
 interface DataType {
   key: string;
@@ -33,8 +33,8 @@ export function ListReport(): JSX.Element {
   const router = useRouter();
 
   const onChangePagination = (value: any): void => {
-      console.log(value)
-  }
+    console.log(value);
+  };
 
   const getDataDetailReport = (): Promise<IGetListReportRes> =>
     getAllReport({
@@ -44,7 +44,7 @@ export function ListReport(): JSX.Element {
       size: paramsGetReport.size,
     });
 
-  const {refetch, data, isLoading} = useQuery(
+  const { refetch, data, isLoading } = useQuery(
     ["GET_DETAIL_REPORT"],
     getDataDetailReport,
     {
@@ -59,7 +59,7 @@ export function ListReport(): JSX.Element {
 
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
-    setParamsGetReport({...paramsGetReport, renterName: valueSearch});
+    setParamsGetReport({ ...paramsGetReport, renterName: valueSearch });
   };
 
   const listSearchText = [
@@ -67,7 +67,7 @@ export function ListReport(): JSX.Element {
       placeHolder: "Tìm kiếm...",
       onSearch: handleSearch,
       maxLength: 255,
-      tooltip: "Từ khóa: Tiêu đề",
+      tooltip: "Tìm kiếm",
     },
   ];
 
@@ -109,22 +109,15 @@ export function ListReport(): JSX.Element {
       dataIndex: "reportTypeDetail",
       key: "reportTypeDetail",
       align: "center",
-      width: 120,
+      width: 150,
     },
-    {
-      title: "Chi tiết",
-      dataIndex: "detail",
-      key: "detail",
-      align: "center",
-      width: 170,
-    },
-    {
-      title: "Trạng tháio",
-      dataIndex: "reportStatus",
-      key: "reportStatus",
-      align: "center",
-      width: 120,
-    },
+    // {
+    //   title: "Chi tiết",
+    //   dataIndex: "detail",
+    //   key: "detail",
+    //   align: "center",
+    //   width: 170,
+    // },
     {
       title: "Ngày tạo",
       dataIndex: "createAt",
@@ -133,6 +126,26 @@ export function ListReport(): JSX.Element {
       width: 120,
       render: (_, dataIndex) => (
         <span>{formatDateTime(dataIndex.createAt)}</span>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "reportStatus",
+      key: "reportStatus",
+      align: "center",
+      width: 80,
+      render: (_: any, dataIndex: any) => (
+        <div>
+          {dataIndex.reportStatus === "PROCESSING" && (
+            <Tag color="cyan">{"Chờ duyệt"}</Tag>
+          )}
+          {dataIndex.reportStatus === "PROCESSED" && (
+            <Tag color="lime">{"Đã xử lý"}</Tag>
+          )}
+          {dataIndex.reportStatus === "REJECTED" && (
+            <Tag color="red">{"Từ chối"}</Tag>
+          )}
+        </div>
       ),
     },
     {
@@ -180,15 +193,18 @@ export function ListReport(): JSX.Element {
         <LoadingGlobal />
       ) : (
         <Table
-          style={{marginTop: 10}}
-          scroll={{x: 600, y: 550}}
+          style={{ marginTop: 10 }}
+          scroll={{ x: 600, y: 550 }}
           columns={columns}
           dataSource={dataInit}
           pagination={false}
         />
       )}
 
-      <div className="pagination-table">
+      <div
+        className="pagination-table"
+        style={{ display: "flex", justifyContent: "flex-end", paddingTop: "17px" }}
+      >
         <Pagination
           onChange={onChangePagination}
           defaultCurrent={1}
