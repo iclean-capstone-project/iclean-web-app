@@ -86,15 +86,6 @@ export function DetailService() {
         formData.append("serviceName", name);
         formData.append("description", des);
   
-        // values.serviceFileImages.forEach((image: any, index: number) => {
-        //   formData.append(`serviceFileImages`, image.originFileObj);
-        // });
-  
-        // formData.append(
-        //   "serviceAvatar",
-        //   values.serviceAvatar.fileList[0].originFileObj
-        // );
-  
         const endPoint = `https://iclean.azurewebsites.net/api/v1/service/${serviceId}`
         const response = await axios
           .put(endPoint , formData, {
